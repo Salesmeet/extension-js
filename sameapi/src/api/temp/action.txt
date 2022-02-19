@@ -1,0 +1,99 @@
+{"idmeeting":"3","second":"97","secondmanual":"36","action":"sameStopHour","value":"36"}
+{"idmeeting":"3","second":"100","secondmanual":"36","action":"sameRapidMak","value":"Make an appointment"}
+{"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-18-23-18-56"}
+{"idmeeting":"3","second":"5","secondmanual":"0","action":"sameTemplateChoise","value":"projectplan"}
+{"idmeeting":"3","second":"7","secondmanual":"0","action":"sameTemplateSaveParent","value":"projectplan"}
+{"idmeeting":"3","second":"12","secondmanual":"0","action":"sameGetParticipantList","value":"Corrado Facchini"}
+{"idmeeting":"3","second":"16","secondmanual":"0","action":"sameGetAgenda","value":"Reading the agenda of the day"}
+{"idmeeting":"3","second":"19","secondmanual":"0","action":"sameRapidMak","value":"Make an appointment"}
+{"idmeeting":"3","second":"22","secondmanual":"0","action":"sameRapidPoi","value":"Point of interest"}
+{"idmeeting":"3","second":"25","secondmanual":"0","action":"sameStartHour","value":"0"}
+{"idmeeting":"3","second":"28","secondmanual":"3","action":"sameRapidPoi","value":"Point of interest"}
+{"idmeeting":"3","second":"28","secondmanual":"3","action":"sameRapidPoi","value":"Point of interest"}
+{"idmeeting":"3","second":"34","secondmanual":"8","action":"sameRapidMak","value":"Make an appointment"}
+{"idmeeting":"3","second":"38","secondmanual":"12","action":"sameRapidPoi","value":"Point of interest"}
+{"idmeeting":"3","second":"41","secondmanual":"15","action":"sameRapidMak","value":"Make an appointment"}
+{"idmeeting":"3","second":"46","secondmanual":"21","action":"sameRapidMak","value":"Make an appointment"}
+{"idmeeting":"3","second":"52","secondmanual":"27","action":"sameRapidPoi","value":"Point of interest"}
+{"idmeeting":"3","second":"98","secondmanual":"72","action":"sameGetDataMeeting","value":"Name_ SAL Same Project"}
+{"idmeeting":"3","second":"111","secondmanual":"85","action":"sameGetDataMeeting","value":"Name_ SAL Same Project"}
+{"idmeeting":"3","second":"170","secondmanual":"144","action":"sameStopHour","value":"144"}
+{"idmeeting":"3","second":"172","secondmanual":"144","action":"sameStartHour","value":"144"}
+{"idmeeting":"3","second":"175","secondmanual":"147","action":"sameClearHour","value":"147"}
+{"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-18-23-22-6"}
+{"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-18-23-24-23"}
+{"idmeeting":"3","second":"6","secondmanual":"0","action":"sameTemplateChoise","value":"projectplan"}
+{"idmeeting":"3","second":"8","secondmanual":"0","action":"sameTemplateSaveParent","value":"projectplan"}
+{"idmeeting":"3","second":"16","secondmanual":"0","action":"sameTemplateChoise","value":"projectplan"}
+{"idmeeting":"3","second":"20","secondmanual":"0","action":"sameTemplateSaveParent","value":"projectplan"}
+{"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-18-23-24-50"}
+{"idmeeting":"3","second":"4","secondmanual":"0","action":"sameTemplateChoise","value":"projectplan"}
+{"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-18-23-26-29"}
+{"idmeeting":"3","second":"7","secondmanual":"0","action":"sameGetAgenda","value":"Check participants"}
+{"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-18-23-26-50"}
+{"idmeeting":"3","second":"4","secondmanual":"0","action":"sameGetDataMeeting","value":"Data_ February 18_ 2022_ 10_26 pm"}
+{"idmeeting":"3","second":"8","secondmanual":"0","action":"sameTemplateChoise","value":"meetingnotes"}
+{"idmeeting":"3","second":"10","secondmanual":"0","action":"sameTemplateChoise","value":"projectplan"}
+{"idmeeting":"3","second":"16","secondmanual":"0","action":"sameTemplateSaveParent","value":"projectplan"}
+{"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-18-23-29-17"}
+{"idmeeting":"3","second":"14","secondmanual":"0","action":"sameTemplateChoise","value":"projectplan"}
+{"idmeeting":"3","second":"16","secondmanual":"0","action":"sameTemplateSaveParent","value":"projectplan"}
+{"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-18-23-29-37"}
+{"idmeeting":"3","second":"19","secondmanual":"0","action":"sameRapidPoi","value":"Point of interest"}
+{"idmeeting":"3","second":"19","secondmanual":"0","action":"sameRapidMak","value":"Make an appointment"}
+{"idmeeting":"3","second":"364","secondmanual":"0","action":"sameGetParticipantList","value":"Corrado Facchini"}
+{"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-18-23-36-29"}
+{"idmeeting":"3","second":"12","secondmanual":"0","action":"sameTemplateChoise","value":"projectplan"}
+{"idmeeting":"3","second":"18","secondmanual":"0","action":"sameTemplateSaveParent","value":"projectplan"}
+{"idmeeting":"3","second":"27","secondmanual":"0","action":"sameGetParticipantList","value":"Corrado Facchini"}
+{"idmeeting":"3","second":"37","secondmanual":"0","action":"sameRapidCommand","value":"Remember to call"}
+{"idmeeting":"3","second":"64","secondmanual":"0","action":"sameGetParticipantList","value":"Regina Elisabetta"}
+{"idmeeting":"3","second":"72","secondmanual":"0","action":"sameGetParticipantList","value":"Regina Elisabetta"}
+{"idmeeting":"3","second":"78","secondmanual":"0","action":"sameGetParticipantList","value":"Maurizio ___"}
+{"idmeeting":"3","second":"87","secondmanual":"0","action":"sameGetParticipantList","value":"Regina Elisabetta"}
+{"idmeeting":"3","second":"106","secondmanual":"0","action":"sameGetAgenda","value":"Project introduction"}
+{"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-18-23-38-33"}
+{"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-18-23-38-53"}
+{"idmeeting":"3","second":"4","secondmanual":"0","action":"sameTemplateChoise","value":"projectplan"}
+{"idmeeting":"3","second":"9","secondmanual":"0","action":"sameTemplateSaveParent","value":"projectplan"}
+{"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-18-23-39-7"}
+{"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-18-23-40-27"}
+{"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-18-23-40-59"}
+{"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-18-23-41-10"}
+{"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-18-23-41-19"}
+{"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-18-23-46-18"}
+{"idmeeting":"3","second":"8","secondmanual":"0","action":"sameTemplateChoise","value":"projectplan"}
+{"idmeeting":"3","second":"10","secondmanual":"0","action":"sameTemplateSaveParent","value":"projectplan"}
+{"idmeeting":"3","second":"17","secondmanual":"0","action":"sameTemplateChoise","value":"projectplan"}
+{"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-18-23-47-5"}
+{"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-18-23-47-26"}
+{"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-18-23-47-33"}
+{"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-18-23-48-38"}
+{"idmeeting":"3","second":"7","secondmanual":"0","action":"sameTemplateChoise","value":"meetingnotes"}
+{"idmeeting":"3","second":"17","secondmanual":"0","action":"sameTemplateSaveParent","value":"meetingnotes"}
+{"idmeeting":"3","second":"24","secondmanual":"0","action":"sameTemplateChoise","value":"meetingnotes"}
+{"idmeeting":"3","second":"26","secondmanual":"0","action":"sameTemplateChoise","value":"projectplan"}
+{"idmeeting":"3","second":"751","secondmanual":"0","action":"sameTemplateSaveParent","value":"projectplan"}
+{"idmeeting":"3","second":"799","secondmanual":"0","action":"sameGetAgenda","value":"Check participants"}
+{"idmeeting":"3","second":"808","secondmanual":"0","action":"sameGetDataMeeting","value":"Data_ February 18_ 2022_ 11_02 pm"}
+{"idmeeting":"3","second":"817","secondmanual":"0","action":"sameRapidCommand","value":"Remember to call"}
+{"idmeeting":"3","second":"826","secondmanual":"0","action":"sameGetParticipantList","value":"Maurizio ___"}
+{"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-19-0-8-22"}
+{"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-19-0-10-51"}
+{"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-19-0-10-59"}
+{"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-19-0-16-20"}
+{"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-19-0-18-21"}
+{"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-19-0-26-2"}
+{"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-19-0-26-21"}
+{"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-19-0-27-4"}
+{"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-19-0-27-59"}
+{"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-19-0-28-51"}
+{"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-19-0-36-30"}
+{"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-19-0-38-50"}
+{"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-19-0-39-30"}
+{"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-19-0-39-47"}
+{"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-19-0-40-7"}
+{"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-19-0-41-16"}
+{"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-19-0-41-33"}
+{"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-19-0-42-51"}
+{"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-19-0-43-20"}
