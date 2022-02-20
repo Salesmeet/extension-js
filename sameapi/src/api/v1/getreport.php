@@ -12,7 +12,7 @@ $note = file_get_contents('../temp/note.txt');
 
 
   <div style="float: left; width: 7%; text-align: center;">
-     <img src="https://api.salesmeet.it/api/img/logo.png" style="width: 70px;">
+     <img src="https://api.sameapp.net/api/img/logo.png" style="width: 70px;">
      <br><br>
      Edit and export
      <br>
@@ -29,7 +29,7 @@ $note = file_get_contents('../temp/note.txt');
 
     <div id="spinner" style="position: absolute;z-index: 99;left: 48%;top: 40%;">
       <svg  width="970" height="70">
-           <image xlink:href="https://api.salesmeet.it/api/img/spinner.svg" src="https://api.salesmeet.it/api/img/spinner.svg"/>
+           <image xlink:href="https://api.sameapp.net/api/img/spinner.svg" src="https://api.sameapp.net/api/img/spinner.svg"/>
       </svg>
     </div>
 

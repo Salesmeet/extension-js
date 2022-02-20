@@ -58,7 +58,7 @@
           // console.log("saveNote_Frame");
           var data = new FormData();
           data.append('value', contentTinymce );
-          samePostAPICommon('https://api.salesmeet.it/api/v1/postnote.php',data);
+          samePostAPICommon('https://api.sameapp.net/api/v1/postnote.php',data);
     }
     function samePostAPICommon(url,data) {
           var xhr = new XMLHttpRequest();

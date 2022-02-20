@@ -4,8 +4,10 @@ escapeHTMLPolicy = trustedTypes.createPolicy("forceInner", {
 })
 
 var same_id_meeting = 3;
-var same_domain_api = "https://api.salesmeet.it";
-var same_domain = "https://plugin.salesmeet.it";
+// var same_domain_api = "https://api.sameapp.net";
+// var same_domain = "https://plugin.sameapp.net";
+var same_domain_api = "https://api.sameapp.net";
+var same_domain = "https://plugin.sameapp.net";
 var same_id_extension = "eakfjnpihbkoohjbelkfjcdlkdhfeadb";
 
 

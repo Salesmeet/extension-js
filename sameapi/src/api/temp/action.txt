@@ -97,3 +97,13 @@
 {"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-19-0-41-33"}
 {"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-19-0-42-51"}
 {"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-19-0-43-20"}
+{"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-20-0-36-8"}
+{"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-20-0-36-22"}
+{"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-20-0-39-9"}
+{"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-20-0-39-30"}
+{"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-20-0-40-11"}
+{"idmeeting":"3","second":"8","secondmanual":"0","action":"sameTemplateChoise","value":"blank"}
+{"idmeeting":"3","second":"10","secondmanual":"0","action":"sameTemplateSaveParent","value":"blank"}
+{"idmeeting":"3","second":"17","secondmanual":"0","action":"sameTemplateChoise","value":"meetingnotes"}
+{"idmeeting":"3","second":"21","secondmanual":"0","action":"sameTemplateSaveParent","value":"meetingnotes"}
+{"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-20-21-12-22"}

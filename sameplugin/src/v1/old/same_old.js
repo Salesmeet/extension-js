@@ -61,7 +61,7 @@ var same_panel_all_meeting = '\
 
 var same_panel_setting = '\
 <div id="same_setting" style="display:none">\
-<div style="float:left;"><img id="img_setting_logo" src="https://plugin.salesmeet.it/logo.png"> </div>\
+<div style="float:left;"><img id="img_setting_logo" src="https://plugin.sameapp.net/logo.png"> </div>\
 <div style="float:left;">Settings: ---\</div>\
 </div>\
 ';
@@ -109,7 +109,7 @@ var same_panel_info = '<div id="same_info" class="same_panel_style">\
 
 /* Inizializza SAME creando l'immagine drag come primo step per il cliente */
 function sameInit() {
-    var same_init = '<img id="same_init_img" alt="Open" src="https://plugin.salesmeet.it/logo.png"><div id="same_initheader">Click here to move</div>';
+    var same_init = '<img id="same_init_img" alt="Open" src="https://plugin.sameapp.net/logo.png"><div id="same_initheader">Click here to move</div>';
     var same_elemDiv = document.createElement('div');
     same_elemDiv.id = "same_init";
     same_elemDiv.innerHTML = escapeHTMLPolicy.createHTML(same_init);
@@ -482,7 +482,7 @@ function samePostAPI(value,action) {
       data.append('value', value);
       data.append('action', action);
       data.append('time', same_getTime());
-      samePostAPICommon('https://api.salesmeet.it/api/v1/postaction.php',data);
+      samePostAPICommon('https://api.sameapp.net/api/v1/postaction.php',data);
 }
 /* salva i dati provenienti dallo WYSIWYG HTML */
 function samePostAPINote() {
@@ -493,12 +493,12 @@ function samePostAPINote() {
 function samePostAPINoteCommon( value ) {
       var data = new FormData();
       data.append('value', value );
-      samePostAPICommon('https://api.salesmeet.it/api/v1/postnote.php',data);
+      samePostAPICommon('https://api.sameapp.net/api/v1/postnote.php',data);
 }
 /* prova di inserimento immagine nelll WYSIWYG HTML */
 function sameFunctionInsertImage() {
   var temp = sameGetNoteValue();
-  sameSetNoteValue( temp + '<img src="https://plugin.salesmeet.it/img/position-icon.png">');
+  sameSetNoteValue( temp + '<img src="https://plugin.sameapp.net/img/position-icon.png">');
 }
 
 function samePostAPICommon(url,data) {
@@ -537,7 +537,7 @@ function sameFunctionOpenTemplate() {
     } else {
       samePostAPINote();
     }
-    sameFunctionOpenCommon("https://api.salesmeet.it/api/v1/gettemplate.php");
+    sameFunctionOpenCommon("https://api.sameapp.net/api/v1/gettemplate.php");
 }
 
 /****** PANEL FUNCTION EDIT ************************************************/
@@ -551,7 +551,7 @@ function sameFunctionOpenReport() {
     } else {
       samePostAPINote();
     }
-    sameFunctionOpenCommon("https://api.salesmeet.it/api/v1/getreport.php");
+    sameFunctionOpenCommon("https://api.sameapp.net/api/v1/getreport.php");
 }
 function sameFunctionOpenCommon(url) {
 
@@ -577,19 +577,19 @@ function sameFunctionEditClose() {
 /****** PANEL FUNCTION CALL API ************************************************/
 
 function sameGetParticipantList() {
-    sameGetAPI("https://api.salesmeet.it/api/v1/getlistuser.php","sameGetParticipantList");
+    sameGetAPI("https://api.sameapp.net/api/v1/getlistuser.php","sameGetParticipantList");
     samePostAPI("","sameGetParticipantList");
 }
 function sameGetDataMeeting() {
-    sameGetAPI("https://api.salesmeet.it/api/v1/getdatameeting.php","sameGetDataMeeting");
+    sameGetAPI("https://api.sameapp.net/api/v1/getdatameeting.php","sameGetDataMeeting");
     samePostAPI("","sameGetDataMeeting");
 }
 function sameGetAgenda() {
-    sameGetAPI("https://api.salesmeet.it/api/v1/getagenda.php","sameGetAgenda");
+    sameGetAPI("https://api.sameapp.net/api/v1/getagenda.php","sameGetAgenda");
     samePostAPI("","sameGetAgenda");
 }
 function sameGetAttachments() {
-    sameGetAPI("https://api.salesmeet.it/api/v1/getattachments.php","sameGetAttachments");
+    sameGetAPI("https://api.sameapp.net/api/v1/getattachments.php","sameGetAttachments");
     samePostAPI("","sameGetAttachments");
 }
 
@@ -614,10 +614,10 @@ function sameMovePanelBottom() {
 function samePostAPIRecord( url ) {
       var data = new FormData();
       data.append('file', url );
-      samePostAPICommon('https://api.salesmeet.it/api/v1/postrecord.php',data);
+      samePostAPICommon('https://api.sameapp.net/api/v1/postrecord.php',data);
 }
 function sameCreateFile( url ) {
-    var temp = '<form method="POST" enctype="multipart/form-data" action="https://api.salesmeet.it/api/v1/postrecord.php">\
+    var temp = '<form method="POST" enctype="multipart/form-data" action="https://api.sameapp.net/api/v1/postrecord.php">\
     <input type="file" name="file">\
     <button type="submit" role="button">Upload File</button>\
     </form>';
@@ -857,7 +857,7 @@ else if (window.attachEvent) {
 }
 function onMessage(event) {
     // Check sender origin to be trusted
-    if (event.origin !== "https://api.salesmeet.it") return;
+    if (event.origin !== "https://api.sameapp.net") return;
     var data = event.data;
     if (typeof(window[data.func]) == "function") {
         window[data.func].call(null, data.message);

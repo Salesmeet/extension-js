@@ -17,7 +17,7 @@ if (!isset($_GET['edit'])) {
 }
 ?>
 {
-   "edit":"https://api.salesmeet.it/api/v1/getagenda.php?edit=0",
+   "edit":"https://api.sameapp.net/api/v1/getagenda.php?edit=0",
    "apiupdate":"",
    "items":[
       {

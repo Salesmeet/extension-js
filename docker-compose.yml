@@ -5,7 +5,7 @@ services:
   same-proxy:
     image: traefik:1.7.4-alpine
     labels:
-      - "traefik.frontend.rule=Host:monitor.salesmeet.it"
+      - "traefik.frontend.rule=Host:monitor.sameapp.net"
       - "traefik.port=8080"
       - "traefik.docker.network=samenetwork"
     volumes:
@@ -17,14 +17,14 @@ services:
       - '8080:8080'
     networks:
       - samenetwork
-    command: -c /dev/null --web --docker --logLevel=DEBUG --defaultEntryPoints='https,http' --entryPoints="Name:https Address::443 TLS:/traefik/cert.pem,/traefik/privkey.pem" --entryPoints="Name:http Address::80"
+    command: -c /dev/null --web --docker --logLevel=DEBUG --defaultEntryPoints='https,http' --entryPoints="Name:https Address::443 TLS:/traefik/cert1.pem,/traefik/privkey1.pem" --entryPoints="Name:http Address::80"
 
   # plugin #################
   same-plugin:
     build: ./sameplugin
     labels:
       - "traefik.backend=same-plugin"
-      - "traefik.frontend.rule=Host:plugin.salesmeet.it"
+      - "traefik.frontend.rule=Host:plugin.sameapp.net"
       - "traefik.docker.network=samenetwork"
     volumes:
       - ./sameplugin/src:/var/www/html
@@ -36,7 +36,7 @@ services:
     build: ./sameapi
     labels:
       - "traefik.backend=same-api"
-      - "traefik.frontend.rule=Host:api.salesmeet.it"
+      - "traefik.frontend.rule=Host:api.sameapp.net"
       - "traefik.docker.network=samenetwork"
     volumes:
       - ./sameapi/src:/var/www/html

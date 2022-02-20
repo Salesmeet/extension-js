@@ -62,7 +62,7 @@ var same_panel_all_meeting = '\
 
 var same_panel_setting = '\
 <div id="same_setting" style="display:none">\
-<div style="float:left;"><img id="img_setting_logo" src="https://extension.salesmeet.it/logo.png"> </div>\
+<div style="float:left;"><img id="img_setting_logo" src="https://extension.sameapp.net/logo.png"> </div>\
 <div style="float:left;">Settings: ---\</div>\
 </div>\
 ';
@@ -113,7 +113,7 @@ var same_panel_info = '<div id="same_info" class="same_panel_style">\
 
 /* Inizializza SAME creando l'immagine drag come primo step per il cliente */
 function sameInit() {
-    var same_init = '<img id="same_init_img" alt="Open" src="https://extension.salesmeet.it/logo.png"><div id="same_initheader">Click here to move</div>';
+    var same_init = '<img id="same_init_img" alt="Open" src="https://extension.sameapp.net/logo.png"><div id="same_initheader">Click here to move</div>';
     var same_elemDiv = document.createElement('div');
     same_elemDiv.id = "same_init";
     same_elemDiv.innerHTML = escapeHTMLPolicy.createHTML(same_init);
@@ -542,7 +542,7 @@ function samePostAPI(value,action) {
       data.append('value', value);
       data.append('action', action);
       data.append('time', same_getTime());
-      samePostAPICommon('https://extension.salesmeet.it/api/v1/postaction.php',data);
+      samePostAPICommon('https://extension.sameapp.net/api/v1/postaction.php',data);
 }
 function samePostAPINote() {
       samePostAPINoteCommon( sameGetNoteValue() );
@@ -550,23 +550,23 @@ function samePostAPINote() {
 function samePostAPINoteCommon( value ) {
       var data = new FormData();
       data.append('value', value );
-      samePostAPICommon('https://extension.salesmeet.it/api/v1/postnote.php',data);
+      samePostAPICommon('https://extension.sameapp.net/api/v1/postnote.php',data);
 }
 function samePostAPIRecord( url ) {
       var data = new FormData();
       data.append('file', url );
-      samePostAPICommon('https://extension.salesmeet.it/api/v1/postrecord.php',data);
+      samePostAPICommon('https://extension.sameapp.net/api/v1/postrecord.php',data);
 }
 
 function sameFunctionInsertImage() {
 
   var temp = sameGetNoteValue();
-  sameSetNoteValue( temp + '<img src="https://extension.salesmeet.it/img/position-icon.png">');
+  sameSetNoteValue( temp + '<img src="https://extension.sameapp.net/img/position-icon.png">');
 
 }
 
 function sameCreateFile( url ) {
-    var temp = '<form method="POST" enctype="multipart/form-data" action="https://extension.salesmeet.it/api/v1/postrecord.php">\
+    var temp = '<form method="POST" enctype="multipart/form-data" action="https://extension.sameapp.net/api/v1/postrecord.php">\
     <input type="file" name="file">\
     <button type="submit" role="button">Upload File</button>\
     </form>';
@@ -616,8 +616,8 @@ function sameFunctionOpenReport() {
     } else {
       samePostAPINote();
     }
-    sameFunctionOpenCommon("https://extension.salesmeet.it/api/v1/getreport.php");
-    // window.open("https://extension.salesmeet.it/api/v1/getreport.php");
+    sameFunctionOpenCommon("https://extension.sameapp.net/api/v1/getreport.php");
+    // window.open("https://extension.sameapp.net/api/v1/getreport.php");
 }
 function sameFunctionCloseReport() {
     alert("prova");
@@ -643,19 +643,19 @@ function sameFunctionEditClose() {
 /****** PANEL FUNCTION CALL API ************************************************/
 
 function sameGetParticipantList() {
-    sameGetAPI("https://extension.salesmeet.it/api/v1/getlistuser.php","sameGetParticipantList");
+    sameGetAPI("https://extension.sameapp.net/api/v1/getlistuser.php","sameGetParticipantList");
     samePostAPI("","sameGetParticipantList");
 }
 function sameGetDataMeeting() {
-    sameGetAPI("https://extension.salesmeet.it/api/v1/getdatameeting.php","sameGetDataMeeting");
+    sameGetAPI("https://extension.sameapp.net/api/v1/getdatameeting.php","sameGetDataMeeting");
     samePostAPI("","sameGetDataMeeting");
 }
 function sameGetAgenda() {
-    sameGetAPI("https://extension.salesmeet.it/api/v1/getagenda.php","sameGetAgenda");
+    sameGetAPI("https://extension.sameapp.net/api/v1/getagenda.php","sameGetAgenda");
     samePostAPI("","sameGetAgenda");
 }
 function sameGetAttachments() {
-    sameGetAPI("https://extension.salesmeet.it/api/v1/getattachments.php","sameGetAttachments");
+    sameGetAPI("https://extension.sameapp.net/api/v1/getattachments.php","sameGetAttachments");
     samePostAPI("","sameGetAttachments");
 }
 
@@ -909,7 +909,7 @@ else if (window.attachEvent) {
 
 function onMessage(event) {
     // Check sender origin to be trusted
-    if (event.origin !== "https://extension.salesmeet.it") return;
+    if (event.origin !== "https://extension.sameapp.net") return;
 
     var data = event.data;
 
