@@ -31,15 +31,17 @@ services:
     networks:
       - samenetwork
 
-  # plugin #################
-  same-api:
-    build: ./sameapi
+  # API #################
+  same-api-slim:
+    build: ./sameapislim
     labels:
       - "traefik.backend=same-api"
       - "traefik.frontend.rule=Host:api.sameapp.net"
       - "traefik.docker.network=samenetwork"
     volumes:
-      - ./sameapi/src:/var/www/html
+      - ./sameapislim:/var/www/html
+    working_dir: /public
+    # working_dir: /var/www
     networks:
       - samenetwork
 

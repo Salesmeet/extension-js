@@ -3,13 +3,13 @@ escapeHTMLPolicy = trustedTypes.createPolicy("forceInner", {
     createHTML: (to_escape) => to_escape
 })
 
-var same_id_meeting = 3;
-// var same_domain_api = "https://api.sameapp.net";
-// var same_domain = "https://plugin.sameapp.net";
 var same_domain_api = "https://api.sameapp.net";
 var same_domain = "https://plugin.sameapp.net";
 var same_id_extension = "eakfjnpihbkoohjbelkfjcdlkdhfeadb";
 
+function sameGetIdMeeting() {
+      return 3;
+}
 
 /****** PANEL DESIGN ************************************************/
 var same_panel_recording_button = '<section class="main-controls">\
@@ -34,7 +34,7 @@ var same_panel_rapid_command = '<div id="same_rapid_command" style="float:left;"
 <button id="same_function_rapid_rtc_short_button" class="same_resize_img same_icon_style" title="Shortcuts"></button><br>\
 <button id="same_function_shortcut_short_button" class="same_resize_img same_icon_style" title="Shortcuts"> </button>\
 </div>';
-var same_panel_note = '<div id="same_note" style="display:none">' + same_panel_rapid_command + '<div id="same_note_text_div" style="float:left;"><iframe src="' + same_domain + '/v1/editor.php" id="same_note_text_iframe"></iframe></div></div>'; //  <textarea id="same_note_text"></textarea> <div contenteditable="true" id="same_note_text"><a href="" target="blank">zzzz</a></div>
+var same_panel_note = '<div id="same_note" style="display:none">' + same_panel_rapid_command + '<div id="same_note_text_div" style="float:left;"><iframe src="' + same_domain + '/v1/editor.php?idmeeting=' + sameGetIdMeeting() + '" id="same_note_text_iframe"></iframe></div></div>'; //  <textarea id="same_note_text"></textarea> <div contenteditable="true" id="same_note_text"><a href="" target="blank">zzzz</a></div>
 
 var same_panel_shortcut = '\
 <div id="same_shortcut" style="display:none">\
@@ -53,7 +53,7 @@ var same_panel_data_meeting = '\
 <button id="same_function_agenda_data_button" class="same_buttom_img">Agenda</button> \
 <button id="same_function_participant_list_button" class="same_buttom_img">Participant list</button> \
 <button id="same_function_meeting_attachments_button" class="same_buttom_img">Attachments</button> \
-<button id="same_function_meeting_data_button" class="same_buttom_img">Common date</button> \
+<button id="same_function_meeting_data_button" class="same_buttom_img">Summary</button> \
 </div>\
 ';
 
@@ -122,8 +122,15 @@ function sameInit() {
     // same_elemDiv.style = "background: #FFFFFF;bottom: 110px;position: absolute;width: 150px;height: 75px;z-index: 99990;border: 1px solid #000";
     document.body.appendChild(same_elemDiv);
     sameClickCommon( "same_init_img" , sameInitHidden );
+    // sameClickCommon( "same_init_img" , sameOpenExtension );
     sameDragElement(document.getElementById("same_init"));
+    sameOpenExtension();
 }
+function sameOpenExtension() {
+    console.log("sameOpenExtension");
+
+}
+
 /* Nasconde immagine SAME e apre il pannello di lavoro */
 function sameInitHidden() {
     sameDisplayCommon("same_init","none");
@@ -140,7 +147,8 @@ function sameInitPanel() {
     same_elemDiv.id = "same_panel_base";
     same_elemDiv.innerHTML = escapeHTMLPolicy.createHTML(same_panel_recording + same_panel_tools + same_panel_operation + same_panel_info);
     document.body.appendChild(same_elemDiv);
-    const myTimeout = setTimeout(sameChangePanelDataMeeting, 500);
+    // const myTimeout = setTimeout(sameChangePanelDataMeeting, 500);
+    const myTimeout = setTimeout(sameGetDataMeeting, 500);
 }
 /* funzioni per rendere l'immagine SAME draggabile */
 function sameDragElement(elmnt) {
@@ -207,6 +215,7 @@ function sameNoteBig() {
 /* ingrandisce WYSIWYG HTML */
 function sameNoteBigCommon() {
       element = document.getElementById("same_note_text_iframe");
+      alert( element.src );
       if (same_position_bottom) {
           element.classList.add("same_note_text_big_bottom");
       } else {
@@ -367,7 +376,7 @@ var sameFlagInitNote = false;
 function sameChangePanelNote() {
       if (sameFlagInitNote==false) {
           sameFlagInitNote = true;
-          sameFunctionOpenTemplateInit();
+          // sameFunctionOpenTemplateInit();
           sameNoteBigCommon();
       }
       sameChangePanel("block","none","none","none","none","none");
@@ -461,10 +470,14 @@ function sameCommonBlockApi( value, type ) {
       var myItems = myArr.items;
       var out = "";
       var i;
+      var title = "";
+      if (myArr.title!="") {
+          title ='<b>' + myArr.title + '</b><br>';
+      }
       for(i = 0; i < myItems.length; i++) {
         if (myItems[i].type == 'checkbox') {
             if (myItems[i].value == '1') { var checked = "checked"; } else { var checked = ""; }
-            out += "<input type='checkbox' " + checked + " id='" + myItems[i].id + "'>";
+            out += "<input data-url='" + myArr.apiupdate + "' type='checkbox' " + checked + " id='" + myItems[i].id + "'>";
         }
         if (myItems[i].type == 'link') {
             out += '<a href="' + myItems[i].value + '" target="_blank">' + myItems[i].description + '</a>';
@@ -480,13 +493,14 @@ function sameCommonBlockApi( value, type ) {
           <button data-url="' + myArr.edit + '" id="same_function_edit" class="same_icon_style" title="edit"></button>\
           <button data-url="' + myArr.edit + '" id="same_function_check" class="same_icon_style" title="Check"></button>\
           </div>\
-          <div id="same_data_meeting_body">' + out + '</div>\
+          <div id="same_data_meeting_body">' + title + out + '</div>\
         ';
         document.getElementById("same_common").innerHTML = escapeHTMLPolicy.createHTML(out);
         sameClickCommon( "same_function_edit" , sameFunctionEditOpen );
-        sameClickCommon( "same_function_check" , sameInProgress );
+        sameClickCommon( "same_function_check" , sameFindElements() );
+
       } else {
-        out = '<div style="float:left;" id="same_data_meeting_body">' + out + '</div>';
+        out = '<div style="float:left;" id="same_data_meeting_body">' + title + out + '</div>';
         document.getElementById("same_common").innerHTML = escapeHTMLPolicy.createHTML(out);
       }
       sameClickCommonClass( "sameAddValueInNote" , sameAddValueInNote );
@@ -514,8 +528,8 @@ function samePostAPI(value,action) {
           data.append('seconddefault', sameDefaulTotalSeconds);
           data.append('secondmanual', same_totalSeconds);
           data.append('secondmanual', same_totalSeconds);
-          data.append('idmeeting', same_id_meeting);
-          samePostAPICommon( same_domain_api + '/api/v1/postaction.php',data);
+          data.append('idmeeting', sameGetIdMeeting());
+          samePostAPICommon( same_domain_api + '/public/v1/action',data);
       }
 }
 /* salva i dati provenienti dallo WYSIWYG HTML */
@@ -530,7 +544,10 @@ function samePostAPICommon(url,data) {
       xhr.onload = function () {
           // console.log(this.responseText);
       };
-      xhr.send(data);
+      try {
+        xhr.send(data);
+      } catch (error) {
+      }
 }
 function sameInProgress(url) {
     sameCommonBlock("Section in progress ...");
@@ -612,19 +629,22 @@ function sameFunctionEditClose() {
 /****** PANEL FUNCTION CALL API ************************************************/
 function sameGetParticipantList() {
     // console.log("sameGetParticipantList");
-    sameGetAPI(same_domain_api + "/api/v1/getlistuser.php","sameGetParticipantList");
+    sameGetAPI(same_domain_api + "/public/v1/partecipants/" + sameGetIdMeeting() ,"sameGetParticipantList");
+    // sameGetAPI(same_domain_api + "/api/v1/getlistuser.php","sameGetParticipantList");
     // samePostAPI("","sameGetParticipantList");
 }
 function sameGetDataMeeting() {
-    sameGetAPI(same_domain_api + "/api/v1/getdatameeting.php","sameGetDataMeeting");
+    sameGetAPI(same_domain_api + "/public/v1/meeting/" + sameGetIdMeeting() ,"sameGetDataMeeting");
+    // sameGetAPI(same_domain_api + "/api/v1/getdatameeting.php","sameGetDataMeeting");
     // samePostAPI("","sameGetDataMeeting");
 }
 function sameGetAgenda() {
-    sameGetAPI(same_domain_api + "/api/v1/getagenda.php","sameGetAgenda");
+    sameGetAPI(same_domain_api + "/public/v1/agenda/" + sameGetIdMeeting(),"sameGetAgenda");
     // samePostAPI("","sameGetAgenda");
 }
 function sameGetAttachments() {
-    sameGetAPI(same_domain_api + "/api/v1/getattachments.php","sameGetAttachments");
+    sameGetAPI(same_domain_api + "/public/v1/attachements/" + sameGetIdMeeting() ,"sameGetAttachments");
+    // sameGetAPI(same_domain_api + "/api/v1/getattachments.php","sameGetAttachments");
     // samePostAPI("","sameGetAttachments");
 }
 
@@ -642,192 +662,41 @@ function sameMovePanelBottom() {
       document.getElementById("same_panel_base").style.bottom = "0px";
 }
 
+/****** PANEL SEARCH ************************************************/
 
-/****** RECORD FUNCTION  ************************************************/
-
-/* salva i dati per il record della registrazione audio  */
-function samePostAPIRecord( url ) {
-      var data = new FormData();
-      data.append('file', url );
-      samePostAPICommon(same_domain_api + '/api/v1/postrecord.php',data);
-}
-function sameCreateFile( url ) {
-    var temp = '<form method="POST" enctype="multipart/form-data" action="' + same_domain_api + '/api/v1/postrecord.php">\
-    <input type="file" name="file">\
-    <button type="submit" role="button">Upload File</button>\
-    </form>';
-    document.getElementById("same_common").innerHTML = escapeHTMLPolicy.createHTML(temp);
-    sameChangePanelCommon();
+function sameMovePanelBottom() {
+      same_position_bottom = true;
+      document.getElementById("same_panel_base").style.top = "auto";
+      document.getElementById("same_panel_base").style.bottom = "0px";
 }
 
-function sameInitRecord() {
+function sameFindElements(str) {
+  console.log("sameFindElements____W_____");
+  // var temp = container.querySelectorAll('[role="listitem"]');
+  /*
+  var temp = document.querySelectorAll("[myAttribute=listitem]");
+  */
+  // console.log(temp);
 
-  const same_record_button = document.querySelector('.same_record_button');
-  const same_stop_button = document.querySelector('.same_stop_button');
-  const same_cancel_button = document.querySelector('.same_cancel_button');
-  const soundClips = document.querySelector('.sound-clips');
-  const canvas = document.querySelector('.visualizer');
-  const mainSection = document.querySelector('.main-controls');
-
-  // disable stop button while not recording
-  same_stop_button.disabled = true;
-  same_cancel_button.disabled = true;
-
-  let audioCtx;
-
-  // set up basic variables for app
-  if (navigator.mediaDevices.getUserMedia) {
-
-    console.log('getUserMedia supported.');
-
-    let chunks = [];
-
-    let onSuccess = function(stream) {
-
-      const mediaRecorder = new MediaRecorder(stream);
-      mediaRecorder.start
-
-      /* visualize(stream); */
-
-      same_record_button.onclick = function() {
-
-        initVideoSameExension();
-
-        mediaRecorder.start();
-        console.log(mediaRecorder.state);
-        console.log("recorder started");
-        same_record_button.style.background = "red";
-
-        same_stop_button.disabled = false;
-        same_cancel_button.disabled = false;
-        same_record_button.disabled = true;
-      }
-
-      same_stop_button.onclick = function() {
-        mediaRecorder.stop();
-        console.log(mediaRecorder.state);
-        console.log("recorder stopped");
-        same_record_button.style.background = "";
-        same_record_button.style.color = "";
-        // mediaRecorder.requestData();
-
-        same_stop_button.disabled = true;
-        same_cancel_button.disabled = true;
-        same_record_button.disabled = false;
-
-        chrome.runtime.sendMessage( same_id_extension ,"stopSame");
-
-      }
-
-      same_cancel_button.onclick = function() {
-        mediaRecorder.stop();
-        console.log(mediaRecorder.state);
-        console.log("recorder stopped");
-        same_record_button.style.background = "";
-        same_record_button.style.color = "";
-        // mediaRecorder.requestData();
-
-        same_stop_button.disabled = true;
-        same_cancel_button.disabled = true;
-        same_record_button.disabled = false;
-
-        chrome.runtime.sendMessage( same_id_extension ,"cancelSame");
-
-      }
-
-      mediaRecorder.onstop = function(e) {
-                console.log("data available after MediaRecorder.stop() called.");
-
-        const clipName = prompt('Enter a name for your sound clip?','My unnamed clip');
-
-        const clipContainer = document.createElement('article');
-        const clipLabel = document.createElement('p');
-        const audio = document.createElement('audio');
-        const deleteButton = document.createElement('button');
-
-        clipContainer.classList.add('clip');
-        audio.setAttribute('controls', '');
-        deleteButton.textContent = 'Delete';
-        deleteButton.className = 'delete';
-
-        if(clipName === null) {
-          clipLabel.textContent = 'My unnamed clip';
-        } else {
-          clipLabel.textContent = clipName;
-        }
-
-        clipContainer.appendChild(audio);
-        clipContainer.appendChild(clipLabel);
-        clipContainer.appendChild(deleteButton);
-        soundClips.appendChild(clipContainer);
-
-        audio.controls = true;
-        const blob = new Blob(chunks, { 'type' : 'audio/ogg; codecs=opus' });
-        chunks = [];
-
-        const audioURL = window.URL.createObjectURL(blob);
-
-        // samePostAPIRecord( audioURL );
-        //sameCreateFile( audioURL );
-        audio.src = audioURL;
-
-        console.log("audioURL: " + audioURL);
-        console.log("recorder stopped");
-
-        deleteButton.onclick = function(e) {
-          let evtTgt = e.target;
-          evtTgt.parentNode.parentNode.removeChild(evtTgt.parentNode);
-        }
-
-        clipLabel.onclick = function() {
-          const existingName = clipLabel.textContent;
-          const newClipName = prompt('Enter a new name for your sound clip?');
-          if(newClipName === null) {
-            clipLabel.textContent = existingName;
-          } else {
-            clipLabel.textContent = newClipName;
-          }
-        }
-      }
-      mediaRecorder.ondataavailable = function(e) {
-        console.log("ondataavailable");
-        chunks.push(e.data);
-      }
-
-    }
-
-    let onError = function(err) {
-      console.log('The following error occured: ' + err);
-    }
-
-    const constraints = { audio: true }
-    navigator.mediaDevices.getUserMedia(constraints).then(onSuccess, onError);
-
-  }
-
-}
-
-function initVideoSameExension() {
-    chrome.runtime.sendMessage( same_id_extension ,"startSame");
+  /*
+  var open = document.getElementById("same_function_check").getAttribute('data-url');
+  var val = window.find("I tuoi preferiti");
+  console.log(val);
+  */
+  // var val2 = window.find("str");
+  // console.log(val2);
 }
 
 
-/****** Screenshots FUNCTION  ************************************************/
-
-function initScreenshotsSameExension() {
-  // chrome.runtime.sendMessage( same_id_extension ,"sameGetScreenshots");
-  startCapture();
+function sameLogin(str) {
+  console.log("sameLogin");
+  var url = "chrome-extension://jinjngkjbcaedjmllefbghfodplfngeh/options/options.html";
+  url = "chrome-extension://eakfjnpihbkoohjbelkfjcdlkdhfeadb/options/options.html";
+  windiw.open(url);
 }
-async function startCapture() {
 
-  console.log("startCapture");
+//
 
-  html2canvas(document.body).then(function(canvas) {
-      document.body.appendChild(canvas);
-  });
-
-
-}
 
 /****** INIT  ************************************************/
 
@@ -835,7 +704,6 @@ function initSame() {
 
   sameInit();
   sameInitPanel();
-  sameInitRecord();
 
   sameClickCommon( "same_function_note_big_button" , sameNoteBig );
   sameClickCommon( "same_function_note_small_button" , sameNoteSmall );

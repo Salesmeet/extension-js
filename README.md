@@ -113,21 +113,22 @@ sudo apt  install docker-compose  # version 1.25.0-1
 PROBLEMA DA RISOLVERE
 ==============================
 
+
+docker buildx create --use --name larger_log --driver-opt env.BUILDKIT_STEP_LOG_MAX_SIZE=50000000
+docker buildx create --driver-opt env.BUILDKIT_STEP_LOG_MAX_SIZE=1000000,env.BUILDKIT_STEP_LOG_MAX_SPEED=100000000 --use
+
+
+
+
 docker ps -a
 
 Entrare in questi docker
 
-    docker exec -ti salesmeetdemo_salesmeet-booking_1 bash
-    docker exec -ti salesmeetdemo_salesmeet-app_1 bash
-    docker exec -ti salesmeetdemo_salesmeet-expert_1 bash
-    docker exec -ti salesmeetdemo_salesmeet-profile_1 bash
-    docker exec -ti salesmeetdemo_salesmeet-plugin_1 bash
+    docker exec -ti extension-js_same-api-slim_1 bash
 
 e lanciare i comandi
 
-    apt-get update
-    docker-php-ext-install pdo_mysql
-    docker-php-ext-install pdo pdo_mysql
+    docker-php-ext-install grpc
 
 restartare servizio
 

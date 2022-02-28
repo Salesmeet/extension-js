@@ -17,8 +17,9 @@ if (!isset($_GET['edit'])) {
 }
 ?>
 {
+   "title":"Partecipant list",
    "edit":"https://api.sameapp.net/api/v1/getlistuser.php?edit=0",
-   "apiupdate":"",
+   "apiupdate":"https://api.sameapp.net/api/v1/updatetlistuser.php",
    "items":[
       {
          "id":"1",

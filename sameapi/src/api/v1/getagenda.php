@@ -15,8 +15,27 @@ if (!isset($_GET['edit'])) {
   <hr>
 <?php
 }
+
+//  https://engineering.flosports.tv/google-cloud-firestore-document-crud-with-php-1df1c084e45b
+include("firestore.php");
+use PHPFireStore\FireStoreApiClient;
+use PHPFireStore\FireStoreDocument;
+$firestore = new FireStoreApiClient(
+ 'sales-66641', 'AIzaSyB_bq-VMYBF7xow-C6GKi4cB3SPKbInm_w'
+);
+
+$document = new FireStoreDocument();
+// $document->setString('people', '9cCuqyF50AhoEM2PMcbA');
+// $firestore->getDocument('people', '9cCuqyF50AhoEM2PMcbA');
+$document->setString('name', 'Michellleeee');
+$firestore->addDocument('bella', $document);
+
+exit;
+// echo $firestore->getDocument('meetings', '29RNHE6NBtHhCkynoV4P');
+
 ?>
 {
+   "title":"Agenda",
    "edit":"https://api.sameapp.net/api/v1/getagenda.php?edit=0",
    "apiupdate":"",
    "items":[

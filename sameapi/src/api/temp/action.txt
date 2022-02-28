@@ -107,3 +107,164 @@
 {"idmeeting":"3","second":"17","secondmanual":"0","action":"sameTemplateChoise","value":"meetingnotes"}
 {"idmeeting":"3","second":"21","secondmanual":"0","action":"sameTemplateSaveParent","value":"meetingnotes"}
 {"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-20-21-12-22"}
+{"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-20-22-25-9"}
+{"idmeeting":"3","second":"7","secondmanual":"0","action":"sameTemplateChoise","value":"meetingnotes"}
+{"idmeeting":"3","second":"8","secondmanual":"0","action":"sameTemplateSaveParent","value":"meetingnotes"}
+{"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-20-22-34-33"}
+{"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-20-22-36-15"}
+{"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-20-22-36-36"}
+{"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-20-22-40-18"}
+{"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-20-22-41-15"}
+{"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-20-22-41-38"}
+{"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-20-22-42-4"}
+{"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-20-22-44-31"}
+{"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-20-22-44-48"}
+{"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-20-22-46-21"}
+{"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-20-22-48-18"}
+{"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-20-22-53-24"}
+{"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-20-22-57-11"}
+{"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-20-22-57-45"}
+{"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-20-22-58-14"}
+{"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-20-22-58-19"}
+{"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-20-22-59-0"}
+{"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-20-22-59-33"}
+{"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-20-23-0-9"}
+{"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-20-23-0-21"}
+{"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-20-23-5-2"}
+{"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-20-23-5-19"}
+{"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-20-23-5-31"}
+{"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-20-23-7-9"}
+{"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-20-23-7-31"}
+{"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-21-10-9-13"}
+{"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-21-10-9-22"}
+{"idmeeting":"3","second":"15","secondmanual":"0","action":"sameTemplateChoise","value":"meetingnotes"}
+{"idmeeting":"3","second":"18","secondmanual":"0","action":"sameTemplateChoise","value":"projectplan"}
+{"idmeeting":"3","second":"20","secondmanual":"0","action":"sameTemplateChoise","value":"blank"}
+{"idmeeting":"3","second":"23","secondmanual":"0","action":"sameTemplateChoise","value":"projectplan"}
+{"idmeeting":"3","second":"24","secondmanual":"0","action":"sameTemplateSaveParent","value":"projectplan"}
+{"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-21-12-3-54"}
+{"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-21-12-3-56"}
+{"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-21-12-4-6"}
+{"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-21-12-4-10"}
+{"idmeeting":"3","second":"43","secondmanual":"0","action":"sameTemplateChoise","value":"meetingnotes"}
+{"idmeeting":"3","second":"46","secondmanual":"0","action":"sameTemplateChoise","value":"projectplan"}
+{"idmeeting":"3","second":"76","secondmanual":"0","action":"sameTemplateChoise","value":"blank"}
+{"idmeeting":"3","second":"77","secondmanual":"0","action":"sameTemplateChoise","value":"meetingnotes"}
+{"idmeeting":"3","second":"79","secondmanual":"0","action":"sameTemplateChoise","value":"projectplan"}
+{"idmeeting":"3","second":"81","secondmanual":"0","action":"sameTemplateChoise","value":"blank"}
+{"idmeeting":"3","second":"126","secondmanual":"0","action":"sameTemplateChoise","value":"meetingnotes"}
+{"idmeeting":"3","second":"127","secondmanual":"0","action":"sameTemplateChoise","value":"projectplan"}
+{"idmeeting":"3","second":"129","secondmanual":"0","action":"sameTemplateChoise","value":"blank"}
+{"idmeeting":"3","second":"132","secondmanual":"0","action":"sameTemplateChoise","value":"meetingnotes"}
+{"idmeeting":"3","second":"133","secondmanual":"0","action":"sameTemplateChoise","value":"projectplan"}
+{"idmeeting":"3","second":"134","secondmanual":"0","action":"sameTemplateChoise","value":"blank"}
+{"idmeeting":"3","second":"138","secondmanual":"0","action":"sameTemplateChoise","value":"meetingnotes"}
+{"idmeeting":"3","second":"139","secondmanual":"0","action":"sameTemplateChoise","value":"projectplan"}
+{"idmeeting":"3","second":"141","secondmanual":"0","action":"sameTemplateSaveParent","value":"projectplan"}
+{"idmeeting":"3","second":"146","secondmanual":"0","action":"sameTemplateChoise","value":"blank"}
+{"idmeeting":"3","second":"147","secondmanual":"0","action":"sameTemplateChoise","value":"meetingnotes"}
+{"idmeeting":"3","second":"148","secondmanual":"0","action":"sameTemplateChoise","value":"projectplan"}
+{"idmeeting":"3","second":"150","secondmanual":"0","action":"sameTemplateChoise","value":"meetingnotes"}
+{"idmeeting":"3","second":"152","secondmanual":"0","action":"sameTemplateSaveParent","value":"meetingnotes"}
+{"idmeeting":"3","second":"157","secondmanual":"0","action":"sameTemplateChoise","value":"meetingnotes"}
+{"idmeeting":"3","second":"157","secondmanual":"0","action":"sameTemplateChoise","value":"blank"}
+{"idmeeting":"3","second":"382","secondmanual":"0","action":"sameTemplateChoise","value":"blank"}
+{"idmeeting":"3","second":"384","secondmanual":"0","action":"sameTemplateChoise","value":"meetingnotes"}
+{"idmeeting":"3","second":"400","secondmanual":"0","action":"sameTemplateChoise","value":"projectplan"}
+{"idmeeting":"3","second":"402","secondmanual":"0","action":"sameTemplateChoise","value":"meetingnotes"}
+{"idmeeting":"3","second":"403","secondmanual":"0","action":"sameTemplateChoise","value":"blank"}
+{"idmeeting":"3","second":"608","secondmanual":"0","action":"sameTemplateChoise","value":"meetingnotes"}
+{"idmeeting":"3","second":"610","secondmanual":"0","action":"sameTemplateChoise","value":"projectplan"}
+{"idmeeting":"3","second":"613","secondmanual":"0","action":"sameTemplateSaveParent","value":"projectplan"}
+{"idmeeting":"3","second":"622","secondmanual":"0","action":"sameTemplateSaveParent","value":"projectplan"}
+{"idmeeting":"3","second":"628","secondmanual":"0","action":"sameRapidPoi","value":"Point of interest"}
+{"idmeeting":"3","second":"633","secondmanual":"0","action":"sameGetParticipantList","value":"Federico Remiti"}
+{"idmeeting":"3","second":"655","secondmanual":"0","action":"sameTemplateChoise","value":"meetingnotes"}
+{"idmeeting":"3","second":"656","secondmanual":"0","action":"sameTemplateChoise","value":"projectplan"}
+{"idmeeting":"3","second":"658","secondmanual":"0","action":"sameTemplateChoise","value":"blank"}
+{"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-21-12-18-8"}
+{"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-21-12-20-22"}
+{"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-21-12-20-53"}
+{"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-21-12-21-39"}
+{"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-21-12-24-52"}
+{"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-21-12-26-21"}
+{"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-21-12-29-26"}
+{"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-21-12-30-58"}
+{"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-21-12-32-33"}
+{"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-21-12-33-59"}
+{"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-21-12-40-34"}
+{"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-21-12-41-39"}
+{"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-21-13-22-54"}
+{"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-21-13-23-25"}
+{"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-21-13-24-35"}
+{"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-21-13-24-57"}
+{"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-21-13-27-32"}
+{"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-21-13-30-6"}
+{"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-21-13-38-0"}
+{"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-21-13-38-43"}
+{"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-21-13-38-46"}
+{"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-21-15-52-0"}
+{"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-21-15-52-11"}
+{"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-21-15-52-18"}
+{"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-21-15-52-21"}
+{"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-21-17-0-1"}
+{"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-21-17-3-59"}
+{"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-21-17-4-48"}
+{"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-21-17-6-46"}
+{"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-21-20-58-18"}
+{"idmeeting":"3","second":"2101","secondmanual":"0","action":"sameTemplateChoise","value":"meetingnotes"}
+{"idmeeting":"3","second":"2106","secondmanual":"0","action":"sameTemplateChoise","value":"projectplan"}
+{"idmeeting":"3","second":"2116","secondmanual":"0","action":"sameTemplateSaveParent","value":"projectplan"}
+{"idmeeting":"3","second":"2142","secondmanual":"0","action":"sameGetParticipantList","value":"Corrado Facchini"}
+{"idmeeting":"3","second":"2231","secondmanual":"0","action":"sameTemplateSaveParent","value":"projectplan"}
+{"idmeeting":"3","second":"2241","secondmanual":"0","action":"sameRapidCommand","value":"Question?"}
+{"idmeeting":"3","second":"2260","secondmanual":"0","action":"sameStartHour","value":"0"}
+{"idmeeting":"3","second":"2298","secondmanual":"37","action":"sameStopHour","value":"37"}
+{"idmeeting":"3","second":"2328","secondmanual":"37","action":"sameTemplateSaveParent","value":"projectplan"}
+{"idmeeting":"3","second":"2332","secondmanual":"37","action":"sameTemplateChoise","value":"blank"}
+{"idmeeting":"3","second":"2334","secondmanual":"37","action":"sameTemplateChoise","value":"meetingnotes"}
+{"idmeeting":"3","second":"2335","secondmanual":"37","action":"sameTemplateChoise","value":"projectplan"}
+{"idmeeting":"3","second":"2346","secondmanual":"37","action":"sameRapidPoi","value":"Point of interest"}
+{"idmeeting":"3","second":"2350","secondmanual":"37","action":"sameRapidMak","value":"Make an appointment"}
+{"idmeeting":"3","second":"2351","secondmanual":"37","action":"sameRapidPoi","value":"Point of interest"}
+{"idmeeting":"3","second":"2780","secondmanual":"37","action":"sameTemplateSaveParent","value":"projectplan"}
+{"idmeeting":"3","second":"2840","secondmanual":"37","action":"sameStartHour","value":"37"}
+{"idmeeting":"3","second":"2844","secondmanual":"41","action":"sameGetParticipantList","value":"Federico Remiti"}
+{"idmeeting":"3","second":"2849","secondmanual":"45","action":"sameGetAgenda","value":"Participants presentation"}
+{"idmeeting":"3","second":"2851","secondmanual":"48","action":"sameRapidCommand","value":"Question?"}
+{"idmeeting":"3","second":"2855","secondmanual":"51","action":"sameRapidPoi","value":"Point of interest"}
+{"idmeeting":"3","second":"3033","secondmanual":"229","action":"sameGetParticipantList","value":"Regina Elisabetta"}
+{"idmeeting":"3","second":"3038","secondmanual":"234","action":"sameRapidMak","value":"Make an appointment"}
+{"idmeeting":"3","second":"3042","secondmanual":"238","action":"sameRapidPoi","value":"Point of interest"}
+{"idmeeting":"3","second":"3175","secondmanual":"372","action":"sameRapidPoi","value":"Point of interest"}
+{"idmeeting":"3","second":"3175","secondmanual":"372","action":"sameRapidPoi","value":"Point of interest"}
+{"idmeeting":"3","second":"3178","secondmanual":"375","action":"sameRapidMak","value":"Make an appointment"}
+{"idmeeting":"3","second":"3310","secondmanual":"507","action":"sameRapidMak","value":"Make an appointment"}
+{"idmeeting":"3","second":"3318","secondmanual":"514","action":"sameGetAgenda","value":"Project introduction"}
+{"idmeeting":"3","second":"3455","secondmanual":"652","action":"sameRapidMak","value":"Make an appointment"}
+{"idmeeting":"3","second":"3471","secondmanual":"667","action":"sameTemplateChoise","value":"meetingnotes"}
+{"idmeeting":"3","second":"3473","secondmanual":"669","action":"sameTemplateChoise","value":"projectplan"}
+{"idmeeting":"3","second":"3482","secondmanual":"678","action":"sameTemplateSaveParent","value":"projectplan"}
+{"idmeeting":"3","second":"3496","secondmanual":"692","action":"sameGetParticipantList","value":"Federico Remiti"}
+{"idmeeting":"3","second":"3530","secondmanual":"727","action":"sameGetAgenda","value":"Project introduction"}
+{"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-21-22-1-28"}
+{"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-22-20-48-29"}
+{"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-22-20-48-38"}
+{"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-22-20-49-3"}
+{"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-22-20-49-8"}
+{"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-22-21-15-18"}
+{"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-22-21-19-20"}
+{"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-22-21-23-57"}
+{"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-22-21-24-33"}
+{"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-22-22-11-46"}
+{"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-22-22-11-47"}
+{"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-22-22-12-6"}
+{"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-22-22-15-20"}
+{"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-22-22-16-21"}
+{"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-22-22-16-27"}
+{"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-22-22-20-20"}
+{"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-22-22-24-15"}
+{"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-22-22-24-15"}
+{"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-23-11-41-16"}
+{"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-23-11-41-28"}
+{"idmeeting":"3","second":"0","secondmanual":"0","action":"sameStartHourDefault","value":"2022-1-23-11-41-38"}

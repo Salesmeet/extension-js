@@ -620,7 +620,7 @@ function sameFunctionOpenReport() {
     // window.open("https://extension.sameapp.net/api/v1/getreport.php");
 }
 function sameFunctionCloseReport() {
-    alert("prova");
+    // alert("prova");
 }
 function sameFunctionOpenCommon(url) {
 
