@@ -27,37 +27,46 @@ class FireStore {
 
   }
 
+  public function updateDocument( $collection_name, $id, $document) {
+      $firestore = new FirestoreClient([
+          'projectId' => $this->project,
+          'keyFilePath' =>  $this->fileKey,
+      ]);
+      $temp = [
+          ['path' => 'action', 'value' => "funziona......."],
+          ['path' => 'value', 'value' => "value ........."]
+      ];
+      $collection = $firestore->collection($collection_name)->document($id);
+      $collection->update(
+          $temp
+      );
+  }
+
   public function getDocument( $collection_name, $id) {
 
       $firestore = new FirestoreClient([
         'projectId' => $this->project,
         'keyFilePath' =>  $this->fileKey,
       ]);
-
       $docRef = $firestore->collection($collection_name)->document($id);
       $snapshot = $docRef->snapshot();
       if ($snapshot->exists()) {
-          // printf('Document data:' . PHP_EOL);
-          // return $snapshot->data();
-          print_r($snapshot->data());
-          echo "<hr>";
+          $data = $snapshot->data();
+          return $data;
       } else {
-          // return null;
+          return null;
       }
-
-    $this->getDocumentsByQuery( $collection_name );
-    // $this->getListDocument( $collection_name );
-
 
   }
 
-  public function getDocumentsByQuery( $collection_name ) {
 
-    echo "<hr>";
-    echo "getDocumentsByQuery";
-    echo "<hr>";
-    echo $collection_name;
-    echo "<hr>";
+  public function getDocumentsByQuery( $collection_name , $field, $option , $value ) {
+
+    echo "<hr><hr><hr><hr><hr><hr>";
+    echo $collection_name . "<br>";
+    echo $field . "<br>";
+    echo $option . "<br>";
+    echo $value . "<br>";
 
     $firestore = new FirestoreClient([
       'projectId' => $this->project,
@@ -67,13 +76,22 @@ class FireStore {
     // https://cloud.google.com/firestore/docs/samples/firestore-query-filter-not-eq
     // https://cloud.google.com/firestore/docs/query-data/queries
 
+    /*
     $citiesRef = $firestore->collection('action');
-    $query = $citiesRef->where('value', '!=', 'Make an appointment');
+    $query = $citiesRef->where('value', '==', 'Make an appointment');
+    */
+
+    $ref = $firestore->collection( $collection_name );
+    $query = $ref->where($field, $option, $value);
+
     $snapshot = $query->documents();
     foreach ($snapshot as $document) {
-        echo "value: " . $document->id();
+        $data = $document->data();
+        // echo "value: " . $document->id();
         echo "<hr>";
         print_r($document->data());
+        echo "<hr>";
+        echo $data["color"];
     }
 
   }
@@ -92,5 +110,34 @@ class FireStore {
     }
 
   }
+
+
+    /*
+    public function login() {
+        // sameapislim/vendor/google/auth/README.md
+        echo "login firestore<hr>";
+        $firestore = new FirestoreClient([
+            'projectId' => $this->project,
+            'keyFilePath' =>  $this->fileKey,
+        ]);
+        $auth = $firestore->createAuth();
+        // $reult = $auth->signInWithEmailAndPassword("corrado@salesmeet.ai", "bella");
+        /*
+        if ($idToken = $result->idToken() && $uid = $result->firebaseUserId()) {
+
+            $request->request->add(['firebase_uid' => $uid]);
+            $this->validateLogin($request);
+            if ($this->attemptLogin($request)) {
+                $customToken = $this->auth->createCustomToken($uid)->toString();
+                auth()->user()->update([
+                    'device_token' => $request->device_token,
+                    'id_token' => $idToken ,
+                    'custom_token' => $customToken,
+                ]);
+                return $this->sendLoginResponse($request);
+            }
+        }
+    }
+    */
 
 }

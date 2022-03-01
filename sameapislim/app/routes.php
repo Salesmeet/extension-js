@@ -21,6 +21,8 @@ use App\Application\Actions\v1\Partecipants;
 use App\Application\Actions\v1\Attachements;
 use App\Application\Actions\v1\Action;
 use App\Application\Actions\v1\Note;
+use App\Application\Actions\v1\Auth;
+
 
 return function (App $app) {
 
@@ -34,6 +36,12 @@ return function (App $app) {
         return $response;
     });
 
+    /*
+    $app->post('/public/v1/login', function (Request $request, Response $response, $args) {
+        $action = new Action();
+        return setResponse($response, $action->insert($request, $response, $args) );
+    });
+    */
 
     $app->post('/public/v1/action', function (Request $request, Response $response, $args) {
         $action = new Action();
@@ -46,39 +54,51 @@ return function (App $app) {
 
 
 
-    $app->get('/public/v1/meeting/{id}', function (Request $request, Response $response, $args) {
+    $app->get('/public/v1/meeting/{idmeeting}/{lang}', function (Request $request, Response $response, $args) {
         $meeting = new Meeting();
         return setResponse($response, $meeting->get($request, $response, $args) );
     });
-    $app->get('/public/v1/agenda/{id}', function (Request $request, Response $response, $args) {
+    $app->get('/public/v1/agenda/{idmeeting}/{lang}', function (Request $request, Response $response, $args) {
         $agenda = new Agenda();
         return setResponse($response, $agenda->get($request, $response, $args) );
     });
-    $app->get('/public/v1/attachements/{id}', function (Request $request, Response $response, $args) {
+    $app->get('/public/v1/attachements/{idmeeting}/{lang}', function (Request $request, Response $response, $args) {
         $attachements = new Attachements();
         return setResponse($response, $attachements->get($request, $response, $args) );
     });
-    $app->get('/public/v1/partecipants/{id}', function (Request $request, Response $response, $args) {
+    $app->get('/public/v1/partecipants/{idmeeting}/{lang}', function (Request $request, Response $response, $args) {
         $partecipants = new Partecipants();
         return setResponse($response, $partecipants->get($request, $response, $args) );
     });
 
     $app->get('/public/v1/test/', function (Request $request, Response $response, $args) {
 
-      $action = new Action();
-      $action->get($request, $response, $args);
-/*
-      echo '<hr>';
-
+          if (isset($args["idmeeting"])) {
+              echo $args["idmeeting"] . "<br>";
+          }
+          echo '<hr>';
+          $requestArrayParam = $request->getParsedBody();
+          if (isset($requestArrayParam["idmeeting"])) {
+              echo $requestArrayParam["idmeeting"] . "<br>";
+          }
+          echo '<hr>';
           $meeting = new Meeting();
           $meeting->get($request, $response, $args);
 
           echo '<hr>';
-          */
 
-        // $id = $args['id'];
-        // echo $id . " <br>";
-/*
+          /*
+
+          $action = new Action();
+          $action->get($request, $response, $args);
+
+          echo '<hr>';
+
+          $auth = new Auth();
+          $auth->auth($request, $response, $args);
+
+            */
+
         echo '<form action="https://api.sameapp.net/public/v1/action" method="post">';
           echo '<input name="idmeeting" id="idmeeting" value="1">';
           echo '<input name="second" id="second" value="1">';
@@ -87,7 +107,14 @@ return function (App $app) {
           echo '<input name="value" id="value" value="1">';
           echo '<input type="submit">';
         echo '</form>';
-        */
+
+
+        echo '<form action="https://api.sameapp.net/public/v1/action" method="post">';
+          echo '<input name="user" id="user" value="corrado@salesmeet.ai">';
+          echo '<input name="password" id="password" value="password">';
+          echo '<input type="submit">';
+        echo '</form>';
+
         $response->getBody()->write( "" );
         return $response;
 
@@ -95,6 +122,10 @@ return function (App $app) {
 
     /*
     $app->post('/public/v1/test/{id}', function (Request $request, Response $response, $args) {
+
+
+    // $id = $args['id'];
+    // echo $id . " <br>";
 
         $requestArrayParam = $request->getParsedBody();
         if (isset($requestArrayParam["be"])) {

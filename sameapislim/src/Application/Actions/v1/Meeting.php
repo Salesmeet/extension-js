@@ -15,13 +15,46 @@ class Meeting
 
   public function get( Request $request, Response $response, $args )  {
 
-    $fireStore = new FireStore();
-    $result = $fireStore->getDocument( "meetings", "29RNHE6NBtHhCkynoV4P" ) ;
-    print_r($result);
-    /*
-    $doc = $this->getDocument( $result );
-    return json_encode( $doc, true);
-    */
+    if (isset($args["idmeeting"])) {
+        $fireStore = new FireStore();
+        $data = $fireStore->getDocument( "meetings", $args["idmeeting"] ) ;
+        // print_r($data);
+        // echo "<hr>";
+        return [
+            "title" => "Summary of meeting data",
+            "edit" => "",
+            "apiupdate" => "",
+            "items" => [
+              [
+                "id" => "1",
+                "type" => "text",
+                "value" => $data["name"],
+                "description" => "name",
+              ],
+              [
+                "id" => "1",
+                "type" => "text",
+                "value" => $data["type"],
+                "description" => "type",
+              ],
+              [
+                "id" => "1",
+                "type" => "text",
+                "value" => $data["start"]->formatAsString(),
+                "description" => "Data",
+              ],
+              [
+                "id" => "1",
+                "type" => "text",
+                "value" => $data["color"],
+                "description" => "color",
+              ],
+            ]
+        ];
+
+    } else {
+        return array();
+    }
 
   }
 

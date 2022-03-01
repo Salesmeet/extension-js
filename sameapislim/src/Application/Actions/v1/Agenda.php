@@ -2,13 +2,56 @@
 
 namespace App\Application\Actions\v1;
 
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
+use App\Application\Actions\FireStore;
+use MrShan0\PHPFirestore\FirestoreDocument;
+
 class Agenda
 {
 
   public function __construct() {
   }
 
-  public function get()  {
+  public function get( Request $request, Response $response, $args )  {
+
+    if (isset($args["idmeeting"])) {
+        $fireStore = new FireStore();
+        $data = $fireStore->getDocument( "meetings", $args["idmeeting"] ) ;
+        /*
+        print_r($data);
+        echo "<hr>";
+        print_r($data["tasks"]);
+        echo "<hr>";
+        */
+        $attendees = array();
+        $i = 0;
+        foreach ($data["tasks"] as $attendee) {
+            $attendee = [
+                "id" => $i,
+                "type" => "text",
+                "value" => $attendee["name"],
+                "description" => "name",
+            ];
+            array_push($attendees,$attendee);
+            $i++;
+            // print_r($attendee["name"]);
+            // echo "<hr>";
+        }
+        return [
+            "title" => "Partecipant list",
+            "edit" => "",
+            "apiupdate" => "",
+            "items" => $attendees
+        ];
+
+    } else {
+        return array();
+    }
+
+  }
+
+  public function getMockup()  {
 
       $jsondata = '{
          "title":"Agenda",

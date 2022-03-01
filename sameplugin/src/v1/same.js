@@ -8,7 +8,10 @@ var same_domain = "https://plugin.sameapp.net";
 var same_id_extension = "eakfjnpihbkoohjbelkfjcdlkdhfeadb";
 
 function sameGetIdMeeting() {
-      return 3;
+      return "YbrhZ97glIkLAruzG7xk";
+}
+function sameGetLanguage() {
+      return "EN";
 }
 
 /****** PANEL DESIGN ************************************************/
@@ -34,7 +37,7 @@ var same_panel_rapid_command = '<div id="same_rapid_command" style="float:left;"
 <button id="same_function_rapid_rtc_short_button" class="same_resize_img same_icon_style" title="Shortcuts"></button><br>\
 <button id="same_function_shortcut_short_button" class="same_resize_img same_icon_style" title="Shortcuts"> </button>\
 </div>';
-var same_panel_note = '<div id="same_note" style="display:none">' + same_panel_rapid_command + '<div id="same_note_text_div" style="float:left;"><iframe src="' + same_domain + '/v1/editor.php?idmeeting=' + sameGetIdMeeting() + '" id="same_note_text_iframe"></iframe></div></div>'; //  <textarea id="same_note_text"></textarea> <div contenteditable="true" id="same_note_text"><a href="" target="blank">zzzz</a></div>
+var same_panel_note = '<div id="same_note" style="display:none">' + same_panel_rapid_command + '<div id="same_note_text_div" style="float:left;"><iframe src="' + same_domain + '/v1/editor.php?idmeeting=' + sameGetIdMeeting() + '&lang=' + sameGetLanguage() + '" id="same_note_text_iframe"></iframe></div></div>'; //  <textarea id="same_note_text"></textarea> <div contenteditable="true" id="same_note_text"><a href="" target="blank">zzzz</a></div>
 
 var same_panel_shortcut = '\
 <div id="same_shortcut" style="display:none">\
@@ -215,7 +218,6 @@ function sameNoteBig() {
 /* ingrandisce WYSIWYG HTML */
 function sameNoteBigCommon() {
       element = document.getElementById("same_note_text_iframe");
-      alert( element.src );
       if (same_position_bottom) {
           element.classList.add("same_note_text_big_bottom");
       } else {
@@ -480,11 +482,11 @@ function sameCommonBlockApi( value, type ) {
             out += "<input data-url='" + myArr.apiupdate + "' type='checkbox' " + checked + " id='" + myItems[i].id + "'>";
         }
         if (myItems[i].type == 'link') {
-            out += '<a href="' + myItems[i].value + '" target="_blank">' + myItems[i].description + '</a>';
+            out += '<a href="' + myItems[i].value + '" target="_blank">' + myItems[i].description + ": " + myItems[i].value + '</a>';
         } else {
-            out += myItems[i].description;
+            out += myItems[i].description + ": " + myItems[i].value;
         }
-        out += ' <button data-object="' + myItems[i].type + '" data-type="' + type + '" data-value="' + sameReplaceCharacters( myItems[i].description ) + '" class="sameAddValueInNote same_resize_small_img same_icon_style" title="Add note"></button>';
+        out += ' <button data-object="' + myItems[i].type + '" data-type="' + type + '" data-value="' + sameReplaceCharacters( myItems[i].value ) + '" class="sameAddValueInNote same_resize_small_img same_icon_style" title="Add note"></button>';
         out += "<br>";
       }
       if (myArr.edit!="") {
@@ -514,7 +516,7 @@ function sameGetAPI(url,type) {
                sameCommonBlockApi( this.responseText, type );
            }
       };
-      xhttp.open("GET", url, true);
+      xhttp.open("GET", url + sameGetIdMeeting() + "/" + sameGetLanguage() , true);
       xhttp.send();
 }
 function samePostAPI(value,action) {
@@ -529,6 +531,7 @@ function samePostAPI(value,action) {
           data.append('secondmanual', same_totalSeconds);
           data.append('secondmanual', same_totalSeconds);
           data.append('idmeeting', sameGetIdMeeting());
+          data.append('lang', sameGetLanguage());
           samePostAPICommon( same_domain_api + '/public/v1/action',data);
       }
 }
@@ -589,7 +592,7 @@ function sameFunctionOpenTemplate() {
     sameFunctionOpenTemplateCommon( init );
 }
 function sameFunctionOpenTemplateCommon( init ) {
-    sameFunctionOpenCommon(same_domain_api + "/api/v1/gettemplate.php?init=" + init);
+    sameFunctionOpenCommon(same_domain + "/v1/gettemplate.php?init=" + init);
 }
 
 /****** PANEL FUNCTION EDIT ************************************************/
@@ -602,7 +605,7 @@ function sameFunctionOpenReport() {
     } else {
       samePostAPINote();
     }
-    sameFunctionOpenCommon(same_domain_api + "/api/v1/getreport.php");
+    sameFunctionOpenCommon(same_domain + "/v1/getreport.php");
 }
 function sameFunctionOpenCommon(url) {
 
@@ -629,23 +632,16 @@ function sameFunctionEditClose() {
 /****** PANEL FUNCTION CALL API ************************************************/
 function sameGetParticipantList() {
     // console.log("sameGetParticipantList");
-    sameGetAPI(same_domain_api + "/public/v1/partecipants/" + sameGetIdMeeting() ,"sameGetParticipantList");
-    // sameGetAPI(same_domain_api + "/api/v1/getlistuser.php","sameGetParticipantList");
-    // samePostAPI("","sameGetParticipantList");
+    sameGetAPI(same_domain_api + "/public/v1/partecipants/" ,"sameGetParticipantList");
 }
 function sameGetDataMeeting() {
-    sameGetAPI(same_domain_api + "/public/v1/meeting/" + sameGetIdMeeting() ,"sameGetDataMeeting");
-    // sameGetAPI(same_domain_api + "/api/v1/getdatameeting.php","sameGetDataMeeting");
-    // samePostAPI("","sameGetDataMeeting");
+    sameGetAPI(same_domain_api + "/public/v1/meeting/" ,"sameGetDataMeeting");
 }
 function sameGetAgenda() {
-    sameGetAPI(same_domain_api + "/public/v1/agenda/" + sameGetIdMeeting(),"sameGetAgenda");
-    // samePostAPI("","sameGetAgenda");
+    sameGetAPI(same_domain_api + "/public/v1/agenda/" ,"sameGetAgenda");
 }
 function sameGetAttachments() {
-    sameGetAPI(same_domain_api + "/public/v1/attachements/" + sameGetIdMeeting() ,"sameGetAttachments");
-    // sameGetAPI(same_domain_api + "/api/v1/getattachments.php","sameGetAttachments");
-    // samePostAPI("","sameGetAttachments");
+    sameGetAPI(same_domain_api + "/public/v1/attachements/" ,"sameGetAttachments");
 }
 
 /****** PANEL FUNCTION SETTING ************************************************/

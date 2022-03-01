@@ -6,7 +6,7 @@ $idtemplate = "";
 if (isset($_GET['idtemplate'])) {
     $idtemplate = $_GET['idtemplate'];
     if ($idtemplate != "") {
-      $note = file_get_contents('../temp/template_' . $idtemplate . '.txt');
+      $note = file_get_contents('template/template_' . $idtemplate . '.txt');
     }
 }
 $init = "";
@@ -28,7 +28,7 @@ if (isset($_GET['init'])) {
 <body>
 
   <div style="float: left; width: 13%; text-align: center;">
-     <img src="https://api.sameapp.net/api/img/logo.png" style="width: 70px;">
+     <img src="https://plugin.sameapp.net/v1/img/logo.png" style="width: 70px;">
      <br><br>
 <!--
      <?php echo $init; ?>
@@ -54,7 +54,7 @@ if (isset($_GET['init'])) {
 
     <div id="spinner" style="position: absolute;z-index: 99;left: 48%;top: 40%;">
       <svg  width="970" height="70">
-           <image xlink:href="https://api.sameapp.net/api/img/spinner.svg" src="https://api.sameapp.net/api/img/spinner.svg"/>
+           <image xlink:href="https://plugin.sameapp.net/v1/img/spinner.svg" src="https://plugin.sameapp.net/v1/img/spinner.svg"/>
       </svg>
     </div>
 
@@ -92,7 +92,7 @@ if (isset($_GET['init'])) {
             'func': 'sameTemplateChoise',
             'message': id
         }, "*");
-        window.location.href = "https://api.sameapp.net/api/v1/gettemplate.php?init=<?php echo $init; ?>&idtemplate=" + id;
+        window.location.href = "https://plugin.sameapp.net/v1/gettemplate.php?init=<?php echo $init; ?>&idtemplate=" + id;
       }
       window.onload = function() {
         document.getElementById("spinner").style.display = "none";
