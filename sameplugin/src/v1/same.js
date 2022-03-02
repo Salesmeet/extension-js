@@ -423,11 +423,13 @@ function sameRapidUlinks() {
 
 function sameRapidCommand(time, value, type, start ) {
 
+      /*
       if (sameFlagInitNote==false) {
 
           sameFunctionOpenTemplate();
 
       } else {
+      */
 
           var char_i = "[ ";
           var char_e = " ]";
@@ -448,7 +450,7 @@ function sameRapidCommand(time, value, type, start ) {
           sameChangePanelNote();
           samePostAPI(value,type);
 
-      }
+      // }
 
 }
 
@@ -590,18 +592,21 @@ function sameClickCommonClass( id , name_funcition, action ) {
     var userSelection =  document.getElementsByClassName(id); //.addEventListener("click", name_funcition);
     for(var i = 0; i < userSelection.length; i++) {
       (function(index) {
-        console.log(index);
+        // console.log(index);
         userSelection[index].addEventListener( action , name_funcition);
       })(i);
     }
 }
 
 /****** PANEL FUNCTION TEMPLATE ************************************************/
-
+/*
 function sameFunctionOpenTemplateInit() {
-    sameFunctionOpenTemplateCommon( "init" );
+    // sameFunctionOpenTemplateCommon( "init" );
+    // sameFunctionOpenTemplate();
 }
+*/
 function sameFunctionOpenTemplate() {
+    /*
     var init = "";
     if (sameFlagInitNote==false) {
       init = "init";
@@ -609,7 +614,10 @@ function sameFunctionOpenTemplate() {
     } else {
       samePostAPINote();
     }
-    sameFunctionOpenTemplateCommon( init );
+    */
+    samePostAPINote();
+    sameChangePanelNote();
+    sameFunctionOpenTemplateCommon( "" );
 }
 function sameFunctionOpenTemplateCommon( init ) {
     sameFunctionOpenCommon(same_domain + "/v1/gettemplate.php?idmeeting=" + sameGetIdMeeting() + "&init=" + init);
