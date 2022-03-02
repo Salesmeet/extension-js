@@ -195,6 +195,7 @@
 #same_function_edit {
     background-image: url('https://plugin.sameapp.net/v1/img/edit.png') !important;
     background-color: #eeeeee !important;
+    position: fixed;
 }
 
 #same_function_shortcut_button, #same_function_shortcut_short_button {

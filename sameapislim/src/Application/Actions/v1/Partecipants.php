@@ -22,25 +22,12 @@ class Partecipants
     if (isset($args["idmeeting"])) {
         $fireStore = new FireStore();
         $data = $fireStore->getDocument( $this->collection_name , $args["idmeeting"] ) ;
-        $i = 0;
-        $attendees = $this->getAttendees($data);
-        foreach ($data["attendees"] as $attendee) {
-            $attendee = [
-                "id" => $i,
-                "type" => "checkbox",
-                "value" => $attendee["name"],
-                "description" => "name",
-            ];
-            array_push($attendees,$attendee);
-            $i++;
-            // print_r($attendee["name"]);
-            // echo "<hr>";
-        }
         return [
             "title" => "Partecipant list",
-            "edit" => "qqqq",
+            "edit" => "partecipant",
             "apiupdate" => "https://api.sameapp.net/public/v1/partecipants/check",
-            "items" => $attendees
+            "viewdescription" => "0",
+            "items" => $this->getAttendees($data)
         ];
 
     } else {
@@ -48,6 +35,15 @@ class Partecipants
     }
 
   }
+
+
+  public function insert( Request $request, Response $response, $args )  {
+    $fireStore = new FireStore();
+    $fireStore->addDocument( "action", $this->setDocument( $request ) );
+    return json_decode( '{"state":"200"}', true);
+  }
+
+
 
   public function check( Request $request, Response $response, $args )  {
 
@@ -79,6 +75,7 @@ class Partecipants
       $idmeeting = "";
       $id = "";
       $checked = "";
+      $user = "";
       if (isset($requestArrayParam["idmeeting"])) {
           $idmeeting = $requestArrayParam["idmeeting"];
       }
@@ -88,11 +85,23 @@ class Partecipants
       if (isset($requestArrayParam["checked"])) {
           $checked = $requestArrayParam["checked"];
       }
+      if (isset($requestArrayParam["second"])) {
+          $second = $requestArrayParam["second"];
+      }
+      if (isset($requestArrayParam["secondmanual"])) {
+          $secondmanual = $requestArrayParam["secondmanual"];
+      }
+      if (isset($requestArrayParam["user"])) {
+          $user  = $requestArrayParam["user"];
+      }
       return array(
           "idmeeting" => $idmeeting,
           "id" => $id,
           "action" => $this->action_attendees_check,
           "value" => $checked,
+          "second" => $second,
+          "secondmanual" => $secondmanual,
+          "user" => $user, 
           "date" => date("Y-m-d H:i:s"),
       );
   }

@@ -33,6 +33,7 @@ class Action
         $secondmanual = "";
         $value = "";
         $action = "";
+        $user = "";
         if (isset($requestArrayParam["idmeeting"])) {
             $idmeeting = $requestArrayParam["idmeeting"];
         }
@@ -48,12 +49,16 @@ class Action
         if (isset($requestArrayParam["value"])) {
             $value  = $requestArrayParam["value"];
         }
+        if (isset($requestArrayParam["user"])) {
+            $user  = $requestArrayParam["user"];
+        }
         return array(
             "idmeeting" => $idmeeting,
             "second" => $second,
             "secondmanual" => $secondmanual,
             "value" => $value,
             "action" => $action,
+            "user" => $user,            
             "date" => date("Y-m-d H:i:s"),
         );
     }

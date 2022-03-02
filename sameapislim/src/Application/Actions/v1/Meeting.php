@@ -18,24 +18,23 @@ class Meeting
     if (isset($args["idmeeting"])) {
         $fireStore = new FireStore();
         $data = $fireStore->getDocument( "meetings", $args["idmeeting"] ) ;
-        // print_r($data);
-        // echo "<hr>";
         return [
             "title" => "Summary of meeting data",
             "edit" => "",
             "apiupdate" => "",
+            "viewdescription" => "1",
             "items" => [
               [
                 "id" => "1",
                 "type" => "text",
                 "value" => $data["name"],
-                "description" => "name",
+                "description" => "Title",
               ],
               [
                 "id" => "1",
                 "type" => "text",
                 "value" => $data["type"],
-                "description" => "type",
+                "description" => "Type",
               ],
               [
                 "id" => "1",
@@ -46,8 +45,8 @@ class Meeting
               [
                 "id" => "1",
                 "type" => "text",
-                "value" => $data["color"],
-                "description" => "color",
+                "value" => $args["idmeeting"],
+                "description" => "Id",
               ],
             ]
         ];

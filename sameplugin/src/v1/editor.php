@@ -32,6 +32,10 @@
         }  else if (e.data.action == 'sameRapidCommand') {
               sameRapidCommand( e.data.value );
         } else if (e.data.action == 'sameWrite') {
+
+              console.log( "____________  sameWrite action ______________" );
+              console.log( e.data.value );
+
               sameWrite( e.data.value);
         } else if (e.data.action == 'saveNote') {
               saveNote();
@@ -59,6 +63,7 @@
           // console.log("saveNote_Frame");
           var data = new FormData();
           data.append('idmeeting', "<?php echo $_GET['idmeeting']; ?>" );
+          data.append('user', "<?php echo $_GET['user']; ?>" );
           data.append('value', contentTinymce );
           samePostAPICommon('https://api.sameapp.net/public/v1/note',data);
     }
@@ -79,17 +84,16 @@
     }
 
     function sameChange() {
-        console.log("sameChange");
         var ed = tinymce.get('same_note_text_iframe');
         let temp = ed.getContent();
         temp = temp.replace("@@", "");  // 64
         temp = temp.replace("##", "");  // 35
         temp = temp.replace("]]", "");  // 93
         temp = temp.replace("[[", "");  // 91
+        console.log( "____________  sameChange ______________" );
+        console.log( temp );
         sameWrite( temp );
     }
-
-
 
     var sameCharCodeBefore = "";
     function sameKeypress( keyPressed ) {

@@ -67,13 +67,13 @@ return function (App $app) {
     });
 
     // Get dati generici del meeting
-    $app->get('/public/v1/meeting/{idmeeting}/{lang}', function (Request $request, Response $response, $args) {
+    $app->get('/public/v1/meeting/{idmeeting}/{lang}/{user}', function (Request $request, Response $response, $args) {
         $meeting = new Meeting();
         return setResponse($response, $meeting->get($request, $response, $args) );
     });
 
     // Get dati dell'agenda del meeting
-    $app->get('/public/v1/agenda/{idmeeting}/{lang}', function (Request $request, Response $response, $args) {
+    $app->get('/public/v1/agenda/{idmeeting}/{lang}/{user}', function (Request $request, Response $response, $args) {
         $agenda = new Agenda();
         return setResponse($response, $agenda->get($request, $response, $args) );
     });
@@ -84,14 +84,14 @@ return function (App $app) {
     });
 
     // Get attachment presenti nel meeting
-    $app->get('/public/v1/attachements/{idmeeting}/{lang}', function (Request $request, Response $response, $args) {
+    $app->get('/public/v1/attachements/{idmeeting}/{lang}/{user}', function (Request $request, Response $response, $args) {
         $attachements = new Attachements();
         return setResponse($response, $attachements->get($request, $response, $args) );
     });
 
 
     // Get lista dei partecipanti del meeting
-    $app->get('/public/v1/partecipants/{idmeeting}/{lang}', function (Request $request, Response $response, $args) {
+    $app->get('/public/v1/partecipants/{idmeeting}/{lang}/{user}', function (Request $request, Response $response, $args) {
         $partecipants = new Partecipants();
         return setResponse($response, $partecipants->get($request, $response, $args) );
     });
@@ -100,14 +100,47 @@ return function (App $app) {
         $partecipants = new Partecipants();
         return setResponse($response, $partecipants->check($request, $response, $args) );
     });
+    // update cambio valore dei checkbox
+    $app->post('/public/v1/partecipants/insert', function (Request $request, Response $response, $args) {
+        $partecipants = new Partecipants();
+        return setResponse($response, $partecipants->add($request, $response, $args) );
+    });
+    $app->post('/public/v1/partecipants/delete', function (Request $request, Response $response, $args) {
+        $partecipants = new Partecipants();
+        return setResponse($response, $partecipants->delete($request, $response, $args) );
+    });
 
 
 
     $app->get('/public/v1/test/', function (Request $request, Response $response, $args) {
 
 
+          echo "<hr>Dati meeting<br>";
+          echo '<a href="https://api.sameapp.net/public/v1/meeting/7EQPmfmJD5eahPCLNxwV/en">call</a>';
+
+
           echo "<hr>Get last NOTE<br>";
           echo '<a href="https://api.sameapp.net/public/v1/note/7EQPmfmJD5eahPCLNxwV">call</a>';
+
+          echo "<hr>Get list participants<br>";
+          echo '<a href="https://api.sameapp.net/public/v1/partecipants/7EQPmfmJD5eahPCLNxwV/en">call</a>';
+
+
+          echo "<hr>ADD partecipants<br>";
+          echo '<form action="https://api.sameapp.net/public/v1/partecipants/add" method="post">';
+            echo '<input name="idmeeting" id="idmeeting" value="1">';
+            echo '<input name="value" id="value" value="1">';
+            echo '<input type="submit">';
+          echo '</form>';
+
+          echo "<hr>Delete partecipants<br>";
+          echo '<form action="https://api.sameapp.net/public/v1/partecipants/delete" method="post">';
+            echo '<input name="idmeeting" id="idmeeting" value="1">';
+            echo '<input name="value" id="value" value="1">';
+            echo '<input name="user" id="user" value="1">';
+            echo '<input type="submit">';
+          echo '</form>';
+
 
         echo "<hr>ACTION<br>";
         echo '<form action="https://api.sameapp.net/public/v1/action" method="post">';

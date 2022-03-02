@@ -19,6 +19,7 @@ class Attachements
          "title":"Attachements",
          "edit":"",
          "apiupdate":"",
+         "viewdescription":"0",
          "items":[
             {
                "id":"1",

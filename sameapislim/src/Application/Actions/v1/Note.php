@@ -62,15 +62,20 @@ class Note
         $requestArrayParam = $request->getParsedBody();
         $idmeeting = "";
         $value = "";
+        $user = "";
         if (isset($requestArrayParam["idmeeting"])) {
             $idmeeting = $requestArrayParam["idmeeting"];
         }
         if (isset($requestArrayParam["value"])) {
             $value  = $requestArrayParam["value"];
         }
+        if (isset($requestArrayParam["user"])) {
+            $user  = $requestArrayParam["user"];
+        }
         return array(
             "idmeeting" => $idmeeting,
             "value" => $value,
+            "user" => $user,   
             "date" => date("Y-m-d H:i:s"),
         );
     }

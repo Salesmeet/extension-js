@@ -7,9 +7,12 @@ var same_domain_api = "https://api.sameapp.net";
 var same_domain = "https://plugin.sameapp.net";
 var same_id_extension = "eakfjnpihbkoohjbelkfjcdlkdhfeadb";
 
-function sameGetIdMeeting() { return "7EQPmfmJD5eahPCLNxwV"; }
-function sameGetLanguage() { return "en"; }
-function sameGetUser() { return "2"; }
+function sameGetIdMeeting() {
+      return "7EQPmfmJD5eahPCLNxwV";
+}
+function sameGetLanguage() {
+      return "EN";
+}
 
 /****** PANEL DESIGN ************************************************/
 var same_panel_recording_button = '<section class="main-controls">\
@@ -34,7 +37,7 @@ var same_panel_rapid_command = '<div id="same_rapid_command" style="float:left;"
 <button id="same_function_rapid_rtc_short_button" class="same_resize_img same_icon_style" title="Shortcuts"></button><br>\
 <button id="same_function_shortcut_short_button" class="same_resize_img same_icon_style" title="Shortcuts"> </button>\
 </div>';
-var same_panel_note = '<div id="same_note" style="display:none">' + same_panel_rapid_command + '<div id="same_note_text_div" style="float:left;"><iframe src="' + same_domain + '/v1/editor.php?idmeeting=' + sameGetIdMeeting() + '&lang=' + sameGetLanguage() + "&user=" + sameGetUser() + '" id="same_note_text_iframe"></iframe></div></div>'; //  <textarea id="same_note_text"></textarea> <div contenteditable="true" id="same_note_text"><a href="" target="blank">zzzz</a></div>
+var same_panel_note = '<div id="same_note" style="display:none">' + same_panel_rapid_command + '<div id="same_note_text_div" style="float:left;"><iframe src="' + same_domain + '/v1/editor.php?idmeeting=' + sameGetIdMeeting() + '&lang=' + sameGetLanguage() + '" id="same_note_text_iframe"></iframe></div></div>'; //  <textarea id="same_note_text"></textarea> <div contenteditable="true" id="same_note_text"><a href="" target="blank">zzzz</a></div>
 
 var same_panel_shortcut = '\
 <div id="same_shortcut" style="display:none">\
@@ -378,6 +381,7 @@ var sameFlagInitNote = false;
 function sameChangePanelNote() {
       if (sameFlagInitNote==false) {
           sameFlagInitNote = true;
+          // sameFunctionOpenTemplateInit();
           sameNoteBigCommon();
       }
       sameChangePanel("block","none","none","none","none","none");
@@ -418,15 +422,36 @@ function sameRapidUlinks() {
 }
 
 function sameRapidCommand(time, value, type, start ) {
-      var char_i = "[ ";
-      var char_e = " ]";
-      if ((type == "sameGetParticipantList") || (type == "sameGetAgenda") || (type == "sameGetAttachments") || (type == "sameGetDataMeeting") ) {
-        char_i = ""; char_e = "";
-      }
-      if (time==1) { time = same_getTimeShortcut(); } else { time = ""; }
-      samePostMessageNote(  time + char_i + value + char_e , "sameRapidCommand" );
-      sameChangePanelNote();
-      samePostAPI(value,type);
+
+      /*
+      if (sameFlagInitNote==false) {
+
+          sameFunctionOpenTemplate();
+
+      } else {
+      */
+
+          var char_i = "[ ";
+          var char_e = " ]";
+          /*
+          if (type == "sameGetParticipantList") {
+              char_i = "user@";
+              char_e = "";
+          }
+          else if (type == "sameGetAgenda") { char_i = "@agenda@"; char_e = ""; }
+          else if (type == "sameGetAttachments") { char_i = "@link@"; char_e = ""; }
+          else if (type == "sameGetDataMeeting") { char_i = "@meeting@"; char_e = ""; }
+          */
+          if ((type == "sameGetParticipantList") || (type == "sameGetAgenda") || (type == "sameGetAttachments") || (type == "sameGetDataMeeting") ) {
+            char_i = ""; char_e = "";
+          }
+          if (time==1) { time = same_getTimeShortcut(); } else { time = ""; }
+          samePostMessageNote(  time + char_i + value + char_e , "sameRapidCommand" );
+          sameChangePanelNote();
+          samePostAPI(value,type);
+
+      // }
+
 }
 
 /****** PANEL FUNCTION ALL MEETING ************************************************/
@@ -460,7 +485,6 @@ function sameAddValueCheck( value ){
     data.append('idmeeting', sameGetIdMeeting());
     data.append('second', sameDefaulTotalSeconds);
     data.append('secondmanual', same_totalSeconds);
-    data.append('user', sameGetUser());
     samePostAPICommon( this.getAttribute('data-url') , data);
 }
 
@@ -479,6 +503,7 @@ function sameCommonBlockApi( value, type ) {
             if (myItems[i].checked == '1') { var checked = "checked"; } else { var checked = ""; }
             out += "<input class='sameAddValueCheck' data-url='" + myArr.apiupdate + "' type='checkbox' " + checked + " id='" + myItems[i].id + "'>";
         }
+        console.log("viewdescription: " + myArr.viewdescription);
         var description = "";
         if (myArr.viewdescription == "1") { description = myItems[i].description + ": "; }
 
@@ -493,7 +518,7 @@ function sameCommonBlockApi( value, type ) {
       if (myArr.edit!="") {
         out = '\
           <div id="same_data_meeting_edit">\
-          <button data-type="' + myArr.edit + '" id="same_function_edit" class="same_icon_style" title="edit"></button>\
+          <button data-url="' + myArr.edit + '" id="same_function_edit" class="same_icon_style" title="edit"></button>\
           </div>\
           <div id="same_data_meeting_body">' + title + out + '</div>\
         ';
@@ -501,7 +526,7 @@ function sameCommonBlockApi( value, type ) {
 
         document.getElementById("same_common").innerHTML = escapeHTMLPolicy.createHTML(out);
         sameClickCommon( "same_function_edit" , sameFunctionEditOpen );
-        // sameClickCommon( "same_function_check" , sameFindElements() );
+        sameClickCommon( "same_function_check" , sameFindElements() );
 
       } else {
         out = '<div style="float:left;" id="same_data_meeting_body">' + title + out + '</div>';
@@ -519,7 +544,7 @@ function sameGetAPI(url,type) {
                sameCommonBlockApi( this.responseText, type );
            }
       };
-      xhttp.open("GET", url + sameGetIdMeeting() + "/" + sameGetLanguage() + "/" + sameGetUser() , true);
+      xhttp.open("GET", url + sameGetIdMeeting() + "/" + sameGetLanguage() , true);
       xhttp.send();
 }
 function samePostAPI(value,action) {
@@ -534,12 +559,12 @@ function samePostAPI(value,action) {
           data.append('secondmanual', same_totalSeconds);
           data.append('idmeeting', sameGetIdMeeting());
           data.append('lang', sameGetLanguage());
-          data.append('user', sameGetUser());
           samePostAPICommon( same_domain_api + '/public/v1/action',data);
       }
 }
 /* salva i dati provenienti dallo WYSIWYG HTML */
 function samePostAPINote() {
+      // console.log("samePostAPINote");
       samePostMessageNote( "", "saveNote" );
 }
 
@@ -580,7 +605,22 @@ function sameClickCommonClass( id , name_funcition, action ) {
 }
 
 /****** PANEL FUNCTION TEMPLATE ************************************************/
+/*
+function sameFunctionOpenTemplateInit() {
+    // sameFunctionOpenTemplateCommon( "init" );
+    // sameFunctionOpenTemplate();
+}
+*/
 function sameFunctionOpenTemplate() {
+    /*
+    var init = "";
+    if (sameFlagInitNote==false) {
+      init = "init";
+      sameChangePanelNote();
+    } else {
+      samePostAPINote();
+    }
+    */
     samePostAPINote();
     sameChangePanelNote();
     sameFunctionOpenTemplateCommon( "" );
@@ -591,8 +631,7 @@ function sameFunctionOpenTemplateCommon( init ) {
 
 /****** PANEL FUNCTION EDIT ************************************************/
 function sameFunctionEditOpen() {
-    var type = document.getElementById("same_function_edit").getAttribute('data-type')
-    sameFunctionOpenCommon(same_domain + "/v1/getmeeting.php?idmeeting=" + sameGetIdMeeting() + "&type=" + type + "&lang=" + sameGetLanguage() + "&user=" + sameGetUser() );
+    sameFunctionOpenCommon(document.getElementById("same_function_edit").getAttribute('data-url'));
 }
 function sameFunctionOpenReport() {
     if (sameFlagInitNote==false) {

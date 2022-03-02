@@ -22,12 +22,12 @@ class Agenda
     if (isset($args["idmeeting"])) {
         $fireStore = new FireStore();
         $data = $fireStore->getDocument( $this->collection_name, $args["idmeeting"] ) ;
-        $tasks = $this->getTasks($data);
         return [
-            "title" => "Partecipant list",
-            "edit" => "aaa",
+            "title" => "Agenda list",
+            "edit" => "agenda",
             "apiupdate" => "https://api.sameapp.net/public/v1/agenda/check",
-            "items" => $tasks
+            "viewdescription" => "0",
+            "items" => $this->getTasks($data)
         ];
     } else {
         return array();
@@ -65,6 +65,7 @@ class Agenda
       $idmeeting = "";
       $id = "";
       $checked = "";
+      $user = "";
       if (isset($requestArrayParam["idmeeting"])) {
           $idmeeting = $requestArrayParam["idmeeting"];
       }
@@ -74,11 +75,23 @@ class Agenda
       if (isset($requestArrayParam["checked"])) {
           $checked = $requestArrayParam["checked"];
       }
+      if (isset($requestArrayParam["second"])) {
+          $second = $requestArrayParam["second"];
+      }
+      if (isset($requestArrayParam["secondmanual"])) {
+          $secondmanual = $requestArrayParam["secondmanual"];
+      }
+      if (isset($requestArrayParam["user"])) {
+          $user  = $requestArrayParam["user"];
+      }
       return array(
           "idmeeting" => $idmeeting,
           "id" => $id,
           "action" => $this->action_task_check,
           "value" => $checked,
+          "second" => $second,
+          "secondmanual" => $secondmanual,
+          "user" => $user, 
           "date" => date("Y-m-d H:i:s"),
       );
   }
