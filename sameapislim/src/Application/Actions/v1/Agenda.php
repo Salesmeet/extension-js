@@ -10,6 +10,10 @@ use MrShan0\PHPFirestore\FirestoreDocument;
 class Agenda
 {
 
+  private $collection_name = "meetings";
+  private $collection_name_action = "meetings_action";
+  private $action_task_check = "tasksChecked";
+
   public function __construct() {
   }
 
@@ -17,39 +21,121 @@ class Agenda
 
     if (isset($args["idmeeting"])) {
         $fireStore = new FireStore();
-        $data = $fireStore->getDocument( "meetings", $args["idmeeting"] ) ;
-        /*
-        print_r($data);
-        echo "<hr>";
-        print_r($data["tasks"]);
-        echo "<hr>";
-        */
-        $attendees = array();
-        $i = 0;
-        foreach ($data["tasks"] as $attendee) {
-            $attendee = [
-                "id" => $i,
-                "type" => "text",
-                "value" => $attendee["name"],
-                "description" => "name",
-            ];
-            array_push($attendees,$attendee);
-            $i++;
-            // print_r($attendee["name"]);
-            // echo "<hr>";
-        }
+        $data = $fireStore->getDocument( $this->collection_name, $args["idmeeting"] ) ;
+        $tasks = $this->getTasks($data);
         return [
             "title" => "Partecipant list",
-            "edit" => "",
-            "apiupdate" => "",
-            "items" => $attendees
+            "edit" => "aaa",
+            "apiupdate" => "https://api.sameapp.net/public/v1/agenda/check",
+            "items" => $tasks
         ];
-
     } else {
         return array();
     }
 
   }
+
+  public function check( Request $request, Response $response, $args )  {
+
+      $document = $this->setDocumentTask( $request );
+      if ($document["idmeeting"]!="") {
+
+          // Aggiungo log
+          $fireStore = new FireStore();
+          $fireStore->addDocument( $this->collection_name_action, $document );
+
+          // Prendo tutto l'elenco dei tasks
+          $data = $fireStore->getDocument( $this->collection_name, $document["idmeeting"] ) ;
+          // Creo l'elenco dei tasks con il checked aggioranto
+          $tasks = $this->getTasksUpdate($data,$document["id"],$document["value"]);
+
+          // Update per idmeeting i tasks aggiornati
+          $temp = [
+              ['path' => 'tasks', 'value' => $tasks]
+          ];
+          $fireStore->updateDocument( $this->collection_name, $document["idmeeting"], $temp);
+
+      }
+      return json_decode( '{"state":"200"}', true);
+
+  }
+
+  public function setDocumentTask( Request $request )  {
+      $requestArrayParam = $request->getParsedBody();
+      $idmeeting = "";
+      $id = "";
+      $checked = "";
+      if (isset($requestArrayParam["idmeeting"])) {
+          $idmeeting = $requestArrayParam["idmeeting"];
+      }
+      if (isset($requestArrayParam["id"])) {
+          $id = $requestArrayParam["id"];
+      }
+      if (isset($requestArrayParam["checked"])) {
+          $checked = $requestArrayParam["checked"];
+      }
+      return array(
+          "idmeeting" => $idmeeting,
+          "id" => $id,
+          "action" => $this->action_task_check,
+          "value" => $checked,
+          "date" => date("Y-m-d H:i:s"),
+      );
+  }
+
+  public function getTasks($data)  {
+      $checked_master = $checked;
+      $tasks = array();
+      $i = 0;
+      foreach ($data["tasks"] as $task) {
+
+          // Se non ho il campo checked lo creo
+          if ($task["checked"]=="") {
+              $checked = 0;
+          } else {
+              $checked = $task["checked"];
+          }
+          $task = [
+              "id" => $i,
+              "type" => "checkbox",
+              "value" => $task["name"],
+              "description" => "",
+              "checked" => $checked,
+          ];
+          array_push($tasks,$task);
+          $i++;
+      }
+      return $tasks;
+  }
+
+  public function getTasksUpdate($data, $id, $checked)  {
+      $checked_master = $checked;
+      $tasks = array();
+      $i = 0;
+      foreach ($data["tasks"] as $task) {
+          // Controllo di modiifcare solo il task corretto
+          if ($i != $id) {
+              // Se non ho il campo checked lo creo
+              if ($task["checked"]=="") {
+                  $checked = 0;
+              } else {
+                  $checked = $task["checked"];
+              }
+          } else {
+              // assegno il valore di checked dal frontend
+              $checked = $checked_master;
+          }
+          $task = [
+              "icon" => $task["icon"],
+              "name" => $task["name"],
+              "checked" => $checked,
+          ];
+          array_push($tasks,$task);
+          $i++;
+      }
+      return $tasks;
+  }
+
 
   public function getMockup()  {
 
@@ -63,64 +149,10 @@ class Agenda
                "type":"checkbox",
                "value":"0",
                "description":"Check participants"
-            },
-            {
-               "id":"2",
-               "type":"checkbox",
-               "value":"1",
-               "description":"Participants presentation"
-            },
-            {
-               "id":"3",
-               "type":"checkbox",
-               "value":"1",
-               "description":"Reading the agenda of the day"
-            },
-            {
-               "id":"4",
-               "type":"checkbox",
-               "value":"0",
-               "description":"Project introduction"
-            },
-            {
-               "id":"5",
-               "type":"checkbox",
-               "value":"0",
-               "description":"Slide presentation"
-            },
-            {
-               "id":"6",
-               "type":"checkbox",
-               "value":"0",
-               "description":"..."
-            },
-            {
-               "id":"7",
-               "type":"checkbox",
-               "value":"0",
-               "description":"..."
-            },
-            {
-               "id":"8",
-               "type":"checkbox",
-               "value":"0",
-               "description":"..."
-            },
-            {
-               "id":"9",
-               "value":"0",
-               "type":"checkbox",
-               "description":"..."
             }
          ]
       }';
       return json_decode($jsondata, true);
-      /*
-      $result[] = array(
-          "comune" => "aaaaa"
-      );
-      return $result;
-      */
   }
 
 

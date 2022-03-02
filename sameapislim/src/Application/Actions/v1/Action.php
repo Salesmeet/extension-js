@@ -13,12 +13,12 @@ class Action
     public function __construct() {
     }
 
+    // NON USATA ANCORA ...
     public function get( Request $request, Response $response, $args )  {
-
       $fireStore = new FireStore();
       $result = $fireStore->getDocument( "action", "303128bd5c51478fb24d" ) ;
-
     }
+
 
     public function insert( Request $request, Response $response, $args )  {
       $fireStore = new FireStore();
@@ -59,7 +59,6 @@ class Action
     }
 
     public function getDocument( $result )  {
-
         return array(
             "idmeeting" => $result->get('idmeeting'),
             "second" => $result->get('second'),
@@ -67,7 +66,6 @@ class Action
             "value" => $result->get('value'),
             "date" => $result->get('date'),
         );
-
     }
 
 }

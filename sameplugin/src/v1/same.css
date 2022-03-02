@@ -257,6 +257,12 @@
 #same_function_meeting_data_button {
     background-image: url('https://plugin.sameapp.net/v1/img/meeting-information.png') !important;
 }
+#same_function_screenshot_button {
+    background-image: url('https://plugin.sameapp.net/v1/img/screenshot.png') !important;
+}
+#same_function_video_button {
+    background-image: url('https://plugin.sameapp.net/v1/img/rec-1.png') !important;
+}
 #same_screenshot_button {
     background-image: url('https://plugin.sameapp.net/v1/img/screenshot.png') !important;
 }

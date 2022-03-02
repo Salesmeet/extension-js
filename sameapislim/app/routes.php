@@ -43,62 +43,73 @@ return function (App $app) {
     });
     */
 
+
+    // log delle azioni
     $app->post('/public/v1/action', function (Request $request, Response $response, $args) {
         $action = new Action();
         return setResponse($response, $action->insert($request, $response, $args) );
     });
+
+    // log delle note
     $app->post('/public/v1/note', function (Request $request, Response $response, $args) {
         $note = new Note();
         return setResponse($response, $note->insert($request, $response, $args) );
     });
+    // get ultima nota inserita
+    $app->get('/public/v1/note/{idmeeting}', function (Request $request, Response $response, $args) {
+        $note = new Note();
+        return setResponse($response, $note->getLast($request, $response, $args) );
+    });
+    // get tutte le note inserite per il meeting
+    $app->get('/public/v1/note/all/{idmeeting}', function (Request $request, Response $response, $args) {
+        $note = new Note();
+        return setResponse($response, $note->getAll($request, $response, $args) );
+    });
 
-
-
+    // Get dati generici del meeting
     $app->get('/public/v1/meeting/{idmeeting}/{lang}', function (Request $request, Response $response, $args) {
         $meeting = new Meeting();
         return setResponse($response, $meeting->get($request, $response, $args) );
     });
+
+    // Get dati dell'agenda del meeting
     $app->get('/public/v1/agenda/{idmeeting}/{lang}', function (Request $request, Response $response, $args) {
         $agenda = new Agenda();
         return setResponse($response, $agenda->get($request, $response, $args) );
     });
+    // update cambio valore dei checkbox
+    $app->post('/public/v1/agenda/check', function (Request $request, Response $response, $args) {
+        $agenda = new Agenda();
+        return setResponse($response, $agenda->check($request, $response, $args) );
+    });
+
+    // Get attachment presenti nel meeting
     $app->get('/public/v1/attachements/{idmeeting}/{lang}', function (Request $request, Response $response, $args) {
         $attachements = new Attachements();
         return setResponse($response, $attachements->get($request, $response, $args) );
     });
+
+
+    // Get lista dei partecipanti del meeting
     $app->get('/public/v1/partecipants/{idmeeting}/{lang}', function (Request $request, Response $response, $args) {
         $partecipants = new Partecipants();
         return setResponse($response, $partecipants->get($request, $response, $args) );
     });
+    // update cambio valore dei checkbox
+    $app->post('/public/v1/partecipants/check', function (Request $request, Response $response, $args) {
+        $partecipants = new Partecipants();
+        return setResponse($response, $partecipants->check($request, $response, $args) );
+    });
+
+
 
     $app->get('/public/v1/test/', function (Request $request, Response $response, $args) {
 
-          if (isset($args["idmeeting"])) {
-              echo $args["idmeeting"] . "<br>";
-          }
-          echo '<hr>';
-          $requestArrayParam = $request->getParsedBody();
-          if (isset($requestArrayParam["idmeeting"])) {
-              echo $requestArrayParam["idmeeting"] . "<br>";
-          }
-          echo '<hr>';
-          $meeting = new Meeting();
-          $meeting->get($request, $response, $args);
 
-          echo '<hr>';
+          echo "<hr>Get last NOTE<br>";
+          echo '<a href="https://api.sameapp.net/public/v1/note/7EQPmfmJD5eahPCLNxwV">call</a>';
 
-          /*
-
-          $action = new Action();
-          $action->get($request, $response, $args);
-
-          echo '<hr>';
-
-          $auth = new Auth();
-          $auth->auth($request, $response, $args);
-
-            */
-
+        echo "<hr>ACTION<br>";
         echo '<form action="https://api.sameapp.net/public/v1/action" method="post">';
           echo '<input name="idmeeting" id="idmeeting" value="1">';
           echo '<input name="second" id="second" value="1">';
@@ -108,12 +119,36 @@ return function (App $app) {
           echo '<input type="submit">';
         echo '</form>';
 
+        echo "<hr>NOTE<br>";
+        echo '<form action="https://api.sameapp.net/public/v1/note" method="post">';
+          echo '<input name="idmeeting" id="idmeeting" value="1">';
+          echo '<input name="value" id="second" value="Che bella giornta">';
+          echo '<input type="submit">';
+        echo '</form>';
 
-        echo '<form action="https://api.sameapp.net/public/v1/action" method="post">';
+        echo "<hr>LOGIN<br>";
+        echo '<form action="https://api.sameapp.net/public/v1/login" method="post">';
           echo '<input name="user" id="user" value="corrado@salesmeet.ai">';
           echo '<input name="password" id="password" value="password">';
           echo '<input type="submit">';
         echo '</form>';
+
+        echo "<hr>CHECK PARTECIPANTS<br>";
+        echo '<form action="https://api.sameapp.net/public/v1/partecipants/check" method="post">';
+          echo 'idmeeting: <input name="idmeeting" id="idmeeting" value="YbrhZ97glIkLAruzG7xk">';
+          echo ' - id task: <input name="id" id="id" value="1">';
+          echo ' - checked: <input name="checked" id="checked" value="0">';
+          echo '<input type="submit">';
+        echo '</form>';
+
+        echo "<hr>CHECK AGENDA<br>";
+        echo '<form action="https://api.sameapp.net/public/v1/agenda/check" method="post">';
+          echo 'idmeeting: <input name="idmeeting" id="idmeeting" value="YbrhZ97glIkLAruzG7xk">';
+          echo ' - id task: <input name="id" id="id" value="1">';
+          echo ' - checked: <input name="checked" id="checked" value="0">';
+          echo '<input type="submit">';
+        echo '</form>';
+
 
         $response->getBody()->write( "" );
         return $response;

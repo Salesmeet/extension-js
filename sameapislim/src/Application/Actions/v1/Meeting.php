@@ -58,11 +58,21 @@ class Meeting
 
   }
 
+  /*** UTILIZZO quello in note.php per essere più veloce
+  public function updateNote( $idmeeting , $value )  {
+        $fireStore = new FireStore();
+        $temp = [
+            ['path' => 'note', 'value' => $value ]
+        ];
+        $fireStore->updateDocument( "meetings", $idmeeting, $temp);
+  }
+   */
+
   public function getMockup()  {
 
       $jsondata = '{
          "title":"Summary of meeting data",
-         "edit":"",
+         "edit":"https://api.sameapp.net/api/v1/getagenda.php?edit=0",
          "apiupdate":"",
          "items":[
             {
@@ -70,12 +80,6 @@ class Meeting
                "type":"text",
                "value":"",
                "description":"Data: 2022-10-20 22:00:01"
-            },
-            {
-               "id":"2",
-               "type":"text",
-               "value":"",
-               "description":"Name: SAL Same Project"
             }
          ]
       }';

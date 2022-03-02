@@ -1,12 +1,20 @@
 <?
 header("Access-Control-Allow-Origin: *");
+$idmeeting = "";
+if (isset($_GET['idmeeting'])) {
+    $idmeeting = $_GET['idmeeting'];
+}
 // $action = file_get_contents('../temp/action.txt');
-$note = ""; // file_get_contents('../temp/note.txt');
+// file_get_contents('../temp/note.txt');
+
+$note = "";
+
 ?>
 <!DOCTYPE html>
 <html>
 <head>
   <script src="https://cdn.tiny.cloud/1/q8bxw8wqcr049zoy13p15fi50rgnjqfakkx9qrqnzmgt3wy4/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+
 </head>
 <body>
 
@@ -40,6 +48,23 @@ $note = ""; // file_get_contents('../temp/note.txt');
     escapeHTMLPolicy = trustedTypes.createPolicy("forceInner", {
         createHTML: (to_escape) => to_escape
     })
+    function sameGetAPI() {
+          var xhttp = new XMLHttpRequest();
+          xhttp.onreadystatechange = function() {
+               if (this.readyState == 4 && this.status == 200) {
+                  var myArr = JSON.parse(this.responseText);
+                  sameWrite(myArr.note);
+                  document.getElementById("spinner").style.display = "none";
+               }
+          };
+          xhttp.open("GET", "https://api.sameapp.net/public/v1/note/<?php echo $idmeeting; ?>", true);
+          xhttp.send();
+    }
+    function sameWrite( message ) {
+      // console.log("sameWrite");
+      tinymce.activeEditor.setContent( message , {format: 'html'});
+    }
+
     function save() {
       window.parent.postMessage({
           'func': 'sameSaveParentNote',
@@ -52,14 +77,10 @@ $note = ""; // file_get_contents('../temp/note.txt');
         settings: {}
       });
     }
-
     window.onload = function() {
-      document.getElementById("spinner").style.display = "none";
-      /*
-      var ed = tinymce.get('same_note_text');
-      ed.setContent( escapeHTMLPolicy.createHTML("") );
-      */
+      sameGetAPI();
     };
+
     function loadTinyMCE() {
         tinymce.init({
           selector: 'textarea',

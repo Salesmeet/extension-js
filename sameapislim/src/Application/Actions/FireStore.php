@@ -9,7 +9,7 @@ use Google\Cloud\Firestore\FirestoreClient;
 
 class FireStore {
 
-  /*  https://googleapis.github.io/google-cloud-php/#/docs/google-cloud/v0.175.0/firestore/collectionreference  */
+  // https://googleapis.github.io/google-cloud-php/#/docs/google-cloud/v0.175.0/firestore/firestoreclient
 
   private $project = "sales-66641";
   private $apiKey = 'AIzaSyB_bq-VMYBF7xow-C6GKi4cB3SPKbInm_w';
@@ -32,13 +32,15 @@ class FireStore {
           'projectId' => $this->project,
           'keyFilePath' =>  $this->fileKey,
       ]);
-      $temp = [
+      /*
+      $document = [
           ['path' => 'action', 'value' => "funziona......."],
           ['path' => 'value', 'value' => "value ........."]
       ];
+      */
       $collection = $firestore->collection($collection_name)->document($id);
       $collection->update(
-          $temp
+          $document
       );
   }
 
@@ -59,55 +61,55 @@ class FireStore {
 
   }
 
-
   public function getDocumentsByQuery( $collection_name , $field, $option , $value ) {
 
-    echo "<hr><hr><hr><hr><hr><hr>";
-    echo $collection_name . "<br>";
-    echo $field . "<br>";
-    echo $option . "<br>";
-    echo $value . "<br>";
+        echo "<hr><hr><hr><hr><hr><hr>";
+        echo $collection_name . "<br>";
+        echo $field . "<br>";
+        echo $option . "<br>";
+        echo $value . "<br>";
 
-    $firestore = new FirestoreClient([
-      'projectId' => $this->project,
-      'keyFilePath' =>  $this->fileKey,
-    ]);
+        $firestore = new FirestoreClient([
+          'projectId' => $this->project,
+          'keyFilePath' =>  $this->fileKey,
+        ]);
 
-    // https://cloud.google.com/firestore/docs/samples/firestore-query-filter-not-eq
-    // https://cloud.google.com/firestore/docs/query-data/queries
+        // https://cloud.google.com/firestore/docs/samples/firestore-query-filter-not-eq
+        // https://cloud.google.com/firestore/docs/query-data/queries
 
-    /*
-    $citiesRef = $firestore->collection('action');
-    $query = $citiesRef->where('value', '==', 'Make an appointment');
-    */
+        /*
+        $citiesRef = $firestore->collection('action');
+        $query = $citiesRef->where('value', '==', 'Make an appointment');
+        */
 
-    $ref = $firestore->collection( $collection_name );
-    $query = $ref->where($field, $option, $value);
+        $ref = $firestore->collection( $collection_name );
+        // $query = $ref->where($field, $option, $value)->orderBy('date', 'DESC')->limit(2);
+        $query = $ref->where($field, $option, $value);
 
-    $snapshot = $query->documents();
-    foreach ($snapshot as $document) {
-        $data = $document->data();
-        // echo "value: " . $document->id();
-        echo "<hr>";
-        print_r($document->data());
-        echo "<hr>";
-        echo $data["color"];
-    }
+        $snapshot = $query->documents();
+        foreach ($snapshot as $document) {
+            $data = $document->data();
+            // echo "value: " . $document->id();
+            echo "<hr>";
+            print_r($document->data());
+            echo "<hr>";
+            echo $data["color"];
+        }
 
   }
 
   public function getListDocument( $collection_name ) {
 
-    $firestore = new FirestoreClient([
-      'projectId' => $this->project,
-      'keyFilePath' =>  $this->fileKey,
-    ]);
-    $collection = $firestore->collection( $collection_name );
-    $documents = $collection->listDocuments();
-    foreach ($documents as $document) {
-        echo $document->id() . PHP_EOL . "<hr>";
-        echo $document->name() . PHP_EOL . "<hr>";
-    }
+        $firestore = new FirestoreClient([
+          'projectId' => $this->project,
+          'keyFilePath' =>  $this->fileKey,
+        ]);
+        $collection = $firestore->collection( $collection_name );
+        $documents = $collection->listDocuments();
+        foreach ($documents as $document) {
+            echo $document->id() . PHP_EOL . "<hr>";
+            echo $document->name() . PHP_EOL . "<hr>";
+        }
 
   }
 

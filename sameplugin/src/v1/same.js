@@ -8,7 +8,7 @@ var same_domain = "https://plugin.sameapp.net";
 var same_id_extension = "eakfjnpihbkoohjbelkfjcdlkdhfeadb";
 
 function sameGetIdMeeting() {
-      return "YbrhZ97glIkLAruzG7xk";
+      return "7EQPmfmJD5eahPCLNxwV";
 }
 function sameGetLanguage() {
       return "EN";
@@ -46,6 +46,7 @@ Quick commands: \
 <button id="same_function_rapid_mak_button" class="same_buttom_img">Make an appointment</button> \
 <button id="same_function_rapid_question_button" class="same_buttom_img">Question?</button> \
 <button id="same_function_rapid_rtc_button" class="same_buttom_img">Remember to call</button> \
+<button id="same_function_rapid_u_links_button" class="same_buttom_img">Useful links</button> \
 <button id="same_function_rapid_button">...</button> \
 --- : --- \
 </div>\
@@ -57,6 +58,8 @@ var same_panel_data_meeting = '\
 <button id="same_function_participant_list_button" class="same_buttom_img">Participant list</button> \
 <button id="same_function_meeting_attachments_button" class="same_buttom_img">Attachments</button> \
 <button id="same_function_meeting_data_button" class="same_buttom_img">Summary</button> \
+<button id="same_function_screenshot_button" class="same_buttom_img">List screenshot</button> \
+<button id="same_function_video_button" class="same_buttom_img">List video</button> \
 </div>\
 ';
 
@@ -414,6 +417,10 @@ function sameRapidQuestion() {
 function sameRapidRtc() {
       sameRapidCommand(1,"Remember to call","sameRapidCommand",sameACapoCharacter);
 }
+function sameRapidUlinks() {
+      sameRapidCommand(1,"Useful links","sameRapidCommand",sameACapoCharacter);
+}
+
 function sameRapidCommand(time, value, type, start ) {
 
       if (sameFlagInitNote==false) {
@@ -448,7 +455,7 @@ function sameRapidCommand(time, value, type, start ) {
 /****** PANEL FUNCTION ALL MEETING ************************************************/
 
 function sameAllMeetingCalendar( value ) {
-    sameOpenWindowCommon( "https://sales-66641.firebaseapp.com/main/home" );
+    sameOpenWindowCommon( "https://my.sameapp.net/" );
 }
 
 /****** PANEL FUNCTION COMMON ************************************************/
@@ -466,6 +473,17 @@ function sameReplaceCharacters( value ) {
 function sameAddValueInNote( value ){
     sameRapidCommand( 0, this.getAttribute('data-value') , this.getAttribute('data-type'), " ");
 }
+/* funzione per cambiare il check dei checkbox */
+function sameAddValueCheck( value ){
+    var checked = 0;
+    if (this.checked) { checked = 1; }
+    var data = new FormData();
+    data.append('id', this.id);
+    data.append('checked', checked );
+    data.append('idmeeting', sameGetIdMeeting());
+    samePostAPICommon( this.getAttribute('data-url') , data);
+}
+
 /* analisi e creazione dei blocchi per la sezione "data meeting" */
 function sameCommonBlockApi( value, type ) {
       var myArr = JSON.parse(value);
@@ -478,13 +496,13 @@ function sameCommonBlockApi( value, type ) {
       }
       for(i = 0; i < myItems.length; i++) {
         if (myItems[i].type == 'checkbox') {
-            if (myItems[i].value == '1') { var checked = "checked"; } else { var checked = ""; }
-            out += "<input data-url='" + myArr.apiupdate + "' type='checkbox' " + checked + " id='" + myItems[i].id + "'>";
+            if (myItems[i].checked == '1') { var checked = "checked"; } else { var checked = ""; }
+            out += "<input class='sameAddValueCheck' data-url='" + myArr.apiupdate + "' type='checkbox' " + checked + " id='" + myItems[i].id + "'>";
         }
         if (myItems[i].type == 'link') {
-            out += '<a href="' + myItems[i].value + '" target="_blank">' + myItems[i].description + ": " + myItems[i].value + '</a>';
+            out += '<a href="' + myItems[i].value + '" target="_blank">' + myItems[i].value + '</a>';
         } else {
-            out += myItems[i].description + ": " + myItems[i].value;
+            out += myItems[i].value;
         }
         out += ' <button data-object="' + myItems[i].type + '" data-type="' + type + '" data-value="' + sameReplaceCharacters( myItems[i].value ) + '" class="sameAddValueInNote same_resize_small_img same_icon_style" title="Add note"></button>';
         out += "<br>";
@@ -505,7 +523,8 @@ function sameCommonBlockApi( value, type ) {
         out = '<div style="float:left;" id="same_data_meeting_body">' + title + out + '</div>';
         document.getElementById("same_common").innerHTML = escapeHTMLPolicy.createHTML(out);
       }
-      sameClickCommonClass( "sameAddValueInNote" , sameAddValueInNote );
+      sameClickCommonClass( "sameAddValueInNote" , sameAddValueInNote , "click" );
+      sameClickCommonClass( "sameAddValueCheck" , sameAddValueCheck , "click" );
       sameChangePanelCommon();
 }
 
@@ -523,7 +542,7 @@ function samePostAPI(value,action) {
       if (value==="") {
           console.log("Vuoto: " + action + " __ " + value);
       } else {
-          console.log("samePostAPI");
+          // console.log("samePostAPI");
           var data = new FormData();
           data.append('value', value);
           data.append('action', action);
@@ -567,11 +586,12 @@ function sameClickCommon( id , name_funcition ) {
       } catch (error) {
       }
 }
-function sameClickCommonClass( id , name_funcition ) {
+function sameClickCommonClass( id , name_funcition, action ) {
     var userSelection =  document.getElementsByClassName(id); //.addEventListener("click", name_funcition);
     for(var i = 0; i < userSelection.length; i++) {
       (function(index) {
-        userSelection[index].addEventListener("click", name_funcition);
+        console.log(index);
+        userSelection[index].addEventListener( action , name_funcition);
       })(i);
     }
 }
@@ -592,7 +612,7 @@ function sameFunctionOpenTemplate() {
     sameFunctionOpenTemplateCommon( init );
 }
 function sameFunctionOpenTemplateCommon( init ) {
-    sameFunctionOpenCommon(same_domain + "/v1/gettemplate.php?init=" + init);
+    sameFunctionOpenCommon(same_domain + "/v1/gettemplate.php?idmeeting=" + sameGetIdMeeting() + "&init=" + init);
 }
 
 /****** PANEL FUNCTION EDIT ************************************************/
@@ -605,7 +625,7 @@ function sameFunctionOpenReport() {
     } else {
       samePostAPINote();
     }
-    sameFunctionOpenCommon(same_domain + "/v1/getreport.php");
+    sameFunctionOpenCommon(same_domain + "/v1/getreport.php?idmeeting=" + sameGetIdMeeting() );
 }
 function sameFunctionOpenCommon(url) {
 
@@ -721,6 +741,8 @@ function initSame() {
   sameClickCommon( "same_function_rapid_mak_button" , sameRapidMak );
   sameClickCommon( "same_function_rapid_question_button" , sameRapidQuestion );
   sameClickCommon( "same_function_rapid_rtc_button" , sameRapidRtc );
+  sameClickCommon( "same_function_rapid_u_links_button" , sameRapidUlinks);
+
   sameClickCommon( "same_function_rapid_poi_short_button" , sameRapidPoi );
   sameClickCommon( "same_function_rapid_mak_short_button" , sameRapidMak );
   sameClickCommon( "same_function_rapid_question_short_button" , sameRapidQuestion );
