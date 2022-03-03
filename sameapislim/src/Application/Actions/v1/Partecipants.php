@@ -38,9 +38,40 @@ class Partecipants
 
 
   public function insert( Request $request, Response $response, $args )  {
-    $fireStore = new FireStore();
-    $fireStore->addDocument( "action", $this->setDocument( $request ) );
-    return json_decode( '{"state":"200"}', true);
+      $fireStore = new FireStore();
+      $document = $this->setDocumentAttendees( $request );
+      // Prendo tutto l'elenco dei attendees
+      $data = $fireStore->getDocument( $this->collection_name, $document["idmeeting"] ) ;
+      // Creo nuovo utente
+      $attendeeNew = [
+          "image" => "",
+          "name" => $document["value"],
+          "checked" => "1",
+      ];
+      // Creo l'elenco dei attendees con il checked aggioranto
+      $attendees = $this->getAttendeesUpdate($data,99999,1,$attendeeNew,null);
+      // update tuttu l'elenco
+      $temp = [
+          ['path' => 'attendees', 'value' => $attendees]
+      ];
+      $fireStore->updateDocument( $this->collection_name, $document["idmeeting"], $temp);
+      return json_decode( '{"state":"200"}', true);
+  }
+
+
+  public function delete( Request $request, Response $response, $args )  {
+      $fireStore = new FireStore();
+      $document = $this->setDocumentAttendees( $request );
+      // Prendo tutto l'elenco dei attendees
+      $data = $fireStore->getDocument( $this->collection_name, $document["idmeeting"] ) ;
+      // Creo l'elenco dei attendees con il checked aggioranto
+      $attendees = $this->getAttendeesUpdate($data,99999,1,null, $document["id"] );
+      // update tuttu l'elenco
+      $temp = [
+          ['path' => 'attendees', 'value' => $attendees]
+      ];
+      $fireStore->updateDocument( $this->collection_name, $document["idmeeting"], $temp);
+      return json_decode( '{"state":"200"}', true);
   }
 
 
@@ -57,7 +88,7 @@ class Partecipants
           // Prendo tutto l'elenco dei attendees
           $data = $fireStore->getDocument( $this->collection_name, $document["idmeeting"] ) ;
           // Creo l'elenco dei attendees con il checked aggioranto
-          $attendees = $this->getAttendeesUpdate($data,$document["id"],$document["value"]);
+          $attendees = $this->getAttendeesUpdate($data,$document["id"],$document["value"],null,null);
 
           // Update per idmeeting gli attendees aggiornati
           $temp = [
@@ -74,7 +105,7 @@ class Partecipants
       $requestArrayParam = $request->getParsedBody();
       $idmeeting = "";
       $id = "";
-      $checked = "";
+      $value = "";
       $user = "";
       if (isset($requestArrayParam["idmeeting"])) {
           $idmeeting = $requestArrayParam["idmeeting"];
@@ -82,8 +113,13 @@ class Partecipants
       if (isset($requestArrayParam["id"])) {
           $id = $requestArrayParam["id"];
       }
+      if (isset($requestArrayParam["value"])) {
+          $value = $requestArrayParam["value"];
+      }
       if (isset($requestArrayParam["checked"])) {
-          $checked = $requestArrayParam["checked"];
+          $value = $requestArrayParam["checked"];
+      } else if (isset($requestArrayParam["value"])) {
+          $value = $requestArrayParam["value"];
       }
       if (isset($requestArrayParam["second"])) {
           $second = $requestArrayParam["second"];
@@ -98,10 +134,10 @@ class Partecipants
           "idmeeting" => $idmeeting,
           "id" => $id,
           "action" => $this->action_attendees_check,
-          "value" => $checked,
+          "value" => $value,
           "second" => $second,
           "secondmanual" => $secondmanual,
-          "user" => $user, 
+          "user" => $user,
           "date" => date("Y-m-d H:i:s"),
       );
   }
@@ -131,30 +167,42 @@ class Partecipants
       return $attendees;
   }
 
-  public function getAttendeesUpdate($data, $id, $checked)  {
+  public function getAttendeesUpdate($data, $id, $checked, $attendeeNew, $attendeeDelete )  {
       $checked_master = $checked;
       $attendees = array();
       $i = 0;
+
       foreach ($data["attendees"] as $attendee) {
           // Controllo di modiifcare solo il attendees corretto
-          if ($i != $id) {
-              // Se non ho il campo checked lo creo
-              if ($attendee["checked"]=="") {
-                  $checked = 0;
+          if ( ($i!=$attendeeDelete) || ($attendeeDelete==null) ) {
+
+              if ($i != $id) {
+                  // Se non ho il campo checked lo creo
+                  if ($attendee["checked"]=="") {
+                      $checked = 0;
+                  } else {
+                      $checked = $attendee["checked"];
+                  }
               } else {
-                  $checked = $attendee["checked"];
+                  // assegno il valore di checked dal frontend
+                  $checked = $checked_master;
               }
+              $attendee = [
+                  "image" => $attendee["image"],
+                  "name" => $attendee["name"],
+                  "checked" => $checked,
+              ];
+              array_push($attendees,$attendee);
+              $i++;
+
           } else {
-              // assegno il valore di checked dal frontend
-              $checked = $checked_master;
+
+              $attendeeDelete = null;
+              
           }
-          $attendee = [
-              "image" => $attendee["image"],
-              "name" => $attendee["name"],
-              "checked" => $checked,
-          ];
-          array_push($attendees,$attendee);
-          $i++;
+      }
+      if ($attendeeNew!=null) {
+          array_push($attendees,$attendeeNew);
       }
       return $attendees;
   }

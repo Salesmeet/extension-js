@@ -103,7 +103,7 @@ return function (App $app) {
     // update cambio valore dei checkbox
     $app->post('/public/v1/partecipants/insert', function (Request $request, Response $response, $args) {
         $partecipants = new Partecipants();
-        return setResponse($response, $partecipants->add($request, $response, $args) );
+        return setResponse($response, $partecipants->insert($request, $response, $args) );
     });
     $app->post('/public/v1/partecipants/delete', function (Request $request, Response $response, $args) {
         $partecipants = new Partecipants();
@@ -127,9 +127,16 @@ return function (App $app) {
 
 
           echo "<hr>ADD partecipants<br>";
-          echo '<form action="https://api.sameapp.net/public/v1/partecipants/add" method="post">';
+          echo '<form action="https://api.sameapp.net/public/v1/partecipants/insert" method="post">';
             echo '<input name="idmeeting" id="idmeeting" value="1">';
             echo '<input name="value" id="value" value="1">';
+            echo '<input type="submit">';
+          echo '</form>';
+
+          echo "<hr>Delete partecipants<br>";
+          echo '<form action="https://api.sameapp.net/public/v1/partecipants/delete" method="post">';
+            echo '<input name="idmeeting" id="idmeeting" value="1">';
+            echo '<input name="id" id="id" value="1">';
             echo '<input type="submit">';
           echo '</form>';
 

@@ -13,13 +13,17 @@ $lang = "";
 if (isset($_GET['lang'])) {
     $lang = $_GET['lang'];
 }
+$user = "";
+if (isset($_GET['user'])) {
+    $user = $_GET['user'];
+}
 
 $same_domain_api = "https://api.sameapp.net/public/v1/";
 $url = "";
 if ($type=="agenda") {
-    $url = $same_domain_api . "agenda/" . $idmeeting . "/" . $lang;
+    $url = $same_domain_api . "agenda/" . $idmeeting . "/" . $lang . "/" . $user;
 } else if ($type=="partecipant") {
-    $url = $same_domain_api . "partecipants/" . $idmeeting . "/" . $lang;
+    $url = $same_domain_api . "partecipants/" . $idmeeting . "/" . $lang . "/" . $user;;
 }
 ?>
 <!DOCTYPE html>
@@ -38,7 +42,7 @@ if ($type=="agenda") {
      <hr>
      <button onclick="exit();" id="" class="same_icon_style" title="">Close</button>
   </div>
-  <div style="float: right; width: 93%;">
+  <div style="float: left; width: 90%; padding-left: 20px;">
 
     <div id="spinner" style="position: absolute;z-index: 99;left: 48%;top: 40%;">
       <svg  width="970" height="70">
@@ -50,6 +54,7 @@ if ($type=="agenda") {
         <input name="value" id="value" value="1">
         <input type="submit" value="Add item">
       </form>
+      <br><br>
     </div>
     <div id="same_common"></div>
 
@@ -94,7 +99,7 @@ if ($type=="agenda") {
           for(i = 0; i < myItems.length; i++) {
 
                   out += '<button> Delete </button> ';
-                  out += myItems[i].description + myItems[i].value;
+                  out += myItems[i].description + myItems[i].value + " - " + myItems[i].checked;
                   out += "<hr>";
 
           }
