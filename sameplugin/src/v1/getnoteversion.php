@@ -14,14 +14,26 @@ if (isset($_GET['user'])) {
     $user = $_GET['user'];
 }
 
+$idnote = "";
+if (isset($_GET['idnote'])) {
+    $idnote = $_GET['idnote'];
+}
+
+
 $same_domain_api = "https://api.sameapp.net/public/v1/";
-$url = "";
+$urlAll = $same_domain_api . "note/all/" . $idmeeting . "/" . $lang . "/" . $user;
+
+$urlLast = $same_domain_api . "note/" . $idmeeting;
+if ($idnote !="") {
+    $urlLast = $same_domain_api . "note/id/" . $idnote;
+}
 
 ?>
+
 <!DOCTYPE html>
 <html>
 <head>
-
+  <script src="https://cdn.tiny.cloud/1/q8bxw8wqcr049zoy13p15fi50rgnjqfakkx9qrqnzmgt3wy4/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
 </head>
 <body>
 
@@ -30,6 +42,9 @@ $url = "";
      <br><br>
      List note version
      <br><br>
+     <div id="same_list" style="height: 400px; overflow: auto;"></div>
+     <hr>
+     <button onclick="save();" id="" class="same_icon_style" title="">Save</button>
      <hr>
      <button onclick="exit();" id="" class="same_icon_style" title="">Close</button>
   </div>
@@ -40,42 +55,11 @@ $url = "";
            <image xlink:href="https://plugin.sameapp.net/v1/img/spinner.svg" src="https://plugin.sameapp.net/v1/img/spinner.svg"/>
       </svg>
     </div>
-    <div id="same_common"></div>
+
+    <textarea id="same_note_text"></textarea>
 
   </div>
   <script>
-
-      function encodeHTML(str){
-          return str.replace(/([\u00A0-\u9999<>&])(.|$)/g, function(full, char, next) {
-            if(char !== '&' || next !== '#'){
-              if(/[\u00A0-\u9999<>&]/.test(next))
-                next = '&#' + next.charCodeAt(0) + ';';
-
-              return '&#' + char.charCodeAt(0) + ';' + next;
-            }
-
-            return full;
-          });
-      }
-
-    function samePostAPICommon(url, value, id, email) {
-
-          var data = new FormData();
-          data.append('value', value );
-          data.append('email', email );
-          data.append('id', id );
-          data.append('idmeeting', "<?php echo $idmeeting; ?>");
-          data.append('user', "<?php echo $user; ?>");
-          var xhr = new XMLHttpRequest();
-          xhr.open('POST', url, true);
-          xhr.onload = function () {
-              // console.log(this.responseText);
-          };
-          try {
-            xhr.send(data);
-          } catch (error) {
-          }
-    }
 
     escapeHTMLPolicy = trustedTypes.createPolicy("forceInner", {
         createHTML: (to_escape) => to_escape
@@ -84,53 +68,84 @@ $url = "";
           var xhttp = new XMLHttpRequest();
           xhttp.onreadystatechange = function() {
                if (this.readyState == 4 && this.status == 200) {
-                  // var myArr = JSON.parse(this.responseText);
                   sameCommonBlockApi(this.responseText);
+               }
+          };
+          xhttp.open("GET", "<?php echo $urlAll; ?>", true);
+          xhttp.send();
+    }
+    function sameGetAPILast() {
+          var xhttp = new XMLHttpRequest();
+          xhttp.onreadystatechange = function() {
+               if (this.readyState == 4 && this.status == 200) {
+                  var myArr = JSON.parse(this.responseText);
+                  sameWrite( myArr["note"] )
                   document.getElementById("spinner").style.display = "none";
                }
           };
-          xhttp.open("GET", "<?php echo $url; ?>", true);
+          xhttp.open("GET", "<?php echo $urlLast; ?>", true);
           xhttp.send();
     }
 
+    function save() {
+      window.parent.postMessage({
+          'func': 'sameSaveParentNote',
+          'message': tinymce.activeEditor.getContent()
+      }, "*");
+    }
     function exit() {
       window.parent.postMessage({
-          'func': '<?php echo $sameMessage; ?>',
+          'func': 'sameTemplateCloseParent',
           'message': ""
       }, "*");
     }
     function sameCommonBlockApi( value ) {
           // console.log( value );
           var myArr = JSON.parse(value);
+          // console.log(myArr);
+          myArr.sort(function (a, b) {
+            return a.date.localeCompare(b.date) || b.price - a.price;
+        });
 
-          var myItems = myArr.items;
           var out = "";
-          var i;
-          var title = "";
-
-          if (myArr.title!="") {
-              title ='<b>' + myArr.title + '</b><br>';
+          for(i = 0; i < myArr.length; i++) {
+                out += '<a href="?idmeeting=<?php echo $idmeeting ?>&lang=<?php echo $lang ?>&user=<?php echo $user ?>&idnote=' +  myArr[i].id + '">' + myArr[i].date + '</a>';
+                out += "<hr>";
+                if (i==0) {
+                      myArr[i].id
+                }
+                /*
+                console.log(myArr[i].date);
+                console.log( new Date(myArr[i].date) );
+                console.log("__________________");
+                */
           }
-          document.getElementById("same_title").innerHTML = escapeHTMLPolicy.createHTML(title);
-
-
-          for(i = 0; i < myItems.length; i++) {
-
-                  var enValue = encodeHTML(myItems[i].value);
-                  out += '<img style="width:14px; cursor: pointer;" src="https://plugin.sameapp.net/v1/img/delete.png" onclick="javascript:deleteValue(' + i +  ',\'' + enValue + '\')">  ';
-                  if (myItems[i].checked==1) {
-                      out += "<b>" + myItems[i].value + "</b>";
-                  } else {
-                      out += myItems[i].value;
-                  }
-                  out += "<hr>";
-
-          }
-          document.getElementById("same_common").innerHTML = escapeHTMLPolicy.createHTML(out);
+          document.getElementById("same_list").innerHTML = escapeHTMLPolicy.createHTML(out);
     }
+
+    function sameWrite( message ) {
+      // console.log("sameWrite");
+      tinymce.activeEditor.setContent( message , {format: 'html'});
+    }
+    function loadTinyMCE() {
+        tinymce.init({
+          selector: 'textarea',
+          menubar: false,
+          statusbar: false,
+          height: 135,
+          plugins: 'link table lists checklist',
+          toolbar: 'undo redo | bold italic underline strikethrough | fontsizeselect | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist checklist | forecolor backcolor removeformat | link | table ',
+          height: window.innerHeight,
+          statusbar: false,
+          tinycomments_mode: 'embedded',
+          tinycomments_author: '',
+        });
+    }
+    loadTinyMCE();
 
     window.onload = function() {
       sameGetAPI();
+      sameGetAPILast();
     };
 
   </script>

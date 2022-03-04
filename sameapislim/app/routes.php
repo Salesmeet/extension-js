@@ -65,6 +65,11 @@ return function (App $app) {
         $note = new Note();
         return setResponse($response, $note->getAll($request, $response, $args) );
     });
+    // get  nota inserita per ID
+    $app->get('/public/v1/note/id/{idnote}', function (Request $request, Response $response, $args) {
+        $note = new Note();
+        return setResponse($response, $note->getById($request, $response, $args) );
+    });
 
     // Get dati generici del meeting
     $app->get('/public/v1/meeting/init/{idmeeting}/{lang}/{user}', function (Request $request, Response $response, $args) {

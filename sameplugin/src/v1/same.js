@@ -807,6 +807,7 @@ function sameTemplateChoise(message) {
     samePostAPI(message,"sameTemplateChoise");
 }
 function sameSaveParentNote(message) {
+    sameChangePanelNote();
     sameSaveParentCommon(message);
 }
 function sameTemplateCloseParent(message) {
@@ -821,8 +822,6 @@ function sameTemplateCloseParentGetParticipantList(message) {
     sameGetParticipantList();
     sameFunctionEditClose();
 }
-
-
 function sameTemplateSaveParent(message) {
     sameSaveParentCommon(message);
 }

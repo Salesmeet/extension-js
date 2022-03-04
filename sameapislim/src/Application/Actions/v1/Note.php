@@ -18,6 +18,18 @@ class Note
     public function __construct() {
     }
 
+    public function getById( Request $request, Response $response, $args )  {
+
+        if (isset($args["idnote"])) {
+            $fireStore = new FireStore();
+            $data = $fireStore->getDocument( $this->collection_name, $args["idnote"] ) ;
+            return [
+                "note" => $data["value"]
+            ];
+        }
+        return json_decode( '{"state":"400","value":"not record"}', true);
+    }
+
     public function getLast( Request $request, Response $response, $args )  {
         if (isset($args["idmeeting"])) {
             $fireStore = new FireStore();
@@ -37,10 +49,9 @@ class Note
 
           $notes = array();
           foreach ($data as $document) {
-
               $temp = [
                   "id" => $document->id(),
-                  "name" => $document->data()["date"],
+                  "date" => $document->data()["date"],
               ];
               array_push($notes,$temp);
               /*
