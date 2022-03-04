@@ -5,10 +5,6 @@ $idmeeting = "";
 if (isset($_GET['idmeeting'])) {
     $idmeeting = $_GET['idmeeting'];
 }
-$type = "";
-if (isset($_GET['type'])) {
-    $type = $_GET['type'];
-}
 $lang = "";
 if (isset($_GET['lang'])) {
     $lang = $_GET['lang'];
@@ -20,30 +16,7 @@ if (isset($_GET['user'])) {
 
 $same_domain_api = "https://api.sameapp.net/public/v1/";
 $url = "";
-$urlInsert = "";
-$urlDelete = "";
-$sameAddValueField_placeholder = "";
-$sameAddEmail_type = "";
-$sameMessage = "";
 
-if ($type=="agenda") {
-    $url = $same_domain_api . "agenda/" . $idmeeting . "/" . $lang . "/" . $user;
-    $urlInsert = $same_domain_api . "agenda/insert";
-    $urlDelete = $same_domain_api . "agenda/delete";
-    $sameAddValueField_placeholder = "Value";
-    $sameAddEmail_type = "hidden";
-    $sameMessage = "sameTemplateCloseParentGetAgenda";
-
-} else if ($type=="partecipant") {
-
-    $url = $same_domain_api . "partecipants/" . $idmeeting . "/" . $lang . "/" . $user;;
-    $urlInsert = $same_domain_api . "partecipants/insert";
-    $urlDelete = $same_domain_api . "partecipants/delete";
-    $sameAddValueField_placeholder = "Name";
-    $sameAddEmail_type = "text";
-    $sameMessage = "sameTemplateCloseParentGetParticipantList";
-
-}
 ?>
 <!DOCTYPE html>
 <html>
@@ -55,12 +28,7 @@ if ($type=="agenda") {
   <div style="float: left; width: 7%; text-align: center;">
      <img src="https://plugin.sameapp.net/v1/img/logo.png" style="width: 70px;">
      <br><br>
-     Edit meetings
-     <br><br>
-     <hr>
-     <button onclick="javascript:changeType('agenda');" id="" class="same_icon_style" title="">Agenda</button>
-     <br><br>
-     <button onclick="javascript:changeType('partecipant');" id="" class="same_icon_style" title="">Partecipants</button>
+     List note version
      <br><br>
      <hr>
      <button onclick="exit();" id="" class="same_icon_style" title="">Close</button>
@@ -72,26 +40,10 @@ if ($type=="agenda") {
            <image xlink:href="https://plugin.sameapp.net/v1/img/spinner.svg" src="https://plugin.sameapp.net/v1/img/spinner.svg"/>
       </svg>
     </div>
-    <div id="same_title"></div>
-    <br>
-    <div id="same_add">
-      <form action="" id="sameAddValueForm">
-        <input name="sameAddValueField" id="sameAddValueField" value="" placeholder="<?php echo $sameAddValueField_placeholder; ?>" >
-        <input name="sameAddEmail" id="sameAddEmail" value="" type="<?php echo $sameAddEmail_type; ?>" placeholder="Email">
-        <input type="button" value="Add new" onclick="javascript:addValue()">
-      </form>
-      <br><br>
-    </div>
     <div id="same_common"></div>
 
   </div>
   <script>
-
-
-      function changeType(type){
-          window.location.href = "https://plugin.sameapp.net/v1/getmeeting.php?idmeeting=<?php echo $idmeeting ?>&type=" + type + "&lang=<?php echo $lang ?>&user=<?php echo $user ?>";
-
-      }
 
       function encodeHTML(str){
           return str.replace(/([\u00A0-\u9999<>&])(.|$)/g, function(full, char, next) {
@@ -106,21 +58,6 @@ if ($type=="agenda") {
           });
       }
 
-    function addValue(){
-          document.getElementById("spinner").style.display = "block";
-          var value = document.getElementById("sameAddValueField").value;
-          var email = document.getElementById("sameAddEmail").value;
-          samePostAPICommon( "<?php echo $urlInsert; ?>" , value , "", email);
-          document.getElementById("sameAddValueField").value = "";
-          setTimeout(sameGetAPI, 2000);
-    }
-
-    function deleteValue( id , value ){
-          document.getElementById("spinner").style.display = "block";
-          samePostAPICommon( "<?php echo $urlDelete; ?>" , value , id, "");
-          setTimeout(sameGetAPI, 2000);
-
-    }
     function samePostAPICommon(url, value, id, email) {
 
           var data = new FormData();

@@ -5,19 +5,42 @@ namespace App\Application\Actions\v1;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use App\Application\Actions\FireStore;
-use MrShan0\PHPFirestore\FirestoreDocument;
 
 class Meeting
 {
 
+  private $collection_name = "meetings";
+
   public function __construct() {
+  }
+
+  public function init( Request $request, Response $response, $args )  {
+
+      if (isset($args["idmeeting"])) {
+
+          $idmeeting = $args["idmeeting"];
+          $user = $args["user"];
+          $fireStore = new FireStore();
+          $data = $fireStore->getDocument( $this->collection_name, $idmeeting ) ;
+          if ($data["init"]=="") {
+              $temp = [
+                  ['path' => 'init', 'value' => date("Y-m-d H:i:s")]
+              ];
+              $fireStore->updateDocument( $this->collection_name, $idmeeting, $temp);
+              return json_decode( '{"state":"200","init":""}', true);
+          } else {
+              return json_decode( '{"state":"200","init":"' . $data["init"] . '"}', true);
+          }
+      }
+      return json_decode( '{"state":"200","init":""}', true);
+
   }
 
   public function get( Request $request, Response $response, $args )  {
 
     if (isset($args["idmeeting"])) {
         $fireStore = new FireStore();
-        $data = $fireStore->getDocument( "meetings", $args["idmeeting"] ) ;
+        $data = $fireStore->getDocument( $this->collection_name, $args["idmeeting"] ) ;
         return [
             "title" => "Summary of meeting data",
             "edit" => "",

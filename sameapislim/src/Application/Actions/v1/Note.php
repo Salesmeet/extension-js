@@ -32,10 +32,24 @@ class Note
     public function getAll( Request $request, Response $response, $args )  {
       $data = $this->setDocument( $request );
       if (isset($args["idmeeting"])) {
-          echo $args["idmeeting"];
           $fireStore = new FireStore();
           $data = $fireStore->getDocumentsByQuery( $this->collection_name, "idmeeting", "==" , $args["idmeeting"]);
-          // print_r($data);
+
+          $notes = array();
+          foreach ($data as $document) {
+
+              $temp = [
+                  "id" => $document->id(),
+                  "name" => $document->data()["date"],
+              ];
+              array_push($notes,$temp);
+              /*
+              $data = $document->data();
+              echo $document->id();
+              echo $data["date"];
+              */
+          }
+          return $notes;
       }
       return json_decode( '{"state":"200","value":"not add"}', true);
     }
@@ -75,7 +89,7 @@ class Note
         return array(
             "idmeeting" => $idmeeting,
             "value" => $value,
-            "user" => $user,   
+            "user" => $user,
             "date" => date("Y-m-d H:i:s"),
         );
     }

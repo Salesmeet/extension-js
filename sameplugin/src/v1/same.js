@@ -98,7 +98,13 @@ var same_panel_edit_external = '<div style="display:none;" id="same_panel_edit_e
 <iframe src="" id="same_panel_edit_external_iframe"></iframe>\
 </div>';
 
-var same_panel_operation = '<div id="same_panel" class="same_panel_style same_panel_style_border">' + same_panel_shortcut + same_panel_note + same_panel_edit_external + same_panel_setting + same_panel_data_meeting + same_panel_all_meeting + same_panel_common + '</div>';
+var same_panel_init_after_note = '<div style="display:none;" id="same_panel_init_after_note">\
+Meeting already active. There are saved notes.<br><br> \
+Do you want to proceed with the recovery? <br><br>\
+<button id="same_function_open_note_version_button">Open list version</button>\
+</div>';
+
+var same_panel_operation = '<div id="same_panel" class="same_panel_style same_panel_style_border">' + same_panel_shortcut + same_panel_note + same_panel_edit_external + same_panel_setting + same_panel_data_meeting + same_panel_all_meeting + same_panel_common + same_panel_init_after_note + '</div>';
 
 var same_panel_info = '<div id="same_info" class="same_panel_style">\
 <button id="same_function_stop_hour_button" style="display:none;">Stop timer</button>\
@@ -125,13 +131,7 @@ function sameInit() {
     // same_elemDiv.style = "background: #FFFFFF;bottom: 110px;position: absolute;width: 150px;height: 75px;z-index: 99990;border: 1px solid #000";
     document.body.appendChild(same_elemDiv);
     sameClickCommon( "same_init_img" , sameInitHidden );
-    // sameClickCommon( "same_init_img" , sameOpenExtension );
     sameDragElement(document.getElementById("same_init"));
-    sameOpenExtension();
-}
-function sameOpenExtension() {
-    console.log("sameOpenExtension");
-
 }
 
 /* Nasconde immagine SAME e apre il pannello di lavoro */
@@ -150,9 +150,27 @@ function sameInitPanel() {
     same_elemDiv.id = "same_panel_base";
     same_elemDiv.innerHTML = escapeHTMLPolicy.createHTML(same_panel_recording + same_panel_tools + same_panel_operation + same_panel_info);
     document.body.appendChild(same_elemDiv);
+
+    // init per l'eventuale ritorno delle note ...
+    sameGetAPI(same_domain_api + "/public/v1/meeting/init/" ,"sameGetAttachments", "sameInitAfter");
+
     // const myTimeout = setTimeout(sameChangePanelDataMeeting, 500);
-    const myTimeout = setTimeout(sameGetDataMeeting, 500);
+    // const myTimeout = setTimeout(sameGetDataMeeting, 500);
 }
+
+/******* DA QUI CORRADO ******/
+function sameInitAfter( data ) {
+    var myArr = JSON.parse(data);
+    if (myArr.init!="") {
+        console.log("non init");
+        sameDisplayCommon( "same_panel_init_after_note" , "block" );
+    } else {
+        console.log("init");
+        myTimeout = setTimeout(sameGetDataMeeting, 200);
+    }
+}
+
+
 /* funzioni per rendere l'immagine SAME draggabile */
 function sameDragElement(elmnt) {
   var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
@@ -360,6 +378,9 @@ function sameChangePanel(note,shortcut,setting,common,datameeting,allmeeting) {
       sameSelectedButtoCommon( "same_function_data_meeting_all_button" , allmeeting );
       sameDisplayCommon("same_all_meeting",allmeeting);
 
+      // pannello iniziale recupero note ... Sempre in none.
+      sameDisplayCommon("same_panel_init_after_note","none");
+
       sameDisplayCommon("same_common",common);
 
 }
@@ -457,10 +478,12 @@ function sameAddValueCheck( value ){
     var data = new FormData();
     data.append('id', this.id);
     data.append('checked', checked );
+    data.append('value', checked );
     data.append('idmeeting', sameGetIdMeeting());
     data.append('second', sameDefaulTotalSeconds);
     data.append('secondmanual', same_totalSeconds);
     data.append('user', sameGetUser());
+    data.append('action', "");
     samePostAPICommon( this.getAttribute('data-url') , data);
 }
 
@@ -512,11 +535,15 @@ function sameCommonBlockApi( value, type ) {
       sameChangePanelCommon();
 }
 
-function sameGetAPI(url,type) {
+function sameGetAPI(url,type,action) {
       var xhttp = new XMLHttpRequest();
       xhttp.onreadystatechange = function() {
            if (this.readyState == 4 && this.status == 200) {
-               sameCommonBlockApi( this.responseText, type );
+               if (action=="sameInitAfter") {
+                 sameInitAfter(this.responseText);
+               } else {
+                 sameCommonBlockApi( this.responseText, type );
+               }
            }
       };
       xhttp.open("GET", url + sameGetIdMeeting() + "/" + sameGetLanguage() + "/" + sameGetUser() , true);
@@ -561,6 +588,7 @@ function sameOpenWindowCommon( value ) {
     window.open(value);
 }
 function sameDisplayCommon( id , value ) {
+  console.log("sameDisplayCommon:" + id + "__" + value);
   document.getElementById(id).style.display = value;
 }
 function sameClickCommon( id , name_funcition ) {
@@ -593,6 +621,9 @@ function sameFunctionOpenTemplateCommon( init ) {
 function sameFunctionEditOpen() {
     var type = document.getElementById("same_function_edit").getAttribute('data-type')
     sameFunctionOpenCommon(same_domain + "/v1/getmeeting.php?idmeeting=" + sameGetIdMeeting() + "&type=" + type + "&lang=" + sameGetLanguage() + "&user=" + sameGetUser() );
+}
+function sameFunctionOpenNoteVersion() {
+    sameFunctionOpenCommon(same_domain + "/v1/getnoteversion.php?idmeeting=" + sameGetIdMeeting() + "&lang=" + sameGetLanguage() + "&user=" + sameGetUser() );
 }
 function sameFunctionOpenReport() {
     if (sameFlagInitNote==false) {
@@ -627,16 +658,16 @@ function sameFunctionEditClose() {
 /****** PANEL FUNCTION CALL API ************************************************/
 function sameGetParticipantList() {
     // console.log("sameGetParticipantList");
-    sameGetAPI(same_domain_api + "/public/v1/partecipants/" ,"sameGetParticipantList");
+    sameGetAPI(same_domain_api + "/public/v1/partecipants/" ,"sameGetParticipantList", "");
 }
 function sameGetDataMeeting() {
-    sameGetAPI(same_domain_api + "/public/v1/meeting/" ,"sameGetDataMeeting");
+    sameGetAPI(same_domain_api + "/public/v1/meeting/" ,"sameGetDataMeeting", "");
 }
 function sameGetAgenda() {
-    sameGetAPI(same_domain_api + "/public/v1/agenda/" ,"sameGetAgenda");
+    sameGetAPI(same_domain_api + "/public/v1/agenda/" ,"sameGetAgenda", "");
 }
 function sameGetAttachments() {
-    sameGetAPI(same_domain_api + "/public/v1/attachements/" ,"sameGetAttachments");
+    sameGetAPI(same_domain_api + "/public/v1/attachements/" ,"sameGetAttachments", "");
 }
 
 /****** PANEL FUNCTION SETTING ************************************************/
@@ -740,6 +771,7 @@ function initSame() {
   sameClickCommon( "same_function_data_meeting_template_button" , sameFunctionOpenTemplate );
 
   sameClickCommon( "same_screenshot_button" , initScreenshotsSameExension )
+  sameClickCommon( "same_function_open_note_version_button" , sameFunctionOpenNoteVersion )
 
 
   document.getElementById("same_note_text_iframe").addEventListener("mouseout", samePostAPINote);
@@ -780,6 +812,17 @@ function sameSaveParentNote(message) {
 function sameTemplateCloseParent(message) {
     sameFunctionEditClose();
 }
+
+function sameTemplateCloseParentGetAgenda(message) {
+    sameGetAgenda();
+    sameFunctionEditClose();
+}
+function sameTemplateCloseParentGetParticipantList(message) {
+    sameGetParticipantList();
+    sameFunctionEditClose();
+}
+
+
 function sameTemplateSaveParent(message) {
     sameSaveParentCommon(message);
 }

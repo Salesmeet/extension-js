@@ -63,12 +63,6 @@ class FireStore {
 
   public function getDocumentsByQuery( $collection_name , $field, $option , $value ) {
 
-        echo "<hr><hr><hr><hr><hr><hr>";
-        echo $collection_name . "<br>";
-        echo $field . "<br>";
-        echo $option . "<br>";
-        echo $value . "<br>";
-
         $firestore = new FirestoreClient([
           'projectId' => $this->project,
           'keyFilePath' =>  $this->fileKey,
@@ -87,14 +81,19 @@ class FireStore {
         $query = $ref->where($field, $option, $value);
 
         $snapshot = $query->documents();
+        return $snapshot;
+        /*
         foreach ($snapshot as $document) {
             $data = $document->data();
+            return $data;
             // echo "value: " . $document->id();
             echo "<hr>";
             print_r($document->data());
             echo "<hr>";
             echo $data["color"];
         }
+        return null;
+        */
 
   }
 

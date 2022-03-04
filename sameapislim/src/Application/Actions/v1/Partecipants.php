@@ -5,6 +5,7 @@ namespace App\Application\Actions\v1;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use App\Application\Actions\FireStore;
+use App\Application\Actions\v1\Common;
 use MrShan0\PHPFirestore\FirestoreDocument;
 
 class Partecipants
@@ -13,6 +14,8 @@ class Partecipants
   private $collection_name = "meetings";
   private $collection_name_action = "meetings_action";
   private $action_attendees_check = "attendeesChecked";
+  private $action_attendees_delete = "attendeesDelete";
+  private $action_attendees_insert = "attendeesInsert";
 
   public function __construct() {
   }
@@ -39,13 +42,16 @@ class Partecipants
 
   public function insert( Request $request, Response $response, $args )  {
       $fireStore = new FireStore();
-      $document = $this->setDocumentAttendees( $request );
+      $document = $this->setDocumentAttendees( $request, $this->action_attendees_insert);
+      // loggo azione
+      $fireStore->addDocument( $this->collection_name_action, $document );
       // Prendo tutto l'elenco dei attendees
       $data = $fireStore->getDocument( $this->collection_name, $document["idmeeting"] ) ;
       // Creo nuovo utente
       $attendeeNew = [
           "image" => "",
           "name" => $document["value"],
+          "email" => $document["email"],
           "checked" => "1",
       ];
       // Creo l'elenco dei attendees con il checked aggioranto
@@ -61,7 +67,9 @@ class Partecipants
 
   public function delete( Request $request, Response $response, $args )  {
       $fireStore = new FireStore();
-      $document = $this->setDocumentAttendees( $request );
+      $document = $this->setDocumentAttendees( $request, $this->action_attendees_delete);
+      // loggo azione
+      $fireStore->addDocument( $this->collection_name_action, $document );
       // Prendo tutto l'elenco dei attendees
       $data = $fireStore->getDocument( $this->collection_name, $document["idmeeting"] ) ;
       // Creo l'elenco dei attendees con il checked aggioranto
@@ -75,10 +83,9 @@ class Partecipants
   }
 
 
-
   public function check( Request $request, Response $response, $args )  {
 
-      $document = $this->setDocumentAttendees( $request );
+      $document = $this->setDocumentAttendees( $request, $this->action_attendees_check );
       if ($document["idmeeting"]!="") {
 
           // Aggiungo log
@@ -101,112 +108,21 @@ class Partecipants
 
   }
 
-  public function setDocumentAttendees( Request $request )  {
-      $requestArrayParam = $request->getParsedBody();
-      $idmeeting = "";
-      $id = "";
-      $value = "";
-      $user = "";
-      if (isset($requestArrayParam["idmeeting"])) {
-          $idmeeting = $requestArrayParam["idmeeting"];
-      }
-      if (isset($requestArrayParam["id"])) {
-          $id = $requestArrayParam["id"];
-      }
-      if (isset($requestArrayParam["value"])) {
-          $value = $requestArrayParam["value"];
-      }
-      if (isset($requestArrayParam["checked"])) {
-          $value = $requestArrayParam["checked"];
-      } else if (isset($requestArrayParam["value"])) {
-          $value = $requestArrayParam["value"];
-      }
-      if (isset($requestArrayParam["second"])) {
-          $second = $requestArrayParam["second"];
-      }
-      if (isset($requestArrayParam["secondmanual"])) {
-          $secondmanual = $requestArrayParam["secondmanual"];
-      }
-      if (isset($requestArrayParam["user"])) {
-          $user  = $requestArrayParam["user"];
-      }
-      return array(
-          "idmeeting" => $idmeeting,
-          "id" => $id,
-          "action" => $this->action_attendees_check,
-          "value" => $value,
-          "second" => $second,
-          "secondmanual" => $secondmanual,
-          "user" => $user,
-          "date" => date("Y-m-d H:i:s"),
-      );
-  }
 
   public function getAttendees($data)  {
-      $checked_master = $checked;
-      $attendees = array();
-      $i = 0;
-      foreach ($data["attendees"] as $attendee) {
+    $common = new Common();
+    return $common->getMeetingSubset( $data, "attendees" );
+  }
 
-          // Se non ho il campo checked lo creo
-          if ($attendee["checked"]=="") {
-              $checked = 0;
-          } else {
-              $checked = $attendee["checked"];
-          }
-          $attendee = [
-              "id" => $i,
-              "type" => "checkbox",
-              "value" => $attendee["name"],
-              "description" => "",
-              "checked" => $checked,
-          ];
-          array_push($attendees,$attendee);
-          $i++;
-      }
-      return $attendees;
+  public function setDocumentAttendees( Request $request, $action )  {
+      $common = new Common();
+      return $common->setDocument( $request, $action );
   }
 
   public function getAttendeesUpdate($data, $id, $checked, $attendeeNew, $attendeeDelete )  {
-      $checked_master = $checked;
-      $attendees = array();
-      $i = 0;
-
-      foreach ($data["attendees"] as $attendee) {
-          // Controllo di modiifcare solo il attendees corretto
-          if ( ($i!=$attendeeDelete) || ($attendeeDelete==null) ) {
-
-              if ($i != $id) {
-                  // Se non ho il campo checked lo creo
-                  if ($attendee["checked"]=="") {
-                      $checked = 0;
-                  } else {
-                      $checked = $attendee["checked"];
-                  }
-              } else {
-                  // assegno il valore di checked dal frontend
-                  $checked = $checked_master;
-              }
-              $attendee = [
-                  "image" => $attendee["image"],
-                  "name" => $attendee["name"],
-                  "checked" => $checked,
-              ];
-              array_push($attendees,$attendee);
-              $i++;
-
-          } else {
-
-              $attendeeDelete = null;
-              
-          }
-      }
-      if ($attendeeNew!=null) {
-          array_push($attendees,$attendeeNew);
-      }
-      return $attendees;
+      $common = new Common();
+      return $common->getMeetingSubsetUpdate($data, $id, $checked, $attendeeNew, $attendeeDelete, "attendees"  ) ;
   }
-
 
   public function getMockup()  {
 

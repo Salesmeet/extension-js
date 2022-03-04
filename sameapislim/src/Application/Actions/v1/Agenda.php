@@ -13,6 +13,8 @@ class Agenda
   private $collection_name = "meetings";
   private $collection_name_action = "meetings_action";
   private $action_task_check = "tasksChecked";
+  private $action_task_delete = "tasksDelete";
+  private $action_task_insert = "tasksInsert";
 
   public function __construct() {
   }
@@ -35,9 +37,51 @@ class Agenda
 
   }
 
+
+  public function insert( Request $request, Response $response, $args )  {
+
+      $fireStore = new FireStore();
+      $document = $this->setDocumentTask( $request, $this->action_task_insert );
+      // loggo azione
+      $fireStore->addDocument( $this->collection_name_action, $document );
+      // Prendo tutto l'elenco dei attendees
+      $data = $fireStore->getDocument( $this->collection_name, $document["idmeeting"] ) ;
+      // Creo nuovo utente
+      $taskNew = [
+          "image" => "",
+          "name" => $document["value"],
+          "checked" => "1",
+      ];
+      // Creo l'elenco dei attendees con il checked aggioranto
+      $tasks = $this->getTasksUpdate($data,99999,1,$taskNew,null);
+      // update tuttu l'elenco
+      $temp = [
+          ['path' => 'tasks', 'value' => $tasks]
+      ];
+      $fireStore->updateDocument( $this->collection_name, $document["idmeeting"], $temp);
+      return json_decode( '{"state":"200"}', true);
+  }
+
+  public function delete( Request $request, Response $response, $args )  {
+      $fireStore = new FireStore();
+      $document = $this->setDocumentTask( $request , $this->action_task_delete );
+      // loggo azione
+      $fireStore->addDocument( $this->collection_name_action, $document );
+      // Prendo tutto l'elenco dei attendees
+      $data = $fireStore->getDocument( $this->collection_name, $document["idmeeting"] ) ;
+      // Creo l'elenco dei attendees con il checked aggioranto
+      $tasks = $this->getTasksUpdate($data,99999,1,null, $document["id"] );
+      // update tuttu l'elenco
+      $temp = [
+          ['path' => 'tasks', 'value' => $tasks]
+      ];
+      $fireStore->updateDocument( $this->collection_name, $document["idmeeting"], $temp);
+      return json_decode( '{"state":"200"}', true);
+  }
+
   public function check( Request $request, Response $response, $args )  {
 
-      $document = $this->setDocumentTask( $request );
+      $document = $this->setDocumentTask( $request, $this->action_task_check );
       if ($document["idmeeting"]!="") {
 
           // Aggiungo log
@@ -47,8 +91,7 @@ class Agenda
           // Prendo tutto l'elenco dei tasks
           $data = $fireStore->getDocument( $this->collection_name, $document["idmeeting"] ) ;
           // Creo l'elenco dei tasks con il checked aggioranto
-          $tasks = $this->getTasksUpdate($data,$document["id"],$document["value"]);
-
+          $tasks = $this->getTasksUpdate($data,$document["id"],$document["value"],null,null);
           // Update per idmeeting i tasks aggiornati
           $temp = [
               ['path' => 'tasks', 'value' => $tasks]
@@ -60,95 +103,21 @@ class Agenda
 
   }
 
-  public function setDocumentTask( Request $request )  {
-      $requestArrayParam = $request->getParsedBody();
-      $idmeeting = "";
-      $id = "";
-      $checked = "";
-      $user = "";
-      if (isset($requestArrayParam["idmeeting"])) {
-          $idmeeting = $requestArrayParam["idmeeting"];
-      }
-      if (isset($requestArrayParam["id"])) {
-          $id = $requestArrayParam["id"];
-      }
-      if (isset($requestArrayParam["checked"])) {
-          $checked = $requestArrayParam["checked"];
-      }
-      if (isset($requestArrayParam["second"])) {
-          $second = $requestArrayParam["second"];
-      }
-      if (isset($requestArrayParam["secondmanual"])) {
-          $secondmanual = $requestArrayParam["secondmanual"];
-      }
-      if (isset($requestArrayParam["user"])) {
-          $user  = $requestArrayParam["user"];
-      }
-      return array(
-          "idmeeting" => $idmeeting,
-          "id" => $id,
-          "action" => $this->action_task_check,
-          "value" => $checked,
-          "second" => $second,
-          "secondmanual" => $secondmanual,
-          "user" => $user, 
-          "date" => date("Y-m-d H:i:s"),
-      );
+
+  public function setDocumentTask( Request $request, $action )  {
+      $common = new Common();
+      return $common->setDocument( $request, $action );
   }
 
   public function getTasks($data)  {
-      $checked_master = $checked;
-      $tasks = array();
-      $i = 0;
-      foreach ($data["tasks"] as $task) {
-
-          // Se non ho il campo checked lo creo
-          if ($task["checked"]=="") {
-              $checked = 0;
-          } else {
-              $checked = $task["checked"];
-          }
-          $task = [
-              "id" => $i,
-              "type" => "checkbox",
-              "value" => $task["name"],
-              "description" => "",
-              "checked" => $checked,
-          ];
-          array_push($tasks,$task);
-          $i++;
-      }
-      return $tasks;
+    $common = new Common();
+    return $common->getMeetingSubset( $data, "tasks" );
   }
 
-  public function getTasksUpdate($data, $id, $checked)  {
-      $checked_master = $checked;
-      $tasks = array();
-      $i = 0;
-      foreach ($data["tasks"] as $task) {
-          // Controllo di modiifcare solo il task corretto
-          if ($i != $id) {
-              // Se non ho il campo checked lo creo
-              if ($task["checked"]=="") {
-                  $checked = 0;
-              } else {
-                  $checked = $task["checked"];
-              }
-          } else {
-              // assegno il valore di checked dal frontend
-              $checked = $checked_master;
-          }
-          $task = [
-              "icon" => $task["icon"],
-              "name" => $task["name"],
-              "checked" => $checked,
-          ];
-          array_push($tasks,$task);
-          $i++;
-      }
-      return $tasks;
+  public function getTasksUpdate($data, $id, $checked, $attendeeNew, $attendeeDelete )  {
+      $common = new Common();
+      return $common->getMeetingSubsetUpdate($data, $id, $checked, $attendeeNew, $attendeeDelete, "tasks"  ) ;
   }
-
 
   public function getMockup()  {
 
