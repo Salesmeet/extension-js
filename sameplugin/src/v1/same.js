@@ -15,7 +15,7 @@ function sameGetUser() { return "2"; }
 var same_panel_recording_button = '<section class="main-controls">\
         <!--<canvas class="visualizer" height="60px"></canvas>-->\
         <div id="buttons">\
-          <button id="same_screenshot_button" class="same_icon_style" title="Screenshot"> </button><hr>\
+          <button id="same_screenshot_button" class="same_icon_style" title="Screenshot"> </button><hr class="same_hr_panel">\
           <button id="same_record_button" class="same_record_button same_icon_style" title="Record"> </button>\
           <button id="same_stop_button" class="same_stop_button same_icon_style" title="Save"> </button>\
           <button id="same_cancel_button" class="same_cancel_button same_icon_style" title="Cancel"> </button>\
@@ -38,7 +38,6 @@ var same_panel_note = '<div id="same_note" style="display:none">' + same_panel_r
 
 var same_panel_shortcut = '\
 <div id="same_shortcut" style="display:none">\
-Quick commands: \
 <button id="same_function_rapid_poi_button" class="same_buttom_img">Point of interest</button> \
 <button id="same_function_rapid_mak_button" class="same_buttom_img">Make an appointment</button> \
 <button id="same_function_rapid_question_button" class="same_buttom_img">Question?</button> \
@@ -86,9 +85,9 @@ var same_panel_tools = '\
   <button id="same_function_note_big_button" class="same_resize_img same_icon_style" title="Enlarge notes field"> </button>\
   <button id="same_function_note_small_button" class="same_resize_img same_icon_style" title="Secrease note field"> </button>\
   <button id="same_function_shortcut_button" class="same_resize_img same_icon_style" title="Shortcuts"> </button>\
-  <hr>\
-  <button id="same_function_data_meeting_button">Data meeting</button><hr>\
-  <button id="same_function_data_report_meeting_button">Export / Edit plus</button><hr>\
+  <hr class="">\
+  <button id="same_function_data_meeting_button">Data meeting</button><hr class="same_hr_panel">\
+  <button id="same_function_data_report_meeting_button">Export / Edit plus</button><hr class="same_hr_panel">\
   <button id="same_function_data_meeting_template_button">Template</button>\
   <button id="same_function_data_meeting_all_button">All meeting</button>\
   </div>\
@@ -117,7 +116,8 @@ var same_panel_info = '<div id="same_info" class="same_panel_style">\
 <button id="same_function_icon_button" class="same_icon_style" title="Zoom out"></button>\
 <button id="same_function_top_button" class="same_icon_style" title="Position top"></button>\
 <button id="same_function_bottom_button" class="same_icon_style" title="Position bottom"></button>\
-<button id="same_function_setting_button" class="same_icon_style" title="Setting"></button>\
+<button id="same_function_right_button" class="same_icon_style" title="Position right"></button>\
+<!--button id="same_function_setting_button" class="same_icon_style" title="Setting"></button-->\
 </div>';
 
 /****** PANEL INIT  ************************************************/
@@ -675,13 +675,39 @@ function sameGetAttachments() {
 var same_position_bottom = true;
 function sameMovePanelTop() {
       same_position_bottom = false;
+      sameMovePanelDeleteRight();
       document.getElementById("same_panel_base").style.top = "0px";
       document.getElementById("same_panel_base").style.bottom = "auto";
 }
 function sameMovePanelBottom() {
       same_position_bottom = true;
+      sameMovePanelDeleteRight();
       document.getElementById("same_panel_base").style.top = "auto";
       document.getElementById("same_panel_base").style.bottom = "0px";
+}
+
+function sameMovePanelRight() {
+      document.getElementById("same_panel_base").classList.add("same_panel_base_right");
+      document.getElementById("same_recording").classList.add("same_panel_right");
+      document.getElementById("same_tools").classList.add("same_panel_right_tools");
+      document.getElementById("same_panel").classList.add("same_panel_panel_right");
+      document.getElementById("same_info").classList.add("same_panel_right");
+      var hrselec =  document.getElementsByClassName("same_hr_panel");
+      for(var i = 0; i < hrselec.length; i++) {
+          hrselec[i].classList.add("same_hr_panel_right");
+      }
+}
+
+function sameMovePanelDeleteRight() {
+      document.getElementById("same_panel_base").classList.remove("same_panel_base_right");
+      document.getElementById("same_recording").classList.remove("same_panel_right");
+      document.getElementById("same_tools").classList.remove("same_panel_right_tools");
+      document.getElementById("same_panel").classList.remove("same_panel_panel_right");
+      document.getElementById("same_info").classList.remove("same_panel_right");
+      var hrselec =  document.getElementsByClassName("same_hr_panel");
+      for(var i = 0; i < hrselec.length; i++) {
+          hrselec[i].classList.remove("same_hr_panel_right");
+      }
 }
 
 /****** PANEL SEARCH ************************************************/
@@ -764,6 +790,7 @@ function initSame() {
 
   sameClickCommon( "same_function_top_button" , sameMovePanelTop );
   sameClickCommon( "same_function_bottom_button" , sameMovePanelBottom );
+  sameClickCommon( "same_function_right_button" , sameMovePanelRight );
   sameClickCommon( "same_function_icon_button" , sameInitShow );
 
   sameClickCommon( "same_function_data_report_meeting_button" , sameFunctionOpenReport );

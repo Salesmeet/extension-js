@@ -312,3 +312,32 @@ div.editable {
 .tox.tox-silver-sink.tox-tinymce-aux {
     z-index: 99995;
 }
+
+
+
+#same_function_right_button {
+    background-image: url('https://plugin.sameapp.net/v1/img/position-right.png') !important;
+}
+.same_panel_base_right {
+    width: 400px !important;
+    height: 100% !important;
+    right: 0px !important;
+}
+.same_panel_right {
+    float: none  !important;
+    height: 30px  !important;
+    width: 100% !important;
+}
+.same_panel_right_tools {
+    float: none  !important;
+    height: 100px  !important;
+    width: 100% !important;
+}
+.same_panel_panel_right {
+    height: 500px  !important;
+    float: none  !important;
+    width: 100% !important;
+}
+.same_hr_panel_right {
+    display:  none !important;
+}
