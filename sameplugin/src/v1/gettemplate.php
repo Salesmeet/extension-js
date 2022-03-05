@@ -27,7 +27,7 @@ if (isset($_GET['init'])) {
 </head>
 <body>
 
-  <div style="float: left; width: 13%; text-align: center;">
+  <div style="float: left; width: 13%; text-align: center;  height: 100vh; border-right: 1px solid #767575;">
      <img src="https://plugin.sameapp.net/v1/img/logo.png" style="width: 70px;">
      <br><br>
 <!--
@@ -50,7 +50,7 @@ if (isset($_GET['init'])) {
      <button onclick="closeWindow();" id="" class="same_icon_style" title="">Close</button>
      <?php } ?>
   </div>
-  <div style="float: right; width: 87%;">
+  <div style="float: right; width: 86%;">
 
     <div id="spinner" style="position: absolute;z-index: 99;left: 48%;top: 40%;">
       <svg  width="970" height="70">

@@ -15,7 +15,7 @@ function sameGetUser() { return "2"; }
 var same_panel_recording_button = '<section class="main-controls">\
         <!--<canvas class="visualizer" height="60px"></canvas>-->\
         <div id="buttons">\
-          <button id="same_screenshot_button" class="same_icon_style" title="Screenshot"> </button><hr class="same_hr_panel">\
+          <button id="same_screenshot_button" class="same_icon_style" title="Screenshot"> </button><hr class="same_hidden">\
           <button id="same_record_button" class="same_record_button same_icon_style" title="Record"> </button>\
           <button id="same_stop_button" class="same_stop_button same_icon_style" title="Save"> </button>\
           <button id="same_cancel_button" class="same_cancel_button same_icon_style" title="Cancel"> </button>\
@@ -28,10 +28,10 @@ var same_panel_recording_button = '<section class="main-controls">\
 ';
 
 var same_panel_rapid_command = '<div id="same_rapid_command" style="float:left;">\
-<button id="same_function_rapid_poi_short_button" class="same_resize_img same_icon_style" title="Shortcuts"></button><br>\
-<button id="same_function_rapid_mak_short_button" class="same_resize_img same_icon_style" title="Shortcuts"></button><br>\
-<button id="same_function_rapid_question_short_button" class="same_resize_img same_icon_style" title="Shortcuts"></button><br>\
-<button id="same_function_rapid_rtc_short_button" class="same_resize_img same_icon_style" title="Shortcuts"></button><br>\
+<button id="same_function_rapid_poi_short_button" class="same_resize_img same_icon_style" title="Shortcuts"></button><br class="same_hidden">\
+<button id="same_function_rapid_mak_short_button" class="same_resize_img same_icon_style" title="Shortcuts"></button><br class="same_hidden">\
+<button id="same_function_rapid_question_short_button" class="same_resize_img same_icon_style" title="Shortcuts"></button><br class="same_hidden">\
+<button id="same_function_rapid_rtc_short_button" class="same_resize_img same_icon_style" title="Shortcuts"></button><br class="same_hidden">\
 <button id="same_function_shortcut_short_button" class="same_resize_img same_icon_style" title="Shortcuts"> </button>\
 </div>';
 var same_panel_note = '<div id="same_note" style="display:none">' + same_panel_rapid_command + '<div id="same_note_text_div" style="float:left;"><iframe src="' + same_domain + '/v1/editor.php?idmeeting=' + sameGetIdMeeting() + '&lang=' + sameGetLanguage() + "&user=" + sameGetUser() + '" id="same_note_text_iframe"></iframe></div></div>'; //  <textarea id="same_note_text"></textarea> <div contenteditable="true" id="same_note_text"><a href="" target="blank">zzzz</a></div>
@@ -82,12 +82,12 @@ var same_panel_recording = '<div id="same_recording" class="same_panel_style sam
 var same_panel_tools = '\
   <div id="same_tools" class="same_panel_style same_panel_style_border">\
   <button id="same_function_note_button">Note</button> \
-  <button id="same_function_note_big_button" class="same_resize_img same_icon_style" title="Enlarge notes field"> </button>\
-  <button id="same_function_note_small_button" class="same_resize_img same_icon_style" title="Secrease note field"> </button>\
+  <button id="same_function_note_big_button" class="same_resize_img same_icon_style same_hidden" title="Enlarge notes field"> </button>\
+  <button id="same_function_note_small_button" class="same_resize_img same_icon_style same_hidden" title="Secrease note field"> </button>\
   <button id="same_function_shortcut_button" class="same_resize_img same_icon_style" title="Shortcuts"> </button>\
   <hr class="">\
-  <button id="same_function_data_meeting_button">Data meeting</button><hr class="same_hr_panel">\
-  <button id="same_function_data_report_meeting_button">Export / Edit plus</button><hr class="same_hr_panel">\
+  <button id="same_function_data_meeting_button">Data meeting</button><hr class="same_hidden">\
+  <button id="same_function_data_report_meeting_button">Export / Edit plus</button><hr class="same_hidden">\
   <button id="same_function_data_meeting_template_button">Template</button>\
   <button id="same_function_data_meeting_all_button">All meeting</button>\
   </div>\
@@ -235,19 +235,16 @@ function sameNoteBig() {
 }
 /* ingrandisce WYSIWYG HTML */
 function sameNoteBigCommon() {
+      sameNoteChangeHeight();
       element = document.getElementById("same_note_text_iframe");
       if (same_position_bottom) {
           element.classList.add("same_note_text_big_bottom");
       } else {
           element.classList.add("same_note_text_big_top");
       }
-      sameNoteBigCommonTiny();
 }
-function sameNoteBigCommonTiny() {
-      samePostMessageNote( 500, "changeHeightPlus" );
-}
-function sameNoteSmallCommonTiny() {
-      samePostMessageNote( 135, "changeHeightLess" );
+function sameNoteChangeHeight() {
+      samePostMessageNote( "", "changeHeight" );
 }
 
 function samePostMessageNote( value, action ) {
@@ -257,10 +254,10 @@ function samePostMessageNote( value, action ) {
 /* rimpicciolisce WYSIWYG HTML */
 function sameNoteSmall() {
       sameChangePanelNote();
+      sameNoteChangeHeight();
       element = document.getElementById("same_note_text_iframe");
       element.classList.remove("same_note_text_big_bottom");
       element.classList.remove("same_note_text_big_top");
-      sameNoteSmallCommonTiny();
 }
 
 
@@ -369,8 +366,8 @@ function sameChangePanel(note,shortcut,setting,common,datameeting,allmeeting) {
       sameSelectedButtoCommon( "same_function_shortcut_button" , shortcut );
       sameDisplayCommon("same_shortcut",shortcut);
 
-      sameSelectedButtoCommon( "same_function_setting_button" , setting );
-      sameDisplayCommon("same_setting",setting);
+      // sameSelectedButtoCommon( "same_function_setting_button" , setting );
+      // sameDisplayCommon("same_setting",setting);
 
       sameSelectedButtoCommon( "same_function_data_meeting_button" , datameeting );
       sameDisplayCommon("same_data_meeting",datameeting);
@@ -380,7 +377,6 @@ function sameChangePanel(note,shortcut,setting,common,datameeting,allmeeting) {
 
       // pannello iniziale recupero note ... Sempre in none.
       sameDisplayCommon("same_panel_init_after_note","none");
-
       sameDisplayCommon("same_common",common);
 
 }
@@ -678,23 +674,30 @@ function sameMovePanelTop() {
       sameMovePanelDeleteRight();
       document.getElementById("same_panel_base").style.top = "0px";
       document.getElementById("same_panel_base").style.bottom = "auto";
+      sameNoteSmall();
 }
 function sameMovePanelBottom() {
       same_position_bottom = true;
+      sameNoteSmall();
       sameMovePanelDeleteRight();
       document.getElementById("same_panel_base").style.top = "auto";
       document.getElementById("same_panel_base").style.bottom = "0px";
 }
-
 function sameMovePanelRight() {
       document.getElementById("same_panel_base").classList.add("same_panel_base_right");
       document.getElementById("same_recording").classList.add("same_panel_right");
       document.getElementById("same_tools").classList.add("same_panel_right_tools");
       document.getElementById("same_panel").classList.add("same_panel_panel_right");
       document.getElementById("same_info").classList.add("same_panel_right");
-      var hrselec =  document.getElementsByClassName("same_hr_panel");
+      document.getElementById("same_common").classList.add("same_panel_panel_right");
+      document.getElementById("same_note_text_iframe").classList.add("same_note_text_iframe_right");
+      document.getElementById("same_panel_edit_external").classList.add("same_panel_edit_external_right");
+      document.getElementById("same_rapid_command").classList.add("same_rapid_command_right");
+      sameNoteBig();
+
+      var hrselec =  document.getElementsByClassName("same_hidden");
       for(var i = 0; i < hrselec.length; i++) {
-          hrselec[i].classList.add("same_hr_panel_right");
+          hrselec[i].classList.add("same_hidden_right");
       }
 }
 
@@ -704,19 +707,20 @@ function sameMovePanelDeleteRight() {
       document.getElementById("same_tools").classList.remove("same_panel_right_tools");
       document.getElementById("same_panel").classList.remove("same_panel_panel_right");
       document.getElementById("same_info").classList.remove("same_panel_right");
-      var hrselec =  document.getElementsByClassName("same_hr_panel");
+      document.getElementById("same_common").classList.remove("same_panel_panel_right");
+      document.getElementById("same_note_text_iframe").classList.remove("same_note_text_iframe_right");
+      document.getElementById("same_panel_edit_external").classList.remove("same_panel_edit_external_right");
+      document.getElementById("same_rapid_command").classList.remove("same_rapid_command_right");
+
+      var hrselec =  document.getElementsByClassName("same_hidden");
       for(var i = 0; i < hrselec.length; i++) {
-          hrselec[i].classList.remove("same_hr_panel_right");
+          hrselec[i].classList.remove("same_hidden_right");
       }
 }
 
 /****** PANEL SEARCH ************************************************/
 
-function sameMovePanelBottom() {
-      same_position_bottom = true;
-      document.getElementById("same_panel_base").style.top = "auto";
-      document.getElementById("same_panel_base").style.bottom = "0px";
-}
+
 
 function sameFindElements(str) {
   // var temp = container.querySelectorAll('[role="listitem"]');

@@ -52,7 +52,7 @@ if ($type=="agenda") {
 </head>
 <body>
 
-  <div style="float: left; width: 7%; text-align: center;">
+  <div style="float: left; width: 7%; text-align: center; height: 100vh; border-right: 1px solid #767575;">
      <img src="https://plugin.sameapp.net/v1/img/logo.png" style="width: 70px;">
      <br><br>
      Edit meetings

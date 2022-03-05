@@ -6,9 +6,6 @@
     body {
       margin: 0px;
     }
-    .same_note_text_iframe_big {
-        height: 500px !important;
-    }
   </style>
 </head>
 <body>
@@ -25,22 +22,15 @@
         var ed = tinymce.get('same_note_text_iframe');
         contentTinymce = ed.getContent();
         // alert(tinyMCE.activeEditor.getContent());
-        if (e.data.action == 'changeHeightPlus') {
-              sameChangeHeight( "plus" );
-        } else if (e.data.action == 'changeHeightLess') {
-              sameChangeHeight( "" );
+        if (e.data.action == 'changeHeight') {
+              sameChangeHeight();
         }  else if (e.data.action == 'sameRapidCommand') {
               sameRapidCommand( e.data.value );
         } else if (e.data.action == 'sameWrite') {
-
-              console.log( "____________  sameWrite action ______________" );
-              console.log( e.data.value );
-
               sameWrite( e.data.value);
         } else if (e.data.action == 'saveNote') {
               saveNote();
         }
-
     };
 
     function sameWrite( message ) {
@@ -48,14 +38,11 @@
       tinymce.activeEditor.setContent( message , {format: 'html'});
     }
 
-    function sameChangeHeight( type ) {
-      // console.log("sameChangeHeight");
+    function sameChangeHeight() {
+      document.head.insertAdjacentHTML("beforeend", '<style> .same_note_text_iframe_dynamic { height: ' + document.documentElement.clientHeight + 'px !important;}</style>')
       var userSelection = document.getElementsByClassName("tox-tinymce");
-      if (type=="plus") {
-        userSelection[0].classList.add("same_note_text_iframe_big");
-      } else {
-        userSelection[0].classList.remove("same_note_text_iframe_big");
-      }
+      userSelection[0].classList.remove("same_note_text_iframe_dynamic");
+      userSelection[0].classList.add("same_note_text_iframe_dynamic");
       sameWrite( contentTinymce );
     }
 
@@ -124,7 +111,7 @@
         selector: '#same_note_text_iframe',
         menubar: false,
         statusbar: false,
-        height: 135,
+        height: 500,
         plugins: 'link table lists checklist',
         toolbar: 'undo redo | bold italic underline strikethrough | fontsizeselect | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist checklist | forecolor backcolor removeformat | link | table ',
         setup : function(ed) {
@@ -136,6 +123,10 @@
             });
         }
     });
+
+    window.onload = function() {
+
+    };
 
     /*
   var temp2 = tinymce.activeEditor.selection.getNode();

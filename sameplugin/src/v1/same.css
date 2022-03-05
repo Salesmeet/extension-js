@@ -330,14 +330,32 @@ div.editable {
 }
 .same_panel_right_tools {
     float: none  !important;
-    height: 100px  !important;
+    height: 76px  !important;
     width: 100% !important;
 }
 .same_panel_panel_right {
-    height: 500px  !important;
+    height: 76% !important;
     float: none  !important;
     width: 100% !important;
 }
-.same_hr_panel_right {
+.same_hidden_right {
     display:  none !important;
+}
+.same_note_text_iframe_right {
+    top: 150px;
+    right: 3px;
+    width: 95% !important;
+    height: 69% !important;
+}
+.same_panel_edit_external_right {
+    top: 0px;
+    position: fixed !important;
+    width: 80% !important;
+    right: 0px !important;
+    left: unset !important;
+    height: 100% !important;
+    border: 1px solid #000 !important;
+}
+.same_rapid_command_right {
+    width: 100% !important;
 }
