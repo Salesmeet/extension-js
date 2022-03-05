@@ -69,8 +69,9 @@ var same_panel_all_meeting = '\
 
 var same_panel_setting = '\
 <div id="same_setting" style="display:none">\
-<div style="float:left;"><img id="img_setting_logo" src="' + same_domain + '/logo.png"> </div>\
-<div style="float:left;">Settings: ---\</div>\
+<div style="float:left;">Note shortcuts function: if you write ... <br> \
+@@ -> add user from list <br> \
+</div>\
 </div>\
 ';
 
@@ -107,9 +108,9 @@ var same_panel_operation = '<div id="same_panel" class="same_panel_style same_pa
 
 var same_panel_info = '<div id="same_info" class="same_panel_style">\
 <button id="same_function_stop_hour_button" style="display:none;">Stop timer</button>\
-<button id="same_function_start_short_hour_button" style="display:none;">Start timer</button>\
+<button id="same_function_start_short_hour_button" style="display:none;">Resume</button>\
 <button id="same_function_clear_hour_button" style="display:none;">Clear</button>\
-<button id="same_function_start_hour_button">Start meeting</button>\
+<button id="same_function_start_hour_button">Start timer</button>\
 <hr>\
 <div id="same_count_hour"><label id="same_minutes">00</label>:<label id="same_seconds">00</label></div>\
 <hr>\
@@ -367,7 +368,7 @@ function sameChangePanel(note,shortcut,setting,common,datameeting,allmeeting) {
       sameDisplayCommon("same_shortcut",shortcut);
 
       // sameSelectedButtoCommon( "same_function_setting_button" , setting );
-      // sameDisplayCommon("same_setting",setting);
+      sameDisplayCommon("same_setting",setting);
 
       sameSelectedButtoCommon( "same_function_data_meeting_button" , datameeting );
       sameDisplayCommon("same_data_meeting",datameeting);
@@ -584,7 +585,6 @@ function sameOpenWindowCommon( value ) {
     window.open(value);
 }
 function sameDisplayCommon( id , value ) {
-  console.log("sameDisplayCommon:" + id + "__" + value);
   document.getElementById(id).style.display = value;
 }
 function sameClickCommon( id , name_funcition ) {
@@ -645,7 +645,6 @@ function sameFunctionOpenCommon(url) {
 }
 
 function sameFunctionEditClose() {
-    console.log("sameFunctionEditClose");
     document.getElementById("same_panel_edit_external_iframe").src = "";
     sameDisplayCommon( "same_panel_edit_external","none");
 

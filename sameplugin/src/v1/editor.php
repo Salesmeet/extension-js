@@ -36,6 +36,7 @@
     function sameWrite( message ) {
       // console.log("sameWrite");
       tinymce.activeEditor.setContent( message , {format: 'html'});
+      tinyMCE.activeEditor.focus();
     }
 
     function sameChangeHeight() {
@@ -64,23 +65,51 @@
     }
 
     function sameRapidCommand( value ) {
-          // console.log("sameRapidCommand: " + value);
+
+          // Prendo il vavlore
+          var temp2 = tinymce.activeEditor.selection.getNode().innerHTML;
+          // sostituisco il valore
+          temp2 = temp2.replace("@@", "");  // 64
+          temp2 = temp2.replace("##", "");  // 35
+          temp2 = temp2.replace("]]", "");  // 93
+          temp2 = temp2.replace("[[", "");  // 91
+          // CAncello i valori del nodo
+          tinymce.activeEditor.selection.getNode().innerHTML = "";
+          // Creo un nuovo nodo
+          var el = tinymce.activeEditor.dom.create('spam', {}, temp2 + value + " ");
+          tinymce.activeEditor.selection.setNode( el );
+
+          tinyMCE.activeEditor.focus();
+    }
+
+    /*
+    function sameRapidCommand( value ) {
+          console.log("sameRapidCommand: " + value);
           var el = tinymce.activeEditor.dom.create('spam', {}, value);
           tinymce.activeEditor.selection.setNode( el );
           sameChange();
     }
-
+    */
+    /*
     function sameChange() {
+
+        var temp2 = tinymce.activeEditor.selection.getNode();
+        console.log(temp2);
+
         var ed = tinymce.get('same_note_text_iframe');
+        // console.log(tinymce.activeEditor.selection.getStart());
+        // console.log(tinymce.activeEditor.selection.getRng());
         let temp = ed.getContent();
         temp = temp.replace("@@", "");  // 64
         temp = temp.replace("##", "");  // 35
         temp = temp.replace("]]", "");  // 93
         temp = temp.replace("[[", "");  // 91
         console.log( "____________  sameChange ______________" );
-        console.log( temp );
-        sameWrite( temp );
+        return temp;
+        // console.log( temp );
+        // sameWrite( temp );
     }
+    */
 
     var sameCharCodeBefore = "";
     function sameKeypress( keyPressed ) {
@@ -113,7 +142,7 @@
         statusbar: false,
         height: 500,
         plugins: 'link table lists checklist',
-        toolbar: 'undo redo | bold italic underline strikethrough | fontsizeselect | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist checklist | forecolor backcolor removeformat | link | table ',
+        toolbar: 'customInsertButton | undo redo | bold italic underline strikethrough | fontsizeselect | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist checklist | forecolor backcolor removeformat | link | table ',
         setup : function(ed) {
             ed.on("keypress", function(keypress){
                 sameKeypress( keypress );
@@ -121,6 +150,14 @@
             ed.on("mouseout", function(){
                 // samePostAPINote();
             });
+            ed.ui.registry.addButton('customInsertButton', {
+              text: 'SHORTCUTS',
+              onAction: function (_) {
+                sameCall( "sameChangePanelSetting" );
+                // ed.insertContent('&nbsp;<strong>Shortcuts</strong>&nbsp;');
+              }
+            });
+
         }
     });
 
