@@ -7,14 +7,6 @@ function samePostAPIRecord( url ) {
       data.append('file', url );
       samePostAPICommon(same_domain_api + '/api/v1/postrecord.php',data);
 }
-function sameCreateFile( url ) {
-    var temp = '<form method="POST" enctype="multipart/form-data" action="' + same_domain_api + '/api/v1/postrecord.php">\
-    <input type="file" name="file">\
-    <button type="submit" role="button">Upload File</button>\
-    </form>';
-    document.getElementById("same_common").innerHTML = escapeHTMLPolicy.createHTML(temp);
-    sameChangePanelCommon();
-}
 
 function sameInitRecord() {
 
@@ -57,9 +49,18 @@ function sameInitRecord() {
         same_stop_button.disabled = false;
         same_cancel_button.disabled = false;
         same_record_button.disabled = true;
+
       }
 
       same_stop_button.onclick = function() {
+
+        // alert("same_stop_button onclick");
+
+        const options = {operation:"stopSame", user:sameGetUser(), idmeeting:sameGetIdMeeting(), type:"back"};
+        chrome.runtime.sendMessage( same_id_extension , options);
+
+        // alert("same_stop_button after same_id_extension");
+
         mediaRecorder.stop();
         console.log(mediaRecorder.state);
         console.log("recorder stopped");
@@ -71,11 +72,11 @@ function sameInitRecord() {
         same_cancel_button.disabled = true;
         same_record_button.disabled = false;
 
-        chrome.runtime.sendMessage( same_id_extension ,"stopSame");
 
       }
 
       same_cancel_button.onclick = function() {
+
         mediaRecorder.stop();
         console.log(mediaRecorder.state);
         console.log("recorder stopped");
@@ -87,13 +88,16 @@ function sameInitRecord() {
         same_cancel_button.disabled = true;
         same_record_button.disabled = false;
 
-        chrome.runtime.sendMessage( same_id_extension ,"cancelSame");
+        const options = {operation:"cancelSame", user:sameGetUser(), idmeeting:sameGetIdMeeting(), type:""};
+        chrome.runtime.sendMessage( same_id_extension ,options);
 
       }
 
       mediaRecorder.onstop = function(e) {
-                console.log("data available after MediaRecorder.stop() called.");
 
+        console.log("data available after MediaRecorder.stop() called.");
+
+        /*
         const clipName = prompt('Enter a name for your sound clip?','My unnamed clip');
 
         const clipContainer = document.createElement('article');
@@ -118,13 +122,15 @@ function sameInitRecord() {
         soundClips.appendChild(clipContainer);
 
         audio.controls = true;
+        */
+
         const blob = new Blob(chunks, { 'type' : 'audio/ogg; codecs=opus' });
+
+        /*
         chunks = [];
 
         const audioURL = window.URL.createObjectURL(blob);
 
-        // samePostAPIRecord( audioURL );
-        //sameCreateFile( audioURL );
         audio.src = audioURL;
 
         console.log("audioURL: " + audioURL);
@@ -144,6 +150,34 @@ function sameInitRecord() {
             clipLabel.textContent = newClipName;
           }
         }
+        */
+
+
+        //the form data that will hold the Blob to upload
+        const formData = new FormData();
+        //add the Blob to formData
+        formData.append('fileToUpload', blob, 'recording.mp3');
+        formData.append('idmeeting', sameGetIdMeeting() );
+        formData.append('type', "microphone" );
+        formData.append('user', sameGetUser());
+        formData.append('extension', "ogg");
+
+        //send the request to the endpoint
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', "https://api.sameapp.net/public/v1/record/save", true);
+        xhr.onload = function () {
+            // alert("onload________" + this.status);
+        };
+        xhr.onreadystatechange = function() {
+            // alert("onreadystatechange________" + this.status);
+        };
+        try {
+          xhr.send(formData);
+        } catch (error) {
+          // alert("error________" + error);
+        }
+
+
       }
       mediaRecorder.ondataavailable = function(e) {
         console.log("ondataavailable");
@@ -164,7 +198,10 @@ function sameInitRecord() {
 }
 
 function initVideoSameExension() {
-    chrome.runtime.sendMessage( same_id_extension ,"startSame");
+    const options = {operation:"startSame", user:sameGetUser(), idmeeting:sameGetIdMeeting(), type:""};
+    chrome.runtime.sendMessage( same_id_extension ,options);
 }
 
-// sameInitRecord();
+window.onload = function() {
+  sameInitRecord();
+};

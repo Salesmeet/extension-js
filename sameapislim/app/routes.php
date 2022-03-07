@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Http\Message\UploadedFileInterface;
+
 use Slim\App;
 use Slim\Interfaces\RouteCollectorProxyInterface as Group;
 
@@ -22,6 +24,7 @@ use App\Application\Actions\v1\Attachements;
 use App\Application\Actions\v1\Action;
 use App\Application\Actions\v1\Note;
 use App\Application\Actions\v1\Auth;
+use App\Application\Actions\v1\Record;
 
 
 return function (App $app) {
@@ -129,9 +132,33 @@ return function (App $app) {
         return setResponse($response, $partecipants->delete($request, $response, $args) );
     });
 
+    // record
+    $app->get('/public/v1/record/all/{idmeeting}/{lang}/{user}', function (Request $request, Response $response, $args) {
+        $partecipants = new Record();
+        return setResponse($response, $partecipants->getAll($request, $response, $args) );
+    });
+    $app->post('/public/v1/record/save', function (Request $request, Response $response, $args) {
+        $record = new Record();
+        return setResponse($response, $record->insert($request, $response, $args) );
+    });
+
 
 
     $app->get('/public/v1/test/', function (Request $request, Response $response, $args) {
+
+
+      echo '<form id="inviofile" action="https://api.sameapp.net/public/v1/save" method="post" enctype="multipart/form-data">';
+      echo '  Select image to upload:';
+      echo '  <input type="file" name="fileToUpload" id="fileToUpload">';
+      echo '  <input type="text" name="idmeeting" id="idmeeting" value="123123123">';
+      echo '  <input type="text" name="type" id="type" value="prova">';
+      echo '  <input type="text" name="user" id="user" value="1">';
+      echo '  <input type="text" name="extension" id="extension" value="mp3">';
+      echo '  <input type="submit" value="Upload Image" name="submit">';
+      echo '</form>';
+
+      echo "<hr>Get list record<br>";
+      echo '<a href="https://api.sameapp.net/public/v1/record/all/7EQPmfmJD5eahPCLNxwV/en/1">call</a>';
 
 
           echo "<hr>Get list note<br>";

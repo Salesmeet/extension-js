@@ -5,7 +5,7 @@ escapeHTMLPolicy = trustedTypes.createPolicy("forceInner", {
 
 var same_domain_api = "https://api.sameapp.net";
 var same_domain = "https://plugin.sameapp.net";
-var same_id_extension = "eakfjnpihbkoohjbelkfjcdlkdhfeadb";
+var same_id_extension = "jinjngkjbcaedjmllefbghfodplfngeh";
 
 function sameGetIdMeeting() { return "7EQPmfmJD5eahPCLNxwV"; }
 function sameGetLanguage() { return "en"; }
@@ -54,8 +54,8 @@ var same_panel_data_meeting = '\
 <button id="same_function_participant_list_button" class="same_buttom_img">Participant list</button> \
 <button id="same_function_meeting_attachments_button" class="same_buttom_img">Attachments</button> \
 <button id="same_function_meeting_data_button" class="same_buttom_img">Summary</button> \
-<button id="same_function_screenshot_button" class="same_buttom_img">List screenshot</button> \
-<button id="same_function_video_button" class="same_buttom_img">List video</button> \
+<button id="same_function_screenshot_button" class="same_buttom_img">Screenshot list</button> \
+<button id="same_function_records_button" class="same_buttom_img">Records list</button> \
 </div>\
 ';
 
@@ -504,6 +504,8 @@ function sameCommonBlockApi( value, type ) {
 
         if (myItems[i].type == 'link') {
             out += '<a href="' + myItems[i].value + '" target="_blank">' + description + myItems[i].value + '</a>';
+        } else if (myItems[i].type == 'record') {
+           out += '<a href="' + same_domain_api + myItems[i].directory  + myItems[i].value  + '" target="_blank">' + myItems[i].value + '</a>';          
         } else {
             out += description + myItems[i].value;
         }
@@ -521,7 +523,6 @@ function sameCommonBlockApi( value, type ) {
 
         document.getElementById("same_common").innerHTML = escapeHTMLPolicy.createHTML(out);
         sameClickCommon( "same_function_edit" , sameFunctionEditOpen );
-        // sameClickCommon( "same_function_check" , sameFindElements() );
 
       } else {
         out = '<div style="float:left;" id="same_data_meeting_body">' + title + out + '</div>';
@@ -664,6 +665,10 @@ function sameGetAgenda() {
 function sameGetAttachments() {
     sameGetAPI(same_domain_api + "/public/v1/attachements/" ,"sameGetAttachments", "");
 }
+function sameGetRecors() {
+    sameGetAPI(same_domain_api + "/public/v1/record/all/" ,"sameGetRecors", "");
+}
+
 
 /****** PANEL FUNCTION SETTING ************************************************/
 
@@ -719,34 +724,12 @@ function sameMovePanelDeleteRight() {
 
 /****** PANEL SEARCH ************************************************/
 
-
-
-function sameFindElements(str) {
-  // var temp = container.querySelectorAll('[role="listitem"]');
-  /*
-  var temp = document.querySelectorAll("[myAttribute=listitem]");
-  */
-  // console.log(temp);
-
-  /*
-  var open = document.getElementById("same_function_check").getAttribute('data-url');
-  var val = window.find("I tuoi preferiti");
-  console.log(val);
-  */
-  // var val2 = window.find("str");
-  // console.log(val2);
-}
-
-
 function sameLogin(str) {
   console.log("sameLogin");
   var url = "chrome-extension://jinjngkjbcaedjmllefbghfodplfngeh/options/options.html";
   url = "chrome-extension://eakfjnpihbkoohjbelkfjcdlkdhfeadb/options/options.html";
   windiw.open(url);
 }
-
-//
-
 
 /****** INIT  ************************************************/
 
@@ -786,6 +769,8 @@ function initSame() {
   sameClickCommon( "same_function_meeting_data_button" , sameGetDataMeeting );
   sameClickCommon( "same_function_agenda_data_button" , sameGetAgenda );
   sameClickCommon( "same_function_meeting_attachments_button" , sameGetAttachments);
+  sameClickCommon( "same_function_records_button" , sameGetRecors );
+
 
   sameClickCommon( "same_function_all_meeting_calendar_button" , sameAllMeetingCalendar );
   sameClickCommon( "same_function_all_meeting_new_button" , sameAllMeetingCalendar );
@@ -802,7 +787,6 @@ function initSame() {
 
   sameClickCommon( "same_screenshot_button" , initScreenshotsSameExension )
   sameClickCommon( "same_function_open_note_version_button" , sameFunctionOpenNoteVersion )
-
 
   document.getElementById("same_note_text_iframe").addEventListener("mouseout", samePostAPINote);
   window.onblur = function() {
