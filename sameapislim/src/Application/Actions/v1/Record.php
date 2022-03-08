@@ -102,6 +102,8 @@ class Record
         $type = "";
         $user = "";
         $extension = "mp3";
+        $name = "";
+        $idunivoco = "";
         if (isset($requestArrayParam["idmeeting"])) {
             $idmeeting = $requestArrayParam["idmeeting"];
         }
@@ -114,13 +116,22 @@ class Record
         if (isset($requestArrayParam["extension"])) {
             $extension  = $requestArrayParam["extension"];
         }
+        if (isset($requestArrayParam["name"])) {
+            $name  = $requestArrayParam["name"];
+        }
+        if (isset($requestArrayParam["idunivoco"])) {
+            $idunivoco  = $requestArrayParam["idunivoco"];
+        }
+
         return array(
             "idmeeting" => $idmeeting,
             "type" => $type,
             "user" => $user,
+            "name" => $name,
+            "idunivoco" => $idunivoco,
             "extension" => $extension,
             "directory" => $this->directory,
-            "basename" => date("YmdHis") . "_" . $type . "_" . $idmeeting . "_" . $user,
+            "basename" => date("YmdHis") . "_" . $idmeeting . "_" . $user . "_" . $type,
             "date" => date("Y-m-d H:i:s"),
         );
     }
