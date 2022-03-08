@@ -54,6 +54,7 @@ class Record
                   "id" => $document->id(),
                   "type" => "record",
                   "date" => $document->data()["date"],
+                  "name" => $document->data()["name"],
                   "basename" => $document->data()["basename"],
                   "extension" => $document->data()["extension"],
                   "directory" => $document->data()["directory"],

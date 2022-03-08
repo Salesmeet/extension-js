@@ -505,7 +505,11 @@ function sameCommonBlockApi( value, type ) {
         if (myItems[i].type == 'link') {
             out += '<a href="' + myItems[i].value + '" target="_blank">' + description + myItems[i].value + '</a>';
         } else if (myItems[i].type == 'record') {
-           out += '<a href="' + same_domain_api + myItems[i].directory  + myItems[i].value  + '" target="_blank">' + myItems[i].value + '</a>';          
+           if (myItems[i].name!="") {
+              out += '<a href="' + same_domain_api + myItems[i].directory + myItems[i].value  + '" target="_blank">' + myItems[i].name + ' (' + myItems[i].date + ')</a>';
+           } else {
+              out += '<a href="' + same_domain_api + myItems[i].directory + myItems[i].value  + '" target="_blank">' + myItems[i].value + ' (' + myItems[i].date + ')</a>';
+           }
         } else {
             out += description + myItems[i].value;
         }
