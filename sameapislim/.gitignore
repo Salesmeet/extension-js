@@ -2,7 +2,6 @@
 .vscode/
 /coverage/
 /vendor/
-/public/audio/
 /logs/*
 !/logs/README.md
 .phpunit.result.cache

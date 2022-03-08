@@ -25,6 +25,7 @@ use App\Application\Actions\v1\Action;
 use App\Application\Actions\v1\Note;
 use App\Application\Actions\v1\Auth;
 use App\Application\Actions\v1\Record;
+use App\Application\Actions\v1\Screenshot;
 
 
 return function (App $app) {
@@ -142,13 +143,25 @@ return function (App $app) {
         return setResponse($response, $record->insert($request, $response, $args) );
     });
 
+    // screenshot
+    $app->post('/public/v1/screenshot/save', function (Request $request, Response $response, $args) {
+      $screenshot = new Screenshot();
+      return setResponse($response, $screenshot->insert($request, $response, $args) );
+    });
 
 
     $app->get('/public/v1/test/', function (Request $request, Response $response, $args) {
 
 
-      echo '<form id="inviofile" action="https://api.sameapp.net/public/v1/save" method="post" enctype="multipart/form-data">';
+      echo '<form id="inviofile" action="https://api.sameapp.net/public/v1/screenshot/save" method="post" enctype="multipart/form-data">';
       echo '  Select image to upload:';
+      echo '  <input type="text" name="fileToUpload" id="fileToUpload">';
+      echo '  <input type="submit" value="Upload Image" name="submit">';
+      echo '</form>';
+
+
+      echo '<form id="inviofile" action="https://api.sameapp.net/public/v1/record/save" method="post" enctype="multipart/form-data">';
+      echo '  Select audio to upload:';
       echo '  <input type="file" name="fileToUpload" id="fileToUpload">';
       echo '  <input type="text" name="idmeeting" id="idmeeting" value="123123123">';
       echo '  <input type="text" name="type" id="type" value="prova">';
