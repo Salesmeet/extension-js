@@ -7,6 +7,7 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\UploadedFileInterface;
 
 use App\Application\Actions\FireStore;
+use App\Application\Actions\Aws;
 
 class Record
 {
@@ -82,12 +83,25 @@ class Record
 
         $uploadedFiles = $request->getUploadedFiles();
         $uploadedFile = $uploadedFiles['fileToUpload'];
+
+        $filename = sprintf('%s.%0.8s', $data["basename"], $data["extension"]);
+        $filename_e_folder = $data["directory"] . DIRECTORY_SEPARATOR . $filename;
+
         if ($uploadedFile->getError() === UPLOAD_ERR_OK) {
 
-          $filename = sprintf('%s.%0.8s', $data["basename"], $data["extension"]);
-          $uploadedFile->moveTo($data["directory"] . DIRECTORY_SEPARATOR . $filename);
+          $uploadedFile->moveTo( $filename_e_folder );
 
         }
+
+        // trasferisci file su AWS
+        $bucket = "audio";
+        $aws = new Aws();
+        $pathAws = $aws->uploadAWS( $data["directory"] . "/" , $filename , $bucket );
+        $data["directory"] = $pathAws;
+        $data["bucket"] = $aws->getBucketMaster( $bucket );
+
+        // remove file
+        unlink( $filename_e_folder );
 
         $fireStore = new FireStore();
         // inserisco registrazione legata al meeting
@@ -129,6 +143,7 @@ class Record
             "type" => $type,
             "user" => $user,
             "name" => $name,
+            "bucket" => "",
             "idunivoco" => $idunivoco,
             "extension" => $extension,
             "directory" => $this->directory,

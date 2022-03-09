@@ -148,20 +148,29 @@ return function (App $app) {
       $screenshot = new Screenshot();
       return setResponse($response, $screenshot->insert($request, $response, $args) );
     });
+    $app->get('/public/v1/screenshot/all/{idmeeting}/{lang}/{user}', function (Request $request, Response $response, $args) {
+        $screenshot = new Screenshot();
+        return setResponse($response, $screenshot->getAll($request, $response, $args) );
+    });
 
 
     $app->get('/public/v1/test/', function (Request $request, Response $response, $args) {
 
 
+      echo "<hr>Select image to upload:<br>";
       echo '<form id="inviofile" action="https://api.sameapp.net/public/v1/screenshot/save" method="post" enctype="multipart/form-data">';
-      echo '  Select image to upload:';
       echo '  <input type="text" name="fileToUpload" id="fileToUpload">';
       echo '  <input type="submit" value="Upload Image" name="submit">';
       echo '</form>';
 
 
+
+      echo "<hr>Get list record<br>";
+      echo '<a href="https://api.sameapp.net/public/v1/screenshot/all/7EQPmfmJD5eahPCLNxwV/en/1">call</a>';
+
+
+        echo "<hr>Select audio to upload:<br>";
       echo '<form id="inviofile" action="https://api.sameapp.net/public/v1/record/save" method="post" enctype="multipart/form-data">';
-      echo '  Select audio to upload:';
       echo '  <input type="file" name="fileToUpload" id="fileToUpload">';
       echo '  <input type="text" name="idmeeting" id="idmeeting" value="123123123">';
       echo '  <input type="text" name="type" id="type" value="prova">';

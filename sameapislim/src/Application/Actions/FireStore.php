@@ -113,32 +113,4 @@ class FireStore {
   }
 
 
-    /*
-    public function login() {
-        // sameapislim/vendor/google/auth/README.md
-        echo "login firestore<hr>";
-        $firestore = new FirestoreClient([
-            'projectId' => $this->project,
-            'keyFilePath' =>  $this->fileKey,
-        ]);
-        $auth = $firestore->createAuth();
-        // $reult = $auth->signInWithEmailAndPassword("corrado@salesmeet.ai", "bella");
-        /*
-        if ($idToken = $result->idToken() && $uid = $result->firebaseUserId()) {
-
-            $request->request->add(['firebase_uid' => $uid]);
-            $this->validateLogin($request);
-            if ($this->attemptLogin($request)) {
-                $customToken = $this->auth->createCustomToken($uid)->toString();
-                auth()->user()->update([
-                    'device_token' => $request->device_token,
-                    'id_token' => $idToken ,
-                    'custom_token' => $customToken,
-                ]);
-                return $this->sendLoginResponse($request);
-            }
-        }
-    }
-    */
-
 }

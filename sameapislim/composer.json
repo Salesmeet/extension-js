@@ -32,7 +32,8 @@
         "google/cloud-firestore": "*",
         "google/auth": "*",
         "google/protobuf": "*",
-        "grpc/grpc": "*"
+        "grpc/grpc": "*",
+        "aws/aws-sdk-php" : "*"
     },
     "require-dev": {
         "jangregor/phpstan-prophecy": "^1.0.0",

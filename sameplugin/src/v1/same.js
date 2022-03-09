@@ -510,6 +510,12 @@ function sameCommonBlockApi( value, type ) {
            } else {
               out += '<a href="' + same_domain_api + myItems[i].directory + myItems[i].value  + '" target="_blank">' + myItems[i].value + ' (' + myItems[i].date + ')</a>';
            }
+         } else if (myItems[i].type == 'screenshot') {
+            if (myItems[i].name!="") {
+               out += '<a href="' + same_domain_api + myItems[i].directory + myItems[i].value  + '" target="_blank">' + myItems[i].name + ' (' + myItems[i].date + ')</a>';
+            } else {
+               out += '<a href="' + same_domain_api + myItems[i].directory + myItems[i].value  + '" target="_blank">' + myItems[i].value + ' (' + myItems[i].date + ')</a>';
+            }
         } else {
             out += description + myItems[i].value;
         }
@@ -669,9 +675,13 @@ function sameGetAgenda() {
 function sameGetAttachments() {
     sameGetAPI(same_domain_api + "/public/v1/attachements/" ,"sameGetAttachments", "");
 }
-function sameGetRecors() {
-    sameGetAPI(same_domain_api + "/public/v1/record/all/" ,"sameGetRecors", "");
+function sameGetRecords() {
+    sameGetAPI(same_domain_api + "/public/v1/record/all/" ,"sameGetRecords", "");
 }
+function sameGetScreenshot() {
+    sameGetAPI(same_domain_api + "/public/v1/screenshot/all/" ,"sameGetScreenshot", "");
+}
+
 
 
 /****** PANEL FUNCTION SETTING ************************************************/
@@ -773,7 +783,9 @@ function initSame() {
   sameClickCommon( "same_function_meeting_data_button" , sameGetDataMeeting );
   sameClickCommon( "same_function_agenda_data_button" , sameGetAgenda );
   sameClickCommon( "same_function_meeting_attachments_button" , sameGetAttachments);
-  sameClickCommon( "same_function_records_button" , sameGetRecors );
+  sameClickCommon( "same_function_records_button" , sameGetRecords );
+  sameClickCommon( "same_function_screenshot_button" , sameGetScreenshot );
+
 
 
   sameClickCommon( "same_function_all_meeting_calendar_button" , sameAllMeetingCalendar );

@@ -7,6 +7,7 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\UploadedFileInterface;
 
 use App\Application\Actions\FireStore;
+use App\Application\Actions\Aws;
 
 class Screenshot
 {
@@ -19,6 +20,7 @@ class Screenshot
     }
 
     public function getAll( Request $request, Response $response, $args )  {
+
       $data = $this->setDocument( $request );
       if (isset($args["idmeeting"])) {
           $fireStore = new FireStore();
@@ -27,18 +29,16 @@ class Screenshot
           foreach ($data as $document) {
               $temp = [
                   "id" => $document->id(),
-                  "type" => "record",
+                  "type" => "screenshot",
                   "date" => $document->data()["date"],
                   "name" => $document->data()["name"],
-                  "basename" => $document->data()["basename"],
-                  "extension" => $document->data()["extension"],
                   "directory" => $document->data()["directory"],
-                  "value" => $document->data()["basename"] . "." . $document->data()["extension"],
+                  "value" => $document->data()["name"],
               ];
               array_push($records,$temp);
           }
           return [
-              "title" => "Records list",
+              "title" => "Screenshot list",
               "edit" => "",
               "apiupdate" => "",
               "viewdescription" => "0",
@@ -54,6 +54,7 @@ class Screenshot
 
       $dataDocument = $this->setDocument( $request );
 
+      // crea file localmente
       $screenshot = $_POST['fileToUpload'];
       $screenshot = str_replace('data:image/jpeg;base64,', '', $screenshot);
       $screenshot = str_replace(' ', '+', $screenshot);
@@ -62,11 +63,22 @@ class Screenshot
       $dataDocument["name"] = $file;
       $success = file_put_contents($this->directory . $file, $data);
 
+      // trasferisci file su AWS
+      $bucket = "screenshot";
+      $aws = new Aws();
+      $pathAws = $aws->uploadAWS( $this->directory,  $file, $bucket );
+      $dataDocument["directory"] = $pathAws;
+      $dataDocument["bucket"] = $aws->getBucketMaster( $bucket );
+
+      // remove file
+      unlink($this->directory . $file);
+
       $fireStore = new FireStore();
       // inserisco registrazione legata al meeting
       $fireStore->addDocument( $this->collection_name, $dataDocument );
 
       return json_decode( '{"state":"200","value":"ok"}', true);
+
     }
 
     public function setDocument( Request $request )  {
@@ -87,6 +99,7 @@ class Screenshot
             "idmeeting" => $idmeeting,
             "user" => $user,
             "name" => $name,
+            "bucket" => "",
             "directory" => $this->directory,
             "date" => date("Y-m-d H:i:s"),
         );

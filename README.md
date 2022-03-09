@@ -90,14 +90,6 @@ corrado@salesmeet.ai
 
 
 ==============================
-Compression Tools Javascript
-==============================
-
-https://javascript-minifier.com/
-o
-https://closure-compiler.appspot.com/home
-
-==============================
 Install linux
 ==============================
 
@@ -109,13 +101,14 @@ https://acloudxpert.com/how-to-install-docker-compose-on-amazon-linux-ami/
 sudo snap install docker          # version 19.03.13, or
 sudo apt  install docker-compose  # version 1.25.0-1
 
+
 ==============================
 PROBLEMA DA RISOLVERE
 ==============================
 
 
 docker buildx create --use --name larger_log --driver-opt env.BUILDKIT_STEP_LOG_MAX_SIZE=50000000
-docker buildx create --driver-opt env.BUILDKIT_STEP_LOG_MAX_SIZE=1000000,env.BUILDKIT_STEP_LOG_MAX_SPEED=100000000 --use
+docker buildx create --driver-opt env.BUILDKIT_STEP_LOG_MAX_SIZE=50000000,env.BUILDKIT_STEP_LOG_MAX_SPEED=100000000 --use
 
 
 
