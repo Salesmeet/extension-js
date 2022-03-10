@@ -32,8 +32,8 @@ class Screenshot
                   "type" => "screenshot",
                   "date" => $document->data()["date"],
                   "name" => $document->data()["name"],
+                  "value" => $document->data()["value"],
                   "directory" => $document->data()["directory"],
-                  "value" => $document->data()["name"],
               ];
               array_push($records,$temp);
           }
@@ -86,6 +86,7 @@ class Screenshot
         $idmeeting = "";
         $user = "";
         $name = "";
+        $value = "";
         if (isset($requestArrayParam["idmeeting"])) {
             $idmeeting = $requestArrayParam["idmeeting"];
         }
@@ -95,10 +96,14 @@ class Screenshot
         if (isset($requestArrayParam["name"])) {
             $name  = $requestArrayParam["name"];
         }
+        if (isset($requestArrayParam["value"])) {
+            $value  = $requestArrayParam["value"];
+        }
         return array(
             "idmeeting" => $idmeeting,
             "user" => $user,
             "name" => $name,
+            "value" => $value,
             "bucket" => "",
             "directory" => $this->directory,
             "date" => date("Y-m-d H:i:s"),

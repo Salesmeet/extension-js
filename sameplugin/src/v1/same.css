@@ -70,6 +70,23 @@
     width:5%;
     text-align: center;
 }
+
+/*
+#same_modal {
+    width:100%;
+    height: 100%;
+    text-align: center;
+    background: #000000bd;
+    display: none;
+    z-index: 9999999;
+    position: absolute;
+    top: 0px;
+    text-align: center;
+    color: #FFF;
+    font-size: 14px;
+}
+*/
+
 #same_function_start_hour_button {
     height: 50px !important;
     width:100%;

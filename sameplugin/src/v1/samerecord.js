@@ -99,7 +99,7 @@ function sameInitRecord() {
 
       mediaRecorder.onstop = function(e) {
 
-        let clipName = prompt('Enter a name for your record clip?','My unnamed clip');
+        let clipName = prompt('Enter a name for your record clip?','');
 
         if (clipName != null) {
 

@@ -165,7 +165,7 @@ return function (App $app) {
 
 
 
-      echo "<hr>Get list record<br>";
+      echo "<hr>Get list screenshot<br>";
       echo '<a href="https://api.sameapp.net/public/v1/screenshot/all/7EQPmfmJD5eahPCLNxwV/en/1">call</a>';
 
 

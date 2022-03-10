@@ -121,6 +121,7 @@ var same_panel_info = '<div id="same_info" class="same_panel_style">\
 <!--button id="same_function_setting_button" class="same_icon_style" title="Setting"></button-->\
 </div>';
 
+
 /****** PANEL INIT  ************************************************/
 
 /* Inizializza SAME creando l'immagine drag come primo step per il cliente */
@@ -151,6 +152,12 @@ function sameInitPanel() {
     same_elemDiv.id = "same_panel_base";
     same_elemDiv.innerHTML = escapeHTMLPolicy.createHTML(same_panel_recording + same_panel_tools + same_panel_operation + same_panel_info);
     document.body.appendChild(same_elemDiv);
+
+    /*
+    var same_elemModale = document.createElement('div');
+    same_elemModale.id = "same_modal";
+    document.body.appendChild(same_elemModale);
+    */
 
     // init per l'eventuale ritorno delle note ...
     sameGetAPI(same_domain_api + "/public/v1/meeting/init/" ,"sameGetAttachments", "sameInitAfter");
@@ -511,10 +518,10 @@ function sameCommonBlockApi( value, type ) {
               out += '<a href="' + same_domain_api + myItems[i].directory + myItems[i].value  + '" target="_blank">' + myItems[i].value + ' (' + myItems[i].date + ')</a>';
            }
          } else if (myItems[i].type == 'screenshot') {
-            if (myItems[i].name!="") {
-               out += '<a href="' + same_domain_api + myItems[i].directory + myItems[i].value  + '" target="_blank">' + myItems[i].name + ' (' + myItems[i].date + ')</a>';
+            if (myItems[i].value!="") {
+               out += '<a href="' + myItems[i].directory + '" target="_blank">' + myItems[i].value + ' (' + myItems[i].date + ')</a>';
             } else {
-               out += '<a href="' + same_domain_api + myItems[i].directory + myItems[i].value  + '" target="_blank">' + myItems[i].value + ' (' + myItems[i].date + ')</a>';
+               out += '<a href="' + myItems[i].directory + '" target="_blank">' + myItems[i].name + ' (' + myItems[i].date + ')</a>';
             }
         } else {
             out += description + myItems[i].value;
@@ -744,6 +751,16 @@ function sameLogin(str) {
   url = "chrome-extension://eakfjnpihbkoohjbelkfjcdlkdhfeadb/options/options.html";
   windiw.open(url);
 }
+
+/****** MODAL  ************************************************/
+
+/*
+function sameInsertModal(str) {
+    str = "<span>" + str + "</span>";
+    document.getElementById("same_modal").innerHTML = escapeHTMLPolicy.createHTML(str);
+    sameDisplayCommon("same_modal","block");
+}
+*/
 
 /****** INIT  ************************************************/
 
