@@ -12,19 +12,14 @@ function sameGetLanguage() { return "en"; }
 function sameGetUser() { return "2"; }
 
 /****** PANEL DESIGN ************************************************/
-var same_panel_recording_button = '<section class="main-controls">\
-        <!--<canvas class="visualizer" height="60px"></canvas>-->\
-        <div id="buttons">\
-          <button id="same_screenshot_button" class="same_icon_style" title="Screenshot"> </button><hr class="same_hidden">\
-          <button id="same_record_button" class="same_record_button same_icon_style" title="Record"> </button>\
-          <button id="same_stop_button" class="same_stop_button same_icon_style" title="Save"> </button>\
-          <button id="same_cancel_button" class="same_cancel_button same_icon_style" title="Cancel"> </button>\
-          <hr>\
-        </div>\
-      </section>\
-      <section class="sound-clips">\
-      </section>\
-    </div>\
+var same_panel_recording_button = '\
+<div class="same_recording_internal"><button id="same_function_note_button_vertical" class="same_hidden_vertical same_hidden_deactive" >Note</button></div>\
+<div class="same_recording_internal"><button id="same_screenshot_button" class="same_icon_style" title="Screenshot"> </button><hr class="same_hidden"></div>\
+<div class="same_recording_internal"><button id="same_record_button" class="same_record_button same_icon_style" title="Record"> </button>\
+<button id="same_stop_button" class="same_stop_button same_icon_style" title="Save"> </button>\
+<button id="same_cancel_button" class="same_cancel_button same_icon_style" title="Cancel"> </button>\
+<hr class="same_hidden"></div>\
+<div id="same_count_hour_default" class="same_recording_internal">Meeting timer <label id="same_minutes_default">00</label>:<label id="same_seconds_default">00</label></div>\
 ';
 
 var same_panel_rapid_command = '<div id="same_rapid_command" style="float:left;">\
@@ -82,10 +77,10 @@ var same_panel_recording = '<div id="same_recording" class="same_panel_style sam
 // same_button_no_border
 var same_panel_tools = '\
   <div id="same_tools" class="same_panel_style same_panel_style_border">\
-  <button id="same_function_note_button">Note</button> \
+  <button id="same_function_note_button" class="same_hidden">Note</button> \
   <button id="same_function_note_big_button" class="same_resize_img same_icon_style same_hidden" title="Enlarge notes field"> </button>\
   <button id="same_function_note_small_button" class="same_resize_img same_icon_style same_hidden" title="Secrease note field"> </button>\
-  <button id="same_function_shortcut_button" class="same_resize_img same_icon_style" title="Shortcuts"> </button>\
+  <button id="same_function_shortcut_button" class="same_resize_img same_icon_style same_hidden" title="Shortcuts"> </button>\
   <hr class="">\
   <button id="same_function_data_meeting_button">Data meeting</button><hr class="same_hidden">\
   <button id="same_function_data_report_meeting_button">Export / Edit plus</button><hr class="same_hidden">\
@@ -138,7 +133,11 @@ function sameInit() {
 
 /* Nasconde immagine SAME e apre il pannello di lavoro */
 function sameInitHidden() {
+    sameStartHourDefault();
     sameDisplayCommon("same_init","none");
+    if (same_position_save == "right") {
+      sameMovePanelRight();
+    }
     sameDisplayCommon("same_panel_base","block");
 }
 /* Nasconde il pannello di lavoro e apre immagine SAME */
@@ -162,8 +161,6 @@ function sameInitPanel() {
     // init per l'eventuale ritorno delle note ...
     sameGetAPI(same_domain_api + "/public/v1/meeting/init/" ,"sameGetAttachments", "sameInitAfter");
 
-    // const myTimeout = setTimeout(sameChangePanelDataMeeting, 500);
-    // const myTimeout = setTimeout(sameGetDataMeeting, 500);
 }
 
 /******* DA QUI CORRADO ******/
@@ -276,19 +273,29 @@ var same_minutesLabel = "";
 var same_secondsLabel = "";
 var same_totalSeconds = 0;
 
-var sameDefaultMinutes = "";
-var sameDefaultSeconds = "";
+// var sameDefaultMinutes = "";
+// var sameDefaultSeconds = "";
 var sameDefaulTotalSeconds = 0;
+var same_minutesLabel_default = "";
+var same_secondsLabel_default = "";
+
 function sameStartHourDefault() {
-     const d = new Date();
-     var temp = d.getFullYear() + "-" + d.getMonth() + "-" + d.getDate() + "-" + d.getHours() + "-" + d.getMinutes() + "-" + d.getSeconds();
-     samePostAPI(temp,"sameStartHourDefault")
-     setInterval(sameStartHourDefaultSetTime, 1000);
+     if (sameDefaulTotalSeconds==0) {
+         same_minutesLabel_default = document.getElementById("same_minutes_default");
+         same_secondsLabel_default = document.getElementById("same_seconds_default");
+         const d = new Date();
+         var temp = d.getFullYear() + "-" + d.getMonth() + "-" + d.getDate() + "-" + d.getHours() + "-" + d.getMinutes() + "-" + d.getSeconds();
+         samePostAPI(temp,"sameStartHourDefault")
+         setInterval(sameStartHourDefaultSetTime, 1000);
+     }
 }
 function sameStartHourDefaultSetTime() {
     ++sameDefaulTotalSeconds;
+    console.log(same_minutesLabel_default);
+    same_secondsLabel_default.innerHTML = escapeHTMLPolicy.createHTML(same_pad(sameDefaulTotalSeconds % 60));
+    same_minutesLabel_default.innerHTML = escapeHTMLPolicy.createHTML(same_pad(parseInt(sameDefaulTotalSeconds / 60)));
 }
-sameStartHourDefault();
+
 
 function same_getTime() {
    try {
@@ -369,6 +376,7 @@ function sameClearHour() {
 function sameChangePanel(note,shortcut,setting,common,datameeting,allmeeting) {
 
       sameSelectedButtoCommon( "same_function_note_button" , note );
+      sameSelectedButtoCommon( "same_function_note_button_vertical" , note );
       sameDisplayCommon("same_note",note);
 
       sameSelectedButtoCommon( "same_function_shortcut_button" , shortcut );
@@ -502,6 +510,8 @@ function sameCommonBlockApi( value, type ) {
           title ='<b>' + myArr.title + '</b><br>';
       }
       for(i = 0; i < myItems.length; i++) {
+
+        out += '<div class="sameBlockApi">';
         if (myItems[i].type == 'checkbox') {
             if (myItems[i].checked == '1') { var checked = "checked"; } else { var checked = ""; }
             out += "<input class='sameAddValueCheck' data-url='" + myArr.apiupdate + "' type='checkbox' " + checked + " id='" + myItems[i].id + "'>";
@@ -527,7 +537,7 @@ function sameCommonBlockApi( value, type ) {
             out += description + myItems[i].value;
         }
         out += ' <button data-object="' + myItems[i].type + '" data-type="' + type + '" data-value="' + sameReplaceCharacters( myItems[i].value ) + '" class="sameAddValueInNote same_resize_small_img same_icon_style" title="Add note"></button>';
-        out += "<br>";
+        out += "</div>";
       }
       if (myArr.edit!="") {
         out = '\
@@ -693,9 +703,11 @@ function sameGetScreenshot() {
 
 /****** PANEL FUNCTION SETTING ************************************************/
 
+var same_position_save = "right";
 var same_position_bottom = true;
 function sameMovePanelTop() {
       same_position_bottom = false;
+      same_position_save = "top";
       sameMovePanelDeleteRight();
       document.getElementById("same_panel_base").style.top = "0px";
       document.getElementById("same_panel_base").style.bottom = "auto";
@@ -703,12 +715,15 @@ function sameMovePanelTop() {
 }
 function sameMovePanelBottom() {
       same_position_bottom = true;
+      same_position_save = "bottom";
       sameNoteSmall();
       sameMovePanelDeleteRight();
       document.getElementById("same_panel_base").style.top = "auto";
       document.getElementById("same_panel_base").style.bottom = "0px";
 }
 function sameMovePanelRight() {
+
+      same_position_save = "right";
       document.getElementById("same_panel_base").classList.add("same_panel_base_right");
       document.getElementById("same_recording").classList.add("same_panel_right");
       document.getElementById("same_tools").classList.add("same_panel_right_tools");
@@ -718,11 +733,20 @@ function sameMovePanelRight() {
       document.getElementById("same_note_text_iframe").classList.add("same_note_text_iframe_right");
       document.getElementById("same_panel_edit_external").classList.add("same_panel_edit_external_right");
       document.getElementById("same_rapid_command").classList.add("same_rapid_command_right");
-      sameNoteBig();
 
+      // sameNoteBig();
+
+      var hrselec_vertical =  document.getElementsByClassName("same_hidden_vertical");
+      for(var i = 0; i < hrselec_vertical.length; i++) {
+          hrselec_vertical[i].classList.remove("same_hidden_deactive");
+      }
       var hrselec =  document.getElementsByClassName("same_hidden");
       for(var i = 0; i < hrselec.length; i++) {
-          hrselec[i].classList.add("same_hidden_right");
+          hrselec[i].classList.add("same_hidden_deactive");
+      }
+      var hrselec_rec =  document.getElementsByClassName("same_recording_internal");
+      for(var i = 0; i < hrselec_rec.length; i++) {
+          hrselec_rec[i].classList.add("same_recording_internal_right");
       }
 }
 
@@ -737,9 +761,18 @@ function sameMovePanelDeleteRight() {
       document.getElementById("same_panel_edit_external").classList.remove("same_panel_edit_external_right");
       document.getElementById("same_rapid_command").classList.remove("same_rapid_command_right");
 
+      var hrselec_vertical =  document.getElementsByClassName("same_hidden_vertical");
+      for(var i = 0; i < hrselec_vertical.length; i++) {
+          console.log( hrselec_vertical[i] );
+          hrselec_vertical[i].classList.add("same_hidden_deactive");
+      }
       var hrselec =  document.getElementsByClassName("same_hidden");
       for(var i = 0; i < hrselec.length; i++) {
-          hrselec[i].classList.remove("same_hidden_right");
+          hrselec[i].classList.remove("same_hidden_deactive");
+      }
+      var hrselec_rec =  document.getElementsByClassName("same_recording_internal");
+      for(var i = 0; i < hrselec_rec.length; i++) {
+          hrselec_rec[i].classList.remove("same_recording_internal_right");
       }
 }
 
@@ -779,6 +812,8 @@ function initSame() {
   sameClickCommon( "same_function_clear_hour_button" , sameClearHourAsk );
 
   sameClickCommon( "same_function_note_button" , sameChangePanelNote );
+  sameClickCommon( "same_function_note_button_vertical" , sameChangePanelNote );
+
   sameClickCommon( "same_function_shortcut_button" , sameChangePanelShortcut );
   sameClickCommon( "same_function_shortcut_short_button" , sameChangePanelShortcut );
   sameClickCommon( "same_function_setting_button" , sameChangePanelSetting );

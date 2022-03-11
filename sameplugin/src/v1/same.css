@@ -1,11 +1,12 @@
 #same_init {
     background: #FFFFFF;
-    bottom: 110px;
-    position: absolute;
+    top: 43%;
+    position: fixed;
     width: 150px;
     height: 75px;
     z-index: 99990;
     border: 1px solid #000;
+    right: 0px;
 }
 #same_initheader {
   padding: 0px 10px 0px 10px;;
@@ -59,6 +60,10 @@
 #same_recording {
     width:6%;
 }
+.same_recording_internal {
+    float:left;
+}
+
 #same_tools {
     width:11%;
 }
@@ -87,26 +92,34 @@
 }
 */
 
+#same_count_hour_default {
+    height: 100%;
+    padding-top: 10px;
+}
 #same_function_start_hour_button {
     height: 50px !important;
     width:100%;
     background: #03a9f4 !important;;
+        max-width: 100px;
 }
 #same_function_stop_hour_button{
     height: 24px !important;
     background: #69d26d !important;;
     margin-bottom: 2px;
     width:100%;
+        max-width: 100px;
 }
 #same_function_start_short_hour_button {
     height: 24px !important;
     background: #03a9f4 !important;;
     margin-bottom: 2px;
     width:100%;
+        max-width: 100px;
 }
 #same_function_clear_hour_button{
     height: 24px !important;
     width:100%;
+        max-width: 100px;
 }
 #same_panel_edit_external{
     position: absolute;
@@ -246,6 +259,10 @@
 
 .sameAddValueInNote {
     background-image: url('https://plugin.sameapp.net/v1/img/shortcuts2.png') !important;
+    position: absolute;
+}
+.sameBlockApi {
+    height: 27px;
 }
 
 .same_resize_img {
@@ -347,19 +364,24 @@ div.editable {
 }
 .same_panel_right_tools {
     float: none  !important;
-    height: 76px  !important;
+    height: 47px  !important;
     width: 100% !important;
+    padding-top: 4px;
 }
 .same_panel_panel_right {
     height: 76% !important;
     float: none  !important;
     width: 100% !important;
+    padding-top: 10px;
 }
-.same_hidden_right {
+.same_hidden_active {
+    display:  block !important;
+}
+.same_hidden_deactive {
     display:  none !important;
 }
 .same_note_text_iframe_right {
-    top: 150px;
+    top: 122px;
     right: 3px;
     width: 95% !important;
     height: 69% !important;
@@ -375,4 +397,13 @@ div.editable {
 }
 .same_rapid_command_right {
     width: 100% !important;
+}
+.same_function_note_button_vertical_right {
+    display: block !important;
+}
+.same_recording_internal_right {
+    padding-top: 6px;
+    padding-right: 10px;
+    padding-left: 10px;
+    border-right: 1px solid #9e9e9e;
 }

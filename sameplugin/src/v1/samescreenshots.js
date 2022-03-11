@@ -21,5 +21,7 @@ function sameActiveScreenshot() {
     /* viene riattivato da una funzione nel content.js dell'extension chrome */
 }
 function sameDeActiveScreenshot() {
+
+    sameGetScreenshot();
     sameDisplayCommon("same_panel_base","none");
 }
