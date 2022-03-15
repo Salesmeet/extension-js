@@ -24,13 +24,13 @@ class Attachements
             {
                "id":"1",
                "type":"link",
-               "value":"https://www.salesmeet.ai/",
+               "value":"https://www.example.ai/document.pdf",
                "description":"Pre architectural analysis"
             },
             {
                "id":"2",
                "type":"link",
-               "value":"https://www.salesmeet.ai/",
+               "value":"https://www.example.ai/document2.pdf",
                "description":"PDF architecture"
             }
          ]

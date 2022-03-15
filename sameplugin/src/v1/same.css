@@ -35,6 +35,25 @@
     z-index:99992;
     border:1px solid #000;
 }
+
+#same_new_meeting {
+    background: #FFFFFF;
+    font-size: 13px;
+    color: #000;
+    top: 40%;
+    right: 0px;
+    position:fixed;
+    width:300px;
+    height:350px;
+    padding:3px;
+    z-index:99992;
+    border:1px solid #000;
+}
+#same_new_meeting_iframe {
+    height: 100%;
+}
+
+
 #same_panel_base button {
     background-color: #ffffff; /* #d7d7d7; */
     height: 25px;
@@ -43,7 +62,9 @@
     padding: 0px 2px 0px 2px;
     cursor: pointer;
     background-repeat: no-repeat;
+    margin-right: 2px;
 }
+
 #same_panel_base button:hover {
     opacity: 60%;
 }
@@ -141,7 +162,7 @@
 
 #same_panel_edit_external_iframe {
     width: 100%;
-    height: 98%;
+    height: 100%;
     border: 0;
 }
 #same_rapid_command {
@@ -158,6 +179,10 @@
     height: 135px;
     overflow: auto;
     border: 1px solid #000000;
+}
+
+#same_note {
+  height: 100% !important;
 }
 
 .same_note_text_big_bottom {
@@ -228,7 +253,7 @@
     position: fixed;
 }
 
-#same_function_shortcut_button, #same_function_shortcut_short_button {
+#same_function_shortcut_button, #same_function_shortcut_short_button, #same_function_shortcut_button_vertical {
     background-image: url('https://plugin.sameapp.net/v1/img/shortcuts.png') !important;
 }
 #same_function_note_small_button {
@@ -279,6 +304,8 @@
     padding-left: 22px !important;
     background-position: left;
     background-size: 18px;
+    margin-bottom: 5px;
+    margin-right: 5px;
 }
 #same_function_agenda_data_button {
     background-image: url('https://plugin.sameapp.net/v1/img/calendar2.png') !important;
@@ -369,11 +396,26 @@ div.editable {
     padding-top: 4px;
 }
 .same_panel_panel_right {
-    height: 76% !important;
+    /* height: 76% !important; */
     float: none  !important;
     width: 100% !important;
     padding-top: 10px;
+    border-top: 1px solid #000 !important;
+    border-bottom: 1px solid #000 !important;
 }
+.same_common_right {
+    float: none  !important;
+    width: 100% !important;
+    padding-top: 10px;
+    height: 100% !important;
+}
+
+.same_info_right {
+    float: none  !important;
+    height: 116px  !important;
+    width: 100% !important;
+}
+
 .same_hidden_active {
     display:  block !important;
 }
@@ -384,7 +426,7 @@ div.editable {
     top: 122px;
     right: 3px;
     width: 95% !important;
-    height: 69% !important;
+    height: 74% !important;
 }
 .same_panel_edit_external_right {
     top: 0px;
@@ -397,6 +439,10 @@ div.editable {
 }
 .same_rapid_command_right {
     width: 100% !important;
+}
+#same_function_note_button_vertical {
+    position: relative;
+    top: -5px;
 }
 .same_function_note_button_vertical_right {
     display: block !important;

@@ -158,6 +158,8 @@ function initVideoSameExension( sameIdUnivoco ) {
     chrome.runtime.sendMessage( same_id_extension ,options);
 }
 
+/*
 window.onload = function() {
   sameInitRecord();
 };
+*/

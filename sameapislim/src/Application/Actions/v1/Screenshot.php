@@ -7,6 +7,7 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\UploadedFileInterface;
 
 use App\Application\Actions\FireStore;
+// use App\Application\Actions\FirebaseStorage;
 use App\Application\Actions\Aws;
 
 class Screenshot
@@ -69,6 +70,11 @@ class Screenshot
       $pathAws = $aws->uploadAWS( $this->directory,  $file, $bucket );
       $dataDocument["directory"] = $pathAws;
       $dataDocument["bucket"] = $aws->getBucketMaster( $bucket );
+
+      /*
+      $firebaseStorage = new FirebaseStorage();
+      $firebaseStorage->addFile( $this->directory,  $file );
+      */
 
       // remove file
       unlink($this->directory . $file);

@@ -41,6 +41,10 @@ class Meeting
     if (isset($args["idmeeting"])) {
         $fireStore = new FireStore();
         $data = $fireStore->getDocument( $this->collection_name, $args["idmeeting"] ) ;
+        $start = "";
+        if ($data["start"]!="") {
+            $start  = $data["start"]->formatAsString();
+        }
         return [
             "title" => "Summary of meeting data",
             "edit" => "",
@@ -62,7 +66,7 @@ class Meeting
               [
                 "id" => "1",
                 "type" => "text",
-                "value" => $data["start"]->formatAsString(),
+                "value" => $start,
                 "description" => "Data",
               ],
               [
@@ -89,6 +93,64 @@ class Meeting
         $fireStore->updateDocument( "meetings", $idmeeting, $temp);
   }
    */
+
+
+   public function insert( Request $request, Response $response, $args )  {
+
+     $data = $this->setDocumentInsert( $request );
+     $fireStore = new FireStore();
+     $fireStore->addDocument( $this->collection_name,  $data );
+     return json_decode( '{"state":"200","idmeeting":"' .  $this->getByUniqid( $data["uniqid"] ) . '"}', true);
+
+   }
+
+   public function getByUniqid( $uniqid )  {
+         $fireStore = new FireStore();
+         $data = $fireStore->getDocumentsByQuery( $this->collection_name, "uniqid", "==" ,  $uniqid );
+         $records = array();
+         foreach ($data as $document) {
+           return  $document->id();
+         }
+     return "";
+   }
+
+
+   public function setDocumentInsert( Request $request )  {
+       $requestArrayParam = $request->getParsedBody();
+       $name = "";
+       $type = "";
+       $lang = "";
+       $user = "";
+       $url = "";
+       $uniqid = "";
+       if (isset($requestArrayParam["name"])) {
+           $name = $requestArrayParam["name"];
+       }
+       if (isset($requestArrayParam["type"])) {
+           $type = $requestArrayParam["type"];
+       }
+       if (isset($requestArrayParam["lang"])) {
+           $lang = $requestArrayParam["lang"];
+       }
+       if (isset($requestArrayParam["user"])) {
+           $user = $requestArrayParam["user"];
+       }
+       if (isset($requestArrayParam["url"])) {
+           $url  = $requestArrayParam["url"];
+       }
+       if (isset($requestArrayParam["uniqid"])) {
+           $uniqid  = $requestArrayParam["uniqid"];
+       }
+       return array(
+           "name" => $name,
+           "type" => $type,
+           "lang" => $lang,
+           "user" => $user,
+           "url" => $url,
+           "date" => date("Y-m-d H:i:s"),
+           "uniqid" => $uniqid,
+       );
+   }
 
   public function getMockup()  {
 

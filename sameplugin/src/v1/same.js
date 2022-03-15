@@ -6,14 +6,31 @@ escapeHTMLPolicy = trustedTypes.createPolicy("forceInner", {
 var same_domain_api = "https://api.sameapp.net";
 var same_domain = "https://plugin.sameapp.net";
 var same_id_extension = "jinjngkjbcaedjmllefbghfodplfngeh";
+var same_id_meeting = ""; // "7EQPmfmJD5eahPCLNxwV";
 
-function sameGetIdMeeting() { return "7EQPmfmJD5eahPCLNxwV"; }
+function sameGetIdMeeting() { return same_id_meeting; }
+function sameSetIdMeeting( value ) { same_id_meeting = value; }
+
 function sameGetLanguage() { return "en"; }
 function sameGetUser() { return "2"; }
+function sameGetDatePage() {
+    return encodeURIComponent(window.location.href);
+}
+
+var samePanelSelected = "";
+var samePositionSelected = "right";
+function sameSetPanelSelected( value ) {
+    console.log("Selected:" + value);
+    samePanelSelected = value;
+}
+
 
 /****** PANEL DESIGN ************************************************/
 var same_panel_recording_button = '\
-<div class="same_recording_internal"><button id="same_function_note_button_vertical" class="same_hidden_vertical same_hidden_deactive" >Note</button></div>\
+<div class="same_recording_internal">\
+<button id="same_function_note_button_vertical" class="same_hidden_vertical same_hidden_deactive" >Note</button>\
+<button id="same_function_shortcut_button_vertical" class="same_icon_style same_hidden_vertical same_hidden_deactive" title="Shortcuts"> </button>\
+</div>\
 <div class="same_recording_internal"><button id="same_screenshot_button" class="same_icon_style" title="Screenshot"> </button><hr class="same_hidden"></div>\
 <div class="same_recording_internal"><button id="same_record_button" class="same_record_button same_icon_style" title="Record"> </button>\
 <button id="same_stop_button" class="same_stop_button same_icon_style" title="Save"> </button>\
@@ -29,7 +46,9 @@ var same_panel_rapid_command = '<div id="same_rapid_command" style="float:left;"
 <button id="same_function_rapid_rtc_short_button" class="same_resize_img same_icon_style" title="Shortcuts"></button><br class="same_hidden">\
 <button id="same_function_shortcut_short_button" class="same_resize_img same_icon_style" title="Shortcuts"> </button>\
 </div>';
-var same_panel_note = '<div id="same_note" style="display:none">' + same_panel_rapid_command + '<div id="same_note_text_div" style="float:left;"><iframe src="' + same_domain + '/v1/editor.php?idmeeting=' + sameGetIdMeeting() + '&lang=' + sameGetLanguage() + "&user=" + sameGetUser() + '" id="same_note_text_iframe"></iframe></div></div>'; //  <textarea id="same_note_text"></textarea> <div contenteditable="true" id="same_note_text"><a href="" target="blank">zzzz</a></div>
+
+// var same_panel_note = '<div id="same_note" style="display:none">' + same_panel_rapid_command + '<div id="same_note_text_div" style="float:left;"><iframe src="' + same_domain + '/v1/editor.php?idmeeting=' + sameGetIdMeeting() + '&lang=' + sameGetLanguage() + "&user=" + sameGetUser() + '" id="same_note_text_iframe"></iframe></div></div>'; //  <textarea id="same_note_text"></textarea> <div contenteditable="true" id="same_note_text"><a href="" target="blank">zzzz</a></div>
+var same_panel_note = '<div id="same_note" style="display:none">' + same_panel_rapid_command + '<div id="same_note_text_div" style="float:left;"><iframe src="" id="same_note_text_iframe"></iframe></div></div>'; //  <textarea id="same_note_text"></textarea> <div contenteditable="true" id="same_note_text"><a href="" target="blank">zzzz</a></div>
 
 var same_panel_shortcut = '\
 <div id="same_shortcut" style="display:none">\
@@ -105,7 +124,7 @@ var same_panel_info = '<div id="same_info" class="same_panel_style">\
 <button id="same_function_stop_hour_button" style="display:none;">Stop timer</button>\
 <button id="same_function_start_short_hour_button" style="display:none;">Resume</button>\
 <button id="same_function_clear_hour_button" style="display:none;">Clear</button>\
-<button id="same_function_start_hour_button">Start timer</button>\
+<button id="same_function_start_hour_button">Start timer action</button>\
 <hr>\
 <div id="same_count_hour"><label id="same_minutes">00</label>:<label id="same_seconds">00</label></div>\
 <hr>\
@@ -115,7 +134,6 @@ var same_panel_info = '<div id="same_info" class="same_panel_style">\
 <button id="same_function_right_button" class="same_icon_style" title="Position right"></button>\
 <!--button id="same_function_setting_button" class="same_icon_style" title="Setting"></button-->\
 </div>';
-
 
 /****** PANEL INIT  ************************************************/
 
@@ -129,17 +147,28 @@ function sameInit() {
     document.body.appendChild(same_elemDiv);
     sameClickCommon( "same_init_img" , sameInitHidden );
     sameDragElement(document.getElementById("same_init"));
+
 }
 
 /* Nasconde immagine SAME e apre il pannello di lavoro */
 function sameInitHidden() {
-    sameStartHourDefault();
+
     sameDisplayCommon("same_init","none");
-    if (same_position_save == "right") {
-      sameMovePanelRight();
+    if (sameGetIdMeeting()=="") {
+        sameNewMeeting();
+    } else {
+
+        initSameMeeting();
+        sameStartHourDefault();
+        document.getElementById("same_note_text_iframe").src = same_domain + '/v1/editor.php?idmeeting=' + sameGetIdMeeting() + '&lang=' + sameGetLanguage() + "&user=" + sameGetUser();
+        if (samePositionSelected == "right") {
+          sameMovePanelRight();
+        }
+        sameDisplayCommon("same_panel_base","block");
     }
-    sameDisplayCommon("same_panel_base","block");
 }
+
+
 /* Nasconde il pannello di lavoro e apre immagine SAME */
 function sameInitShow() {
     sameDisplayCommon("same_init","block");
@@ -151,17 +180,18 @@ function sameInitPanel() {
     same_elemDiv.id = "same_panel_base";
     same_elemDiv.innerHTML = escapeHTMLPolicy.createHTML(same_panel_recording + same_panel_tools + same_panel_operation + same_panel_info);
     document.body.appendChild(same_elemDiv);
-
-    /*
-    var same_elemModale = document.createElement('div');
-    same_elemModale.id = "same_modal";
-    document.body.appendChild(same_elemModale);
-    */
-
-    // init per l'eventuale ritorno delle note ...
+    // init recupero i dati del mmeting ...
     sameGetAPI(same_domain_api + "/public/v1/meeting/init/" ,"sameGetAttachments", "sameInitAfter");
-
 }
+function sameNewMeeting() {
+    var same_new_meeting = '<iframe src="'+ same_domain + '/v1/newmeeting.php?lang=' + sameGetLanguage() + '&user=' + sameGetUser() + '&url=' + sameGetDatePage() + '" id="same_new_meeting_iframe"></iframe>';
+    var same_elemDiv = document.createElement('div');
+    same_elemDiv.id = "same_new_meeting";
+    same_elemDiv.innerHTML = escapeHTMLPolicy.createHTML(same_new_meeting);
+    document.body.appendChild(same_elemDiv);
+}
+
+
 
 /******* DA QUI CORRADO ******/
 function sameInitAfter( data ) {
@@ -291,7 +321,6 @@ function sameStartHourDefault() {
 }
 function sameStartHourDefaultSetTime() {
     ++sameDefaulTotalSeconds;
-    console.log(same_minutesLabel_default);
     same_secondsLabel_default.innerHTML = escapeHTMLPolicy.createHTML(same_pad(sameDefaulTotalSeconds % 60));
     same_minutesLabel_default.innerHTML = escapeHTMLPolicy.createHTML(same_pad(parseInt(sameDefaulTotalSeconds / 60)));
 }
@@ -380,6 +409,7 @@ function sameChangePanel(note,shortcut,setting,common,datameeting,allmeeting) {
       sameDisplayCommon("same_note",note);
 
       sameSelectedButtoCommon( "same_function_shortcut_button" , shortcut );
+      sameSelectedButtoCommon( "same_function_shortcut_button_vertical" , shortcut );
       sameDisplayCommon("same_shortcut",shortcut);
 
       // sameSelectedButtoCommon( "same_function_setting_button" , setting );
@@ -409,6 +439,7 @@ function sameSelectedButtoCommon( id_element , display ) {
 /* attiva il pannello note creando WYSIWYG HTML */
 var sameFlagInitNote = false;
 function sameChangePanelNote() {
+      console.log("sameChangePanelNote_______");
       if (sameFlagInitNote==false) {
           sameFlagInitNote = true;
           sameNoteBigCommon();
@@ -435,7 +466,7 @@ function sameChangePanelCommon() {
 
 var sameACapoCharacter = "";
 function sameRapidPoi() {
-      sameRapidCommand(1,"Point of interest","sameRapidPoi",sameACapoCharacter);
+      sameRapidCommand(1,"Task","sameRapidPoi",sameACapoCharacter);
 }
 function sameRapidMak() {
       sameRapidCommand(1,"Make an appointment","sameRapidMak",sameACapoCharacter);
@@ -574,9 +605,10 @@ function sameGetAPI(url,type,action) {
       xhttp.open("GET", url + sameGetIdMeeting() + "/" + sameGetLanguage() + "/" + sameGetUser() , true);
       xhttp.send();
 }
+
 function samePostAPI(value,action) {
       if (value==="") {
-          console.log("Vuoto: " + action + " __ " + value);
+          // ssconsole.log("Vuoto: " + action + " __ " + value);
       } else {
           // console.log("samePostAPI");
           var data = new FormData();
@@ -613,6 +645,9 @@ function sameOpenWindowCommon( value ) {
     window.open(value);
 }
 function sameDisplayCommon( id , value ) {
+  if (value == "block") {
+    sameSetPanelSelected( id );
+  }
   document.getElementById(id).style.display = value;
 }
 function sameClickCommon( id , name_funcition ) {
@@ -625,7 +660,6 @@ function sameClickCommonClass( id , name_funcition, action ) {
     var userSelection =  document.getElementsByClassName(id); //.addEventListener("click", name_funcition);
     for(var i = 0; i < userSelection.length; i++) {
       (function(index) {
-        // console.log(index);
         userSelection[index].addEventListener( action , name_funcition);
       })(i);
     }
@@ -703,11 +737,11 @@ function sameGetScreenshot() {
 
 /****** PANEL FUNCTION SETTING ************************************************/
 
-var same_position_save = "right";
+
 var same_position_bottom = true;
 function sameMovePanelTop() {
       same_position_bottom = false;
-      same_position_save = "top";
+      samePositionSelected = "top";
       sameMovePanelDeleteRight();
       document.getElementById("same_panel_base").style.top = "0px";
       document.getElementById("same_panel_base").style.bottom = "auto";
@@ -715,7 +749,7 @@ function sameMovePanelTop() {
 }
 function sameMovePanelBottom() {
       same_position_bottom = true;
-      same_position_save = "bottom";
+      samePositionSelected = "bottom";
       sameNoteSmall();
       sameMovePanelDeleteRight();
       document.getElementById("same_panel_base").style.top = "auto";
@@ -723,13 +757,12 @@ function sameMovePanelBottom() {
 }
 function sameMovePanelRight() {
 
-      same_position_save = "right";
       document.getElementById("same_panel_base").classList.add("same_panel_base_right");
       document.getElementById("same_recording").classList.add("same_panel_right");
       document.getElementById("same_tools").classList.add("same_panel_right_tools");
       document.getElementById("same_panel").classList.add("same_panel_panel_right");
-      document.getElementById("same_info").classList.add("same_panel_right");
-      document.getElementById("same_common").classList.add("same_panel_panel_right");
+      document.getElementById("same_info").classList.add("same_info_right");
+      document.getElementById("same_common").classList.add("same_common_right");
       document.getElementById("same_note_text_iframe").classList.add("same_note_text_iframe_right");
       document.getElementById("same_panel_edit_external").classList.add("same_panel_edit_external_right");
       document.getElementById("same_rapid_command").classList.add("same_rapid_command_right");
@@ -748,6 +781,16 @@ function sameMovePanelRight() {
       for(var i = 0; i < hrselec_rec.length; i++) {
           hrselec_rec[i].classList.add("same_recording_internal_right");
       }
+
+      let height = window.innerHeight - 215;
+      document.getElementById("same_panel").style.height = height + "px";
+      document.getElementById("same_note_text_iframe").style.height = height + "px";
+      document.getElementById("same_panel_edit_external_iframe").style.height = height + "px";
+
+      sameNoteBigCommon();
+      samePositionSelected = "right";
+
+
 }
 
 function sameMovePanelDeleteRight() {
@@ -755,15 +798,14 @@ function sameMovePanelDeleteRight() {
       document.getElementById("same_recording").classList.remove("same_panel_right");
       document.getElementById("same_tools").classList.remove("same_panel_right_tools");
       document.getElementById("same_panel").classList.remove("same_panel_panel_right");
-      document.getElementById("same_info").classList.remove("same_panel_right");
-      document.getElementById("same_common").classList.remove("same_panel_panel_right");
+      document.getElementById("same_info").classList.remove("same_info_right");
+      document.getElementById("same_common").classList.remove("same_common_right");
       document.getElementById("same_note_text_iframe").classList.remove("same_note_text_iframe_right");
       document.getElementById("same_panel_edit_external").classList.remove("same_panel_edit_external_right");
       document.getElementById("same_rapid_command").classList.remove("same_rapid_command_right");
 
       var hrselec_vertical =  document.getElementsByClassName("same_hidden_vertical");
       for(var i = 0; i < hrselec_vertical.length; i++) {
-          console.log( hrselec_vertical[i] );
           hrselec_vertical[i].classList.add("same_hidden_deactive");
       }
       var hrselec =  document.getElementsByClassName("same_hidden");
@@ -774,6 +816,11 @@ function sameMovePanelDeleteRight() {
       for(var i = 0; i < hrselec_rec.length; i++) {
           hrselec_rec[i].classList.remove("same_recording_internal_right");
       }
+
+      document.getElementById("same_panel").style.height = "100%";
+      document.getElementById("same_note_text_iframe").style.height = "135px";
+      document.getElementById("same_panel_edit_external_iframe").style.height = "135px";
+
 }
 
 /****** PANEL SEARCH ************************************************/
@@ -800,6 +847,10 @@ function sameInsertModal(str) {
 function initSame() {
 
   sameInit();
+
+}
+function initSameMeeting() {
+
   sameInitPanel();
 
   sameClickCommon( "same_function_note_big_button" , sameNoteBig );
@@ -816,6 +867,9 @@ function initSame() {
 
   sameClickCommon( "same_function_shortcut_button" , sameChangePanelShortcut );
   sameClickCommon( "same_function_shortcut_short_button" , sameChangePanelShortcut );
+  sameClickCommon( "same_function_shortcut_button_vertical" , sameChangePanelShortcut );
+
+
   sameClickCommon( "same_function_setting_button" , sameChangePanelSetting );
   sameClickCommon( "same_function_data_meeting_button" , sameChangePanelDataMeeting );
   sameClickCommon( "same_function_data_meeting_all_button" , sameChangePanelAllMeeting );
@@ -860,6 +914,8 @@ function initSame() {
   window.onblur = function() {
      samePostAPINote();
   };
+
+  sameInitRecord();
 
 }
 
@@ -912,6 +968,12 @@ function sameSaveParentCommon(message) {
     samePostAPINote();
     sameSetNoteValue( message );
     sameFunctionEditClose();
+}
+function sameCreateMeeting(message) {
+    sameSetIdMeeting(message);
+    sameInitPanel();
+    sameInitHidden();
+    sameDisplayCommon( "same_new_meeting" , "none" );
 }
 
 /***** INIZIALIZZA SAME *****/

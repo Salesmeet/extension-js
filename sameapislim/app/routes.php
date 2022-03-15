@@ -84,6 +84,10 @@ return function (App $app) {
         $meeting = new Meeting();
         return setResponse($response, $meeting->get($request, $response, $args) );
     });
+    $app->post('/public/v1/meeting/', function (Request $request, Response $response, $args) {
+        $meeting = new Meeting();
+        return setResponse($response, $meeting->insert($request, $response, $args) );
+    });
 
     // Get dati dell'agenda del meeting
     $app->get('/public/v1/agenda/{idmeeting}/{lang}/{user}', function (Request $request, Response $response, $args) {
@@ -155,6 +159,17 @@ return function (App $app) {
 
 
     $app->get('/public/v1/test/', function (Request $request, Response $response, $args) {
+
+
+      echo "<hr>New meeting:<br>";
+      echo '<form id="inviofile" action="https://api.sameapp.net/public/v1/meeting/" method="post" enctype="multipart/form-data">';
+      echo '  <input type="text" name="name" id="name">';
+      echo '  <input type="text" name="type" id="type">';
+      echo '  <input type="text" name="url" id="url">';
+      echo '  <input type="text" name="lang" id="lang">';
+      echo '  <input type="text" name="user" id="user">';
+      echo '  <input type="submit" value="Upload Image" name="submit">';
+      echo '</form>';
 
 
       echo "<hr>Select image to upload:<br>";

@@ -12,7 +12,6 @@ class FirebaseStorage {
   // https://googleapis.github.io/google-cloud-php/#/docs/google-cloud/v0.175.0/firestore/firestoreclient
 
   private $project = "sales-66641";
-  private $apiKey = 'AIzaSyB_bq-VMYBF7xow-C6GKi4cB3SPKbInm_w';
   private $fileKey = 'firebase_credentials.json';
 
   public function addFile( $path, $file ) {
