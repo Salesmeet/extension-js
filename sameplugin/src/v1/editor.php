@@ -129,20 +129,20 @@
 
 
     function sameCall( value ) {
-      console.log("sameCall_da_Frame: ");
       window.parent.postMessage({
           'func': value,
           'message': ""
       }, "*");
     }
 
+    // plugins: 'link table lists checklist',
     var ed = tinymce.init({
         selector: '#same_note_text_iframe',
         menubar: false,
         statusbar: false,
         height: 500,
-        plugins: 'link table lists checklist',
-        toolbar: 'customInsertButton | undo redo | bold italic underline strikethrough | fontsizeselect | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist checklist | forecolor backcolor removeformat | link | table ',
+        plugins: 'link table lists',
+        toolbar: 'customInsertButton | undo redo | bold italic underline strikethrough | fontsizeselect | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist | forecolor backcolor removeformat | link | table ',
         setup : function(ed) {
             ed.on("keypress", function(keypress){
                 sameKeypress( keypress );

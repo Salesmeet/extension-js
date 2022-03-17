@@ -29,7 +29,7 @@ $note = "";
      <hr>
      <button onclick="save();" id="" class="same_icon_style" title="">Save</button>
      <hr>
-     <button onclick="exportPdf();" id="" class="same_icon_style" title="">Export PDF</button>
+     <button onclick="" id="" class="same_icon_style" title="">Export PDF</button>
      <hr>
      <button onclick="" id="" class="same_icon_style" title="">Share</button>
   </div>
@@ -80,18 +80,28 @@ $note = "";
     window.onload = function() {
       sameGetAPI();
     };
+    function sameChangeHeight() {
+      document.head.insertAdjacentHTML("beforeend", '<style> .same_note_text_iframe_dynamic { height: ' + document.documentElement.clientHeight + 'px !important;}</style>')
+      var userSelection = document.getElementsByClassName("tox-tinymce");
+      userSelection[0].classList.remove("same_note_text_iframe_dynamic");
+      userSelection[0].classList.add("same_note_text_iframe_dynamic");
+    }
+
+    /* plugins: 'print preview powerpaste casechange importcss tinydrive searchreplace autolink autosave save directionality advcode visualblocks visualchars fullscreen image link media mediaembed template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists checklist wordcount tinymcespellchecker a11ychecker imagetools textpattern noneditable help formatpainter permanentpen pageembed charmap tinycomments mentions quickbars linkchecker emoticons advtable  */
+    /* toolbar: 'export | undo redo | bold italic underline strikethrough | fontselect fontsizeselect formatselect | alignleft aligncenter alignright alignjustify | outdent indent | numlist bullist checklist | forecolor backcolor casechange permanentpen formatpainter removeformat | pagebreak | charmap emoticons | fullscreen  preview save print | insertfile image media pageembed template link anchor codesample | a11ycheck ltr rtl | showcomments addcomment', */
 
     function loadTinyMCE() {
         tinymce.init({
           selector: 'textarea',
-          plugins: 'print preview powerpaste casechange importcss tinydrive searchreplace autolink autosave save directionality advcode visualblocks visualchars fullscreen image link media mediaembed template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists checklist wordcount tinymcespellchecker a11ychecker imagetools textpattern noneditable help formatpainter permanentpen pageembed charmap tinycomments mentions quickbars linkchecker emoticons advtable export',
+          plugins: 'print preview importcss tinydrive searchreplace autolink autosave save directionality visualblocks visualchars fullscreen image link media template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists wordcount imagetools textpattern noneditable help charmap quickbars emoticons',
           menubar: 'file edit view insert format tools table tc help',
-          toolbar: 'export | undo redo | bold italic underline strikethrough | fontselect fontsizeselect formatselect | alignleft aligncenter alignright alignjustify | outdent indent | numlist bullist checklist | forecolor backcolor casechange permanentpen formatpainter removeformat | pagebreak | charmap emoticons | fullscreen  preview save print | insertfile image media pageembed template link anchor codesample | a11ycheck ltr rtl | showcomments addcomment',
+          toolbar: 'undo redo | bold italic underline strikethrough | fontselect fontsizeselect formatselect | alignleft aligncenter alignright alignjustify | outdent indent | numlist bullist | forecolor backcolor casechange permanentpen formatpainter removeformat | pagebreak | charmap emoticons | fullscreen  preview save print | insertfile image media pageembed template link anchor codesample | a11ycheck ltr rtl | showcomments addcomment',
           height: window.innerHeight,
           statusbar: false,
           tinycomments_mode: 'embedded',
           tinycomments_author: '',
         });
+        // sameChangeHeight();
     }
     loadTinyMCE();
     // const myTimeout = setTimeout(loadTinyMCE, 50);

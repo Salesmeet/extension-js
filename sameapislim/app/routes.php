@@ -26,6 +26,7 @@ use App\Application\Actions\v1\Note;
 use App\Application\Actions\v1\Auth;
 use App\Application\Actions\v1\Record;
 use App\Application\Actions\v1\Screenshot;
+use App\Application\Actions\v1\Shortcut;
 
 
 return function (App $app) {
@@ -46,7 +47,6 @@ return function (App $app) {
         return setResponse($response, $action->insert($request, $response, $args) );
     });
     */
-
 
     // log delle azioni
     $app->post('/public/v1/action', function (Request $request, Response $response, $args) {
@@ -88,6 +88,10 @@ return function (App $app) {
         $meeting = new Meeting();
         return setResponse($response, $meeting->insert($request, $response, $args) );
     });
+    $app->post('/public/v1/meeting/url', function (Request $request, Response $response, $args) {
+        $meeting = new Meeting();
+        return setResponse($response, $meeting->getByURL($request, $response, $args) );
+    });
 
     // Get dati dell'agenda del meeting
     $app->get('/public/v1/agenda/{idmeeting}/{lang}/{user}', function (Request $request, Response $response, $args) {
@@ -114,6 +118,12 @@ return function (App $app) {
     $app->get('/public/v1/attachements/{idmeeting}/{lang}/{user}', function (Request $request, Response $response, $args) {
         $attachements = new Attachements();
         return setResponse($response, $attachements->get($request, $response, $args) );
+    });
+
+    // Get Shortcut
+    $app->get('/public/v1/shortcut/{idtype}/{idmeeting}/{lang}/{user}', function (Request $request, Response $response, $args) {
+        $shortcut = new Shortcut();
+        return setResponse($response, $shortcut->get($request, $response, $args) );
     });
 
 

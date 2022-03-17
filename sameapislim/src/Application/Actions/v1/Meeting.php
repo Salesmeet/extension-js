@@ -5,12 +5,12 @@ namespace App\Application\Actions\v1;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use App\Application\Actions\FireStore;
+use App\Application\Actions\v1\Common;
 
 class Meeting
 {
 
   private $collection_name = "meetings";
-
   public function __construct() {
   }
 
@@ -22,14 +22,15 @@ class Meeting
           $user = $args["user"];
           $fireStore = new FireStore();
           $data = $fireStore->getDocument( $this->collection_name, $idmeeting ) ;
+          // print_r($data);
           if ($data["init"]=="") {
               $temp = [
                   ['path' => 'init', 'value' => date("Y-m-d H:i:s")]
               ];
               $fireStore->updateDocument( $this->collection_name, $idmeeting, $temp);
-              return json_decode( '{"state":"200","init":""}', true);
+              return json_decode( '{"state":"200","init":"","type":"' . $data["type"] . '"}', true);
           } else {
-              return json_decode( '{"state":"200","init":"' . $data["init"] . '"}', true);
+              return json_decode( '{"state":"200","init":"' . $data["init"] . '","type":"' . $data["type"] . '"}', true);
           }
       }
       return json_decode( '{"state":"200","init":""}', true);
@@ -111,7 +112,28 @@ class Meeting
          foreach ($data as $document) {
            return  $document->id();
          }
-     return "";
+         return "";
+   }
+
+   public function getByURL( Request $request, Response $response, $args )  {
+
+       /*
+       $common = new Common();
+       $origin = $common->getOrigin($request);
+       return $common->getOrigin($request);
+       */
+       // if ($origin != "") {page
+       $requestArrayParam = $request->getParsedBody();
+       if (isset( $requestArrayParam["page"] )) {
+           $origin =  $requestArrayParam["page"];
+           $fireStore = new FireStore();
+           $data = $fireStore->getDocumentsByQuery( $this->collection_name, "url", "==" , $origin );
+           $records = array();
+           foreach ($data as $document) {
+               return array("id" => $document->id());
+           }
+       }
+       return array("id" => "");
    }
 
 
@@ -138,6 +160,13 @@ class Meeting
        if (isset($requestArrayParam["url"])) {
            $url  = $requestArrayParam["url"];
        }
+       /*
+       $common = new Common();
+       $origin = $common->getOrigin($request);
+       if ($origin!="") {
+         $url = $origin;
+       }
+       */
        if (isset($requestArrayParam["uniqid"])) {
            $uniqid  = $requestArrayParam["uniqid"];
        }

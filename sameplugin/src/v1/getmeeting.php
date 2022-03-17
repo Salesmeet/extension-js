@@ -94,6 +94,9 @@ if ($type=="agenda") {
       }
 
       function encodeHTML(str){
+
+          if (str==null) { return ""; }
+          
           return str.replace(/([\u00A0-\u9999<>&])(.|$)/g, function(full, char, next) {
             if(char !== '&' || next !== '#'){
               if(/[\u00A0-\u9999<>&]/.test(next))

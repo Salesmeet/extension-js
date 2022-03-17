@@ -265,22 +265,9 @@
 #same_function_note_big_button {
     background-image: url('https://plugin.sameapp.net/v1/img/zoomout.png') !important;
 }
-#same_function_rapid_poi_button, #same_function_rapid_poi_short_button {
-    background-image: url('https://plugin.sameapp.net/v1/img/exclamation.png') !important;
-}
-#same_function_rapid_mak_button, #same_function_rapid_mak_short_button {
-    background-image: url('https://plugin.sameapp.net/v1/img/calendar.png') !important;
-}
-#same_function_rapid_question_button, #same_function_rapid_question_short_button {
-    background-image: url('https://plugin.sameapp.net/v1/img/question.png') !important;
-}
-#same_function_rapid_rtc_button, #same_function_rapid_rtc_short_button {
-    background-image: url('https://plugin.sameapp.net/v1/img/phone.png') !important;
-}
 #same_function_check {
     background-image: url('https://plugin.sameapp.net/v1/img/check.png') !important;
 }
-
 
 .sameAddValueInNote {
     background-image: url('https://plugin.sameapp.net/v1/img/shortcuts2.png') !important;

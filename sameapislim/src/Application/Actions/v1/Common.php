@@ -12,6 +12,29 @@ class Common
     {
     }
 
+    public function getOrigin( Request $request)  {
+          $var = $this->getHeader( $request);
+          if (array_key_exists("Origin", $var)) {
+               return $var["Origin"];
+          }
+          return "";
+    }
+    public function getHeader( Request $request)  {
+          $headers = $request->getHeaders();
+          $var = [];
+          foreach ($headers as $name => $values) {
+              $var[$name] =  implode(", ", $values);
+          }
+          return $var;
+    }
+
+
+    public function getOutputMessage($message)
+    {
+        return json_encode($message);
+        // array('message' => $message);
+    }
+
     public function setDocument( Request $request, $action )  {
         $requestArrayParam = $request->getParsedBody();
         $idmeeting = "";
@@ -136,12 +159,6 @@ class Common
             $i++;
         }
         return $items;
-    }
-
-    public function getOutputMessage($message)
-    {
-        return json_encode($message);
-        // array('message' => $message);
     }
 
 }
