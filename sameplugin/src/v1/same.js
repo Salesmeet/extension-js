@@ -56,12 +56,7 @@ var same_panel_all_meeting = '\
 <button id="same_function_all_meeting_open_in_same_button">Open meeting in SAME</button> \
 </div>';
 
-var same_panel_setting = '\
-<div id="same_setting" style="display:none">\
-<div style="float:left;">Note shortcuts function: if you write ... <br> \
-@@ -> add user from list <br> \
-</div>\
-</div>';
+var same_panel_setting = '<div id="same_setting" style="display:none"></div>';
 
 var same_panel_common = '<div id="same_common" style="display:none"></div>';
 
@@ -429,7 +424,6 @@ function sameSelectedButtoCommon( id_element , display ) {
         element.classList.add("same_panel_bottone_active");
       }
 }
-
 /* attiva il pannello note creando WYSIWYG HTML */
 var sameFlagInitNote = false;
 function sameChangePanelNote() {
@@ -443,6 +437,7 @@ function sameChangePanelNote() {
 /* crea dinamicamente da sameGetShortcutList la lista di bottoni dei tasti rapidi */
 function sameCreateNoteShortcut() {
       var temp = sameGetShortcutList();
+      console.log(temp);
       var myArr = JSON.parse( temp );
       var myItems = myArr.items;
       var out = "";
@@ -458,11 +453,17 @@ function sameCreatePanelShortcut() {
       var myArr = JSON.parse( temp );
       var myItems = myArr.items;
       var out = "";
+      var outHelp = "<table><tr><td style='width:70px;'><b>Shortcut</b></td><td><b>Value</b></td></tr>";
+      outHelp += "<tr><td>@@</td><td>Partecipants list</td></tr>";
+      outHelp += "<tr><td>##</td><td>Agenda</td></tr>";
       for(i = 0; i < myItems.length; i++) {
           var style = "background-image: url('" + myItems[i].img + "') !important;";
           out += '<button onclick="sameRapidShortcutList(\'' + myItems[i].value + '\',\'' + myItems[i].call + '\');" class="same_buttom_img" style="' + style + '">' + myItems[i].value + '</button>';
+          outHelp += "<tr><td>" + myItems[i].shortcut + "</td><td>" + myItems[i].value + "</td></tr>";
       }
       document.getElementById("same_shortcut").innerHTML = escapeHTMLPolicy.createHTML( out );
+      outHelp += "</table>"
+      document.getElementById("same_setting").innerHTML = escapeHTMLPolicy.createHTML( outHelp );
 }
 
 function sameChangePanelShortcut() {
@@ -548,7 +549,7 @@ function sameCommonBlockApi( value, type ) {
       var i;
       var title = "";
       if (myArr.title!="") {
-          title ='<b>' + myArr.title + '</b><br>';
+          title ='<b>' + myArr.title + '</b><br><br>';
       }
       for(i = 0; i < myItems.length; i++) {
 
@@ -614,6 +615,7 @@ function sameGetAPI(url,type,action) {
                }
            }
       };
+      console.log( url + sameGetIdMeeting() + "/" + sameGetLanguage() + "/" + sameGetUser() );
       xhttp.open("GET", url + sameGetIdMeeting() + "/" + sameGetLanguage() + "/" + sameGetUser() , true);
       xhttp.send();
 }
@@ -928,7 +930,6 @@ function sameSaveParentNote(message) {
 function sameTemplateCloseParent(message) {
     sameFunctionEditClose();
 }
-
 function sameTemplateCloseParentGetAgenda(message) {
     sameGetAgenda();
     sameFunctionEditClose();
@@ -952,6 +953,11 @@ function sameCreateMeeting(message) {
     sameInitHidden();
     sameDisplayCommon( "same_new_meeting" , "none" );
 }
-
+function sameEditorRapidCommad(message) {
+    console.log("sameEditorRapidCommad");
+    var myArr = JSON.parse( message );
+    console.log(myArr + " ___" + myArr.shortcut);
+    sameRapidShortcutList(myArr.value, message.shortcut);
+}
 /***** INIZIALIZZA SAME *****/
 initSame();

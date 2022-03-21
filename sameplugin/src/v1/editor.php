@@ -64,6 +64,20 @@
           xhr.send(data);
     }
 
+    var same_shortcut_list = [];
+    function sameGetShortcut() {
+          var xhttp = new XMLHttpRequest();
+          xhttp.onreadystatechange = function() {
+               if (this.readyState == 4 && this.status == 200) {
+                   var myArr = JSON.parse( this.responseText );
+                   var myItems = myArr.items;
+                   same_shortcut_list = myArr.items;
+               }
+          };
+          xhttp.open("GET", "https://api.sameapp.net/public/v1/shortcut/type/<?php echo $_GET['idmeeting']; ?>/<?php echo $_GET['lang']; ?>/<?php echo $_GET['user']; ?>" , true);
+          xhttp.send();
+    }
+
     function sameRapidCommand( value ) {
 
           // Prendo il vavlore
@@ -71,9 +85,15 @@
           // sostituisco il valore
           temp2 = temp2.replace("@@", "");  // 64
           temp2 = temp2.replace("##", "");  // 35
+          /*
           temp2 = temp2.replace("]]", "");  // 93
           temp2 = temp2.replace("[[", "");  // 91
-          // CAncello i valori del nodo
+          */
+          for(i = 0; i < same_shortcut_list.length; i++) {
+              temp2 = temp2.replace( same_shortcut_list[i].shortcut , "");
+          }
+
+          // Cancello i valori del nodo
           tinymce.activeEditor.selection.getNode().innerHTML = "";
           // Creo un nuovo nodo
           var el = tinymce.activeEditor.dom.create('spam', {}, temp2 + value + " ");
@@ -82,56 +102,47 @@
           tinyMCE.activeEditor.focus();
     }
 
-    /*
-    function sameRapidCommand( value ) {
-          console.log("sameRapidCommand: " + value);
-          var el = tinymce.activeEditor.dom.create('spam', {}, value);
-          tinymce.activeEditor.selection.setNode( el );
-          sameChange();
-    }
-    */
-    /*
-    function sameChange() {
-
-        var temp2 = tinymce.activeEditor.selection.getNode();
-        console.log(temp2);
-
-        var ed = tinymce.get('same_note_text_iframe');
-        // console.log(tinymce.activeEditor.selection.getStart());
-        // console.log(tinymce.activeEditor.selection.getRng());
-        let temp = ed.getContent();
-        temp = temp.replace("@@", "");  // 64
-        temp = temp.replace("##", "");  // 35
-        temp = temp.replace("]]", "");  // 93
-        temp = temp.replace("[[", "");  // 91
-        console.log( "____________  sameChange ______________" );
-        return temp;
-        // console.log( temp );
-        // sameWrite( temp );
-    }
-    */
 
     var sameCharCodeBefore = "";
+    var sameWord = "";
     function sameKeypress( keyPressed ) {
           // console.log("sameKeypress: " + keyPressed.charCode);
           // valore per il trigger @@
           if ((keyPressed.charCode == 64) && (sameCharCodeBefore == 64)) {
-              sameCall( "sameGetParticipantList" );
+              sameCall( "sameGetParticipantList", "" );
           } else if ((keyPressed.charCode == 35) && (sameCharCodeBefore == 35)) {
-              sameCall( "sameGetAgenda" );
+              sameCall( "sameGetAgenda", "" );
+          /*
           } else if ((keyPressed.charCode == 93) && (sameCharCodeBefore == 93)) {
-              sameCall( "sameRapidPoi" );
+              // sameCall( "sameRapidPoi", "" );
           }  else if ((keyPressed.charCode == 91) && (sameCharCodeBefore == 91)) {
-              sameCall( "sameRapidMak" );
+              // sameCall( "sameRapidMak", "" );
+          */
           }
           sameCharCodeBefore = keyPressed.charCode;
+          // spazio ...
+          if ( keyPressed.charCode == 32) {
+              sameWord = "";
+          } else {
+              sameWord += keyPressed.key;
+          }
+          if (sameWord.length == 3) {
+
+            for(i = 0; i < same_shortcut_list.length; i++) {
+                if (sameWord==same_shortcut_list[i].shortcut) {
+                    sameWord = "";
+                    var temp = '{"value":"' + same_shortcut_list[i].value + '","shortcut":"' + same_shortcut_list[i].shortcut + '"}';
+                    sameCall( "sameEditorRapidCommad", temp );
+                }
+            }
+          }
     }
 
 
-    function sameCall( value ) {
+    function sameCall( value , message ) {
       window.parent.postMessage({
           'func': value,
-          'message': ""
+          'message': message
       }, "*");
     }
 
@@ -153,7 +164,7 @@
             ed.ui.registry.addButton('customInsertButton', {
               text: 'SHORTCUTS',
               onAction: function (_) {
-                sameCall( "sameChangePanelSetting" );
+                sameCall( "sameChangePanelSetting", "" );
                 // ed.insertContent('&nbsp;<strong>Shortcuts</strong>&nbsp;');
               }
             });
@@ -162,36 +173,8 @@
     });
 
     window.onload = function() {
-
+        sameGetShortcut();
     };
-
-    /*
-  var temp2 = tinymce.activeEditor.selection.getNode();
-  console.log(temp2);
-  const temp = temp2.split(' ');
-  // let result = temp.replace("@", "belllllaaaa");
-  console.log(tinymce.activeEditor.selection.getStart());
-  console.log(tinymce.activeEditor.selection.getRng());
-  */
-  /*
-  tinymce.activeEditor.selection.setNode(
-    tinymce.activeEditor.dom.create('img', {src: 'some.gif', title: 'some title'})
-  );
-  */
-  /*
-  var ed = tinymce.get('same_note_text_iframe');
-  let temp2 = ed.getContent();
-  console.log( temp2 );
-  let result = temp2.replace("wwwww", "belllllaaaa");
-  console.log( result );
-  sameWrite( result );
-  */
-  // let result = temp.replace("@", "belllllaaaa");
-  // console.log(result);
-  /*
-  var el = tinymce.activeEditor.dom.create('spam', {}, "belllllaaaa");
-  tinymce.activeEditor.selection.setNode( el );
-  */
 
   </script>
 </body>

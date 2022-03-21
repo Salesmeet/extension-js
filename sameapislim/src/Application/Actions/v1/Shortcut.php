@@ -9,12 +9,42 @@ use App\Application\Actions\FireStore;
 class Shortcut
 {
 
+    private $collection_name = "shortcuts";
+
     public function __construct() {
     }
 
+    public function getAll( Request $request, Response $response, $args )  {
+
+       $fireStore = new FireStore();
+       $data = $fireStore->getDocumentsByQuery( $this->collection_name, "type", "==" , "0");
+       $records = array();
+       foreach ($data as $document) {
+           $temp = [
+               "id" => $document->id(),
+               "shortcut" => $document->data()["shortcut"],
+               "value" => $document->data()["value"],
+               "type" => $document->data()["type"],
+               "call" => $document->data()["call"],
+               "img" => $document->data()["img"],
+               "language" => $document->data()["language"]
+           ];
+           array_push($records,$temp);
+       }
+       return [
+           "title" => "List shortcuts",
+           "edit" => "",
+           "apiupdate" => "",
+           "viewdescription" => "0",
+           "items" => $records
+       ];
+    }
+
+    /*
     public function get()  {
         return json_decode( $this->getMockup() , true);
     }
+    */
 
     public function getMockup()  {
 

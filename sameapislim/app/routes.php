@@ -123,7 +123,7 @@ return function (App $app) {
     // Get Shortcut
     $app->get('/public/v1/shortcut/{idtype}/{idmeeting}/{lang}/{user}', function (Request $request, Response $response, $args) {
         $shortcut = new Shortcut();
-        return setResponse($response, $shortcut->get($request, $response, $args) );
+        return setResponse($response, $shortcut->getAll($request, $response, $args) );
     });
 
 
