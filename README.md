@@ -35,13 +35,8 @@ In caso di errore "docker-compose --verbose up"
 Avvio siti DEMO
 
 ```
-docker-compose -f docker-compose-uiex.yml up
-
-o
-
-docker-compose -f docker-compose-salesmeet.yml up
-docker-compose -f docker-compose-togetherjs.yml up
-docker-compose -f docker-compose-uiex.yml up
+docker-compose -f docker-compose-plugin.yml up -d
+docker-compose -f docker-compose-api.yml up
 ```
 
 docker-compose -f docker-compose-uiex-init.yml up

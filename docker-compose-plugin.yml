@@ -31,19 +31,6 @@ services:
     networks:
       - samenetwork
 
-  # plugin #################
-
-  same-api:
-    build: ./sameapi
-    labels:
-      - "traefik.backend=same-api"
-      - "traefik.frontend.rule=Host:api.sameapp.net"
-      - "traefik.docker.network=samenetwork"
-    volumes:
-      - ./sameapi/src:/var/www/html
-    networks:
-      - samenetwork
-
 networks:
   samenetwork:
     external: true

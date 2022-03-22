@@ -1,0 +1,38 @@
+version: '3.3'
+services:
+
+  # PROXY #####################################################################################
+  same-proxy:
+    image: traefik:1.7.4-alpine
+    labels:
+      - "traefik.frontend.rule=Host:monitor.sameapp.net"
+      - "traefik.port=8080"
+      - "traefik.docker.network=samenetwork"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./traefik:/traefik/
+    ports:
+      - "80:80"
+      - "443:443"
+      - '8080:8080'
+    networks:
+      - samenetwork
+    command: -c /dev/null --web --docker --logLevel=DEBUG --defaultEntryPoints='https,http' --entryPoints="Name:https Address::443 TLS:/traefik/cert1.pem,/traefik/privkey1.pem" --entryPoints="Name:http Address::80"
+
+  # API #################
+  same-api-slim:
+    build: ./sameapislim
+    labels:
+      - "traefik.backend=same-api"
+      - "traefik.frontend.rule=Host:api.sameapp.net"
+      - "traefik.docker.network=samenetwork"
+    volumes:
+      - ./sameapislim:/var/www/html
+    working_dir: /public
+    # working_dir: /var/www
+    networks:
+      - samenetwork
+
+networks:
+  samenetwork:
+    external: true
