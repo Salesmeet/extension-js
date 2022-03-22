@@ -36,7 +36,7 @@ Avvio siti DEMO
 
 ```
 docker-compose -f docker-compose-plugin.yml up -d
-docker-compose -f docker-compose-api.yml up
+docker-compose -f docker-compose-api.yml up -d
 ```
 
 docker-compose -f docker-compose-uiex-init.yml up
@@ -93,9 +93,13 @@ https://docs.aws.amazon.com/AmazonECS/latest/developerguide/docker-basics.html
 https://acloudxpert.com/how-to-install-docker-compose-on-amazon-linux-ami/
 
 
+
 sudo snap install docker          # version 19.03.13, or
 sudo apt  install docker-compose  # version 1.25.0-1
+sudo chown $USER /var/run/docker.sock
 
+per api
+sudo apt install composer
 
 ==============================
 PROBLEMA DA RISOLVERE

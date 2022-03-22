@@ -28,8 +28,6 @@ function sameInitRecord() {
   // set up basic variables for app
   if (navigator.mediaDevices.getUserMedia) {
 
-    console.log('getUserMedia supported.');
-
     let chunks = [];
 
     let onSuccess = function(stream) {

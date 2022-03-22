@@ -85,10 +85,7 @@
           // sostituisco il valore
           temp2 = temp2.replace("@@", "");  // 64
           temp2 = temp2.replace("##", "");  // 35
-          /*
-          temp2 = temp2.replace("]]", "");  // 93
-          temp2 = temp2.replace("[[", "");  // 91
-          */
+
           for(i = 0; i < same_shortcut_list.length; i++) {
               temp2 = temp2.replace( same_shortcut_list[i].shortcut , "");
           }
@@ -102,7 +99,6 @@
           tinyMCE.activeEditor.focus();
     }
 
-
     var sameCharCodeBefore = "";
     var sameWord = "";
     function sameKeypress( keyPressed ) {
@@ -112,12 +108,6 @@
               sameCall( "sameGetParticipantList", "" );
           } else if ((keyPressed.charCode == 35) && (sameCharCodeBefore == 35)) {
               sameCall( "sameGetAgenda", "" );
-          /*
-          } else if ((keyPressed.charCode == 93) && (sameCharCodeBefore == 93)) {
-              // sameCall( "sameRapidPoi", "" );
-          }  else if ((keyPressed.charCode == 91) && (sameCharCodeBefore == 91)) {
-              // sameCall( "sameRapidMak", "" );
-          */
           }
           sameCharCodeBefore = keyPressed.charCode;
           // spazio ...
@@ -126,19 +116,22 @@
           } else {
               sameWord += keyPressed.key;
           }
-          if (sameWord.length == 3) {
+          if (sameWord.length > 2) {
 
             for(i = 0; i < same_shortcut_list.length; i++) {
                 if (sameWord==same_shortcut_list[i].shortcut) {
                     sameWord = "";
-                    var temp = '{"value":"' + same_shortcut_list[i].value + '","shortcut":"' + same_shortcut_list[i].shortcut + '"}';
+                    var temp = '{"value":"' + same_shortcut_list[i].value + '","shortcut":"' + same_shortcut_list[i].shortcut + '","type":"' + same_shortcut_list[i].call + '"}';
                     sameCall( "sameEditorRapidCommad", temp );
                 }
             }
           }
     }
-
-
+    function sameKeydown( keyDown ) {
+        if (keyDown.key=="Enter") {
+            sameWord = "";
+        }
+    }
     function sameCall( value , message ) {
       window.parent.postMessage({
           'func': value,
@@ -157,6 +150,9 @@
         setup : function(ed) {
             ed.on("keypress", function(keypress){
                 sameKeypress( keypress );
+            });
+            ed.on("keydown", function(keydown){
+                sameKeydown( keydown );
             });
             ed.on("mouseout", function(){
                 // samePostAPINote();

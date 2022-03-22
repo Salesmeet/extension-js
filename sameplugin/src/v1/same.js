@@ -437,7 +437,6 @@ function sameChangePanelNote() {
 /* crea dinamicamente da sameGetShortcutList la lista di bottoni dei tasti rapidi */
 function sameCreateNoteShortcut() {
       var temp = sameGetShortcutList();
-      console.log(temp);
       var myArr = JSON.parse( temp );
       var myItems = myArr.items;
       var out = "";
@@ -492,11 +491,12 @@ function sameRapidShortcutList(value, type) {
 function sameRapidCommand(time, value, type, start ) {
       var char_i = "[ ";
       var char_e = " ]";
-      if ((type == "sameGetParticipantList") || (type == "sameGetAgenda") || (type == "sameGetAttachments") || (type == "sameGetDataMeeting") ) {
+      if ((type == "participant") || (type == "agenda") || (type == "data") ) {
         char_i = ""; char_e = "";
       }
       if (time==1) { time = same_getTimeShortcut(); } else { time = ""; }
-      samePostMessageNote(  time + char_i + value + char_e , "sameRapidCommand" );
+      var default_timer = "<!--time:" + sameDefaulTotalSeconds + "--" + type + "-->";
+      samePostMessageNote( default_timer + time + char_i + value + char_e , "sameRapidCommand" );
       sameChangePanelNote();
       samePostAPI(value,type);
 }
@@ -615,7 +615,6 @@ function sameGetAPI(url,type,action) {
                }
            }
       };
-      console.log( url + sameGetIdMeeting() + "/" + sameGetLanguage() + "/" + sameGetUser() );
       xhttp.open("GET", url + sameGetIdMeeting() + "/" + sameGetLanguage() + "/" + sameGetUser() , true);
       xhttp.send();
 }
@@ -729,22 +728,22 @@ function sameFunctionEditClose() {
 /****** PANEL FUNCTION CALL API ************************************************/
 function sameGetParticipantList() {
     // console.log("sameGetParticipantList");
-    sameGetAPI(same_domain_api + "/public/v1/partecipants/" ,"sameGetParticipantList", "");
+    sameGetAPI(same_domain_api + "/public/v1/partecipants/" ,"participant", "");
 }
 function sameGetDataMeeting() {
-    sameGetAPI(same_domain_api + "/public/v1/meeting/" ,"sameGetDataMeeting", "");
+    sameGetAPI(same_domain_api + "/public/v1/meeting/" ,"data", "");
 }
 function sameGetAgenda() {
-    sameGetAPI(same_domain_api + "/public/v1/agenda/" ,"sameGetAgenda", "");
+    sameGetAPI(same_domain_api + "/public/v1/agenda/" ,"agenda", "");
 }
 function sameGetAttachments() {
-    sameGetAPI(same_domain_api + "/public/v1/attachements/" ,"sameGetAttachments", "");
+    sameGetAPI(same_domain_api + "/public/v1/attachements/" ,"attachments", "");
 }
 function sameGetRecords() {
-    sameGetAPI(same_domain_api + "/public/v1/record/all/" ,"sameGetRecords", "");
+    sameGetAPI(same_domain_api + "/public/v1/record/all/" ,"records", "");
 }
 function sameGetScreenshot() {
-    sameGetAPI(same_domain_api + "/public/v1/screenshot/all/" ,"sameGetScreenshot", "");
+    sameGetAPI(same_domain_api + "/public/v1/screenshot/all/" ,"screenshot", "");
 }
 
 /****** PANEL FUNCTION SETTING ************************************************/
@@ -954,10 +953,9 @@ function sameCreateMeeting(message) {
     sameDisplayCommon( "same_new_meeting" , "none" );
 }
 function sameEditorRapidCommad(message) {
-    console.log("sameEditorRapidCommad");
     var myArr = JSON.parse( message );
-    console.log(myArr + " ___" + myArr.shortcut);
-    sameRapidShortcutList(myArr.value, message.shortcut);
+    console.log("sameEditorRapidCommad");
+    sameRapidShortcutList(myArr.value, myArr.type);
 }
 /***** INIZIALIZZA SAME *****/
 initSame();
