@@ -125,6 +125,10 @@ return function (App $app) {
         $shortcut = new Shortcut();
         return setResponse($response, $shortcut->getAll($request, $response, $args) );
     });
+    $app->post('/public/v1/shortcut/{idmeeting}', function (Request $request, Response $response, $args) {
+        $shortcut = new Shortcut();
+        return setResponse($response, $shortcut->insert($request, $response, $args) );
+    });
 
 
     // Get lista dei partecipanti del meeting
@@ -169,6 +173,16 @@ return function (App $app) {
 
 
     $app->get('/public/v1/test/', function (Request $request, Response $response, $args) {
+
+      echo "<hr>New shortcut:<br>";
+      echo '<form id="inviofile" action="https://api.sameapp.net/public/v1/shortcut/qqqqq" method="post">';
+      echo '  <input type="text" name="shortcut" id="shortcut">';
+      echo '  <input type="text" name="type" id="type">';
+      echo '  <input type="text" name="value" id="value">';
+      echo '  <input type="text" name="language" id="lang">';
+      echo '  <input type="text" name="user" id="user">';
+      echo '  <input type="submit" value="Insert" name="submit">';
+      echo '</form>';
 
 
       echo "<hr>New meeting:<br>";

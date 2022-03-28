@@ -20,10 +20,13 @@ function sameGetShortcutList() { return same_shortcut_list; }
 function sameSetShortcutList( value ) { same_shortcut_list = value; sameCreateNoteShortcut(); sameCreatePanelShortcut(); }
 
 /****** PANEL DESIGN ************************************************/
+// <button id="same_function_note_small_button" class="same_resize_img same_icon_style same_hidden_vertical same_hidden_deactive" title="Secrease note field"> </button>\
+// <button id="same_function_shortcut_button_vertical" class="same_icon_style same_hidden_vertical same_hidden_deactive" title="Shortcuts"> </button>\
 var same_panel_recording_button = '\
 <div class="same_recording_internal">\
 <button id="same_function_note_button_vertical" class="same_hidden_vertical same_hidden_deactive" >Note</button>\
-<button id="same_function_shortcut_button_vertical" class="same_icon_style same_hidden_vertical same_hidden_deactive" title="Shortcuts"> </button>\
+<button id="same_function_note_big_button_vertical" class="same_resize_img same_icon_style same_hidden_vertical same_hidden_deactive" title="Enlarge notes field"> </button>\
+<button id="same_function_note_small_button_vertical" style="" class="same_resize_img same_icon_style same_hidden_vertical same_hidden_deactive" title="Secrease note field"> </button>\
 </div>\
 <div class="same_recording_internal"><button id="same_screenshot_button" class="same_icon_style" title="Screenshot"> </button><hr class="same_hidden"></div>\
 <div class="same_recording_internal"><button id="same_record_button" class="same_record_button same_icon_style" title="Record"> </button>\
@@ -257,14 +260,31 @@ function sameNoteBig() {
       sameChangePanelNote();
       sameNoteBigCommon();
 }
+
+function sameNoteBigVertical() {
+  element = document.getElementById("same_note_text_iframe");
+  element.classList.add("same_note_text_iframe_right_big");
+}
+function sameNoteSmallVertical() {
+  element = document.getElementById("same_note_text_iframe");
+  element.classList.remove("same_note_text_iframe_right_big");
+}
+
 /* ingrandisce WYSIWYG HTML */
 function sameNoteBigCommon() {
       sameNoteChangeHeight();
       element = document.getElementById("same_note_text_iframe");
-      if (same_position_bottom) {
+      if (samePositionSelected=="right") {
+
+      } else if (samePositionSelected=="bottom") {
+      // if (same_position_bottom) {
           element.classList.add("same_note_text_big_bottom");
+          // element.classList.remove("same_note_text_big_top");
+          // element.classList.remove("same_note_text_big_right");
       } else {
           element.classList.add("same_note_text_big_top");
+          // element.classList.remove("same_note_text_big_bottom");
+          // element.classList.remove("same_note_text_big_right");
       }
 }
 function sameNoteChangeHeight() {
@@ -398,7 +418,7 @@ function sameChangePanel(note,shortcut,setting,common,datameeting,allmeeting) {
       sameDisplayCommon("same_note",note);
 
       sameSelectedButtoCommon( "same_function_shortcut_button" , shortcut );
-      sameSelectedButtoCommon( "same_function_shortcut_button_vertical" , shortcut );
+      // sameSelectedButtoCommon( "same_function_shortcut_button_vertical" , shortcut );
       sameDisplayCommon("same_shortcut",shortcut);
 
       // sameSelectedButtoCommon( "same_function_setting_button" , setting );
@@ -441,8 +461,12 @@ function sameCreateNoteShortcut() {
       var myItems = myArr.items;
       var out = "";
       for(i = 0; i < 4; i++) {
-          var style = "background-image: url('" + myItems[i].img + "') !important;";
-          out += '<button onclick="sameRapidShortcutList(\'' + myItems[i].value + '\',\'' + myItems[i].call + '\');" class="same_resize_img same_icon_style" style="' + style + '"> </button>';
+          var img = myItems[i].img ;
+          if  (img=="") {
+              img = same_domain + "/v1/img/no-img.png";
+          }
+          var style = "background-image: url('" + img + "') !important;";
+          out += '<button onclick="sameRapidShortcutList(\'' + myItems[i].value + '\',\'' + myItems[i].call + '\');" class="same_resize_img same_icon_style" style="' + style + '"></button>';
       }
       out += '<button id="same_function_shortcut_short_button" onclick="sameChangePanelShortcut();"  class="same_resize_img same_icon_style" title="Shortcuts"> </button>';
       document.getElementById("same_rapid_command").innerHTML = escapeHTMLPolicy.createHTML( out );
@@ -461,8 +485,13 @@ function sameCreatePanelShortcut() {
           outHelp += "<tr><td>" + myItems[i].shortcut + "</td><td>" + myItems[i].value + "</td></tr>";
       }
       document.getElementById("same_shortcut").innerHTML = escapeHTMLPolicy.createHTML( out );
-      outHelp += "</table>"
+      outHelp += "</table>";
+      outHelp += '\
+        <hr>\
+        <button id="same_function_edit_shurtcut" class="same_icon_style" title="edit"></button>\
+      ';
       document.getElementById("same_setting").innerHTML = escapeHTMLPolicy.createHTML( outHelp );
+      sameClickCommon( "same_function_edit_shurtcut" , sameFunctionEditOpenShurtcut );
 }
 
 function sameChangePanelShortcut() {
@@ -693,6 +722,9 @@ function sameFunctionEditOpen() {
     var type = document.getElementById("same_function_edit").getAttribute('data-type')
     sameFunctionOpenCommon(same_domain + "/v1/getmeeting.php?idmeeting=" + sameGetIdMeeting() + "&type=" + type + "&lang=" + sameGetLanguage() + "&user=" + sameGetUser() );
 }
+function sameFunctionEditOpenShurtcut() {
+    sameFunctionOpenCommon(same_domain + "/v1/getshurcut.php?idmeeting=" + sameGetIdMeeting() + "&lang=" + sameGetLanguage() + "&user=" + sameGetUser() );
+}
 function sameFunctionOpenNoteVersion() {
     sameFunctionOpenCommon(same_domain + "/v1/getnoteversion.php?idmeeting=" + sameGetIdMeeting() + "&lang=" + sameGetLanguage() + "&user=" + sameGetUser() );
 }
@@ -707,12 +739,18 @@ function sameFunctionOpenReport() {
 function sameFunctionOpenCommon(url) {
 
     var element = document.getElementById("same_panel_edit_external");
-    if (same_position_bottom) {
+    if (samePositionSelected=="right") {
+         console.log("sameFunctionOpenCommon __  right");
+         // element.classList.remove("same_panel_edit_external_top");
+         // element.classList.remove("same_panel_edit_external_bottom");
+
+    } else if (samePositionSelected=="bottom") {
+    // if (same_position_bottom) {
          element.classList.add("same_panel_edit_external_bottom");
-         element.classList.remove("same_panel_edit_external_top");
+         // element.classList.remove("same_panel_edit_external_top");
     } else {
          element.classList.add("same_panel_edit_external_top");
-         element.classList.remove("same_panel_edit_external_bottom");
+         // element.classList.remove("same_panel_edit_external_bottom");
     }
     sameDisplayCommon( "same_panel_edit_external","block");
     document.getElementById("same_panel_edit_external_iframe").src = url;
@@ -749,9 +787,9 @@ function sameGetScreenshot() {
 /****** PANEL FUNCTION SETTING ************************************************/
 
 
-var same_position_bottom = true;
+// var same_position_bottom = true;
 function sameMovePanelTop() {
-      same_position_bottom = false;
+      // same_position_bottom = false;
       samePositionSelected = "top";
       sameMovePanelDeleteRight();
       document.getElementById("same_panel_base").style.top = "0px";
@@ -759,7 +797,7 @@ function sameMovePanelTop() {
       sameNoteSmall();
 }
 function sameMovePanelBottom() {
-      same_position_bottom = true;
+      // same_position_bottom = true;
       samePositionSelected = "bottom";
       sameNoteSmall();
       sameMovePanelDeleteRight();
@@ -793,7 +831,7 @@ function sameMovePanelRight() {
 
       let height = window.innerHeight - 215;
       document.getElementById("same_panel").style.height = height + "px";
-      document.getElementById("same_note_text_iframe").style.height = height + "px";
+      document.getElementById("same_note_text_iframe").style.height = (height - 50) + "px";
       document.getElementById("same_panel_edit_external_iframe").style.height = "98%";
 
       sameNoteBigCommon();
@@ -847,7 +885,9 @@ function initSameMeeting() {
   sameInitPanel();
 
   sameClickCommon( "same_function_note_big_button" , sameNoteBig );
+  sameClickCommon( "same_function_note_big_button_vertical" , sameNoteBigVertical );
   sameClickCommon( "same_function_note_small_button" , sameNoteSmall );
+  sameClickCommon( "same_function_note_small_button_vertical" , sameNoteSmallVertical );
 
   sameClickCommon( "same_function_start_hour_button" , sameStartHour );
   sameClickCommon( "same_function_start_short_hour_button" , sameStartHour );
@@ -860,7 +900,7 @@ function initSameMeeting() {
 
   sameClickCommon( "same_function_shortcut_button" , sameChangePanelShortcut );
   sameClickCommon( "same_function_shortcut_short_button" , sameChangePanelShortcut );
-  sameClickCommon( "same_function_shortcut_button_vertical" , sameChangePanelShortcut );
+  // sameClickCommon( "same_function_shortcut_button_vertical" , sameChangePanelShortcut );
 
   sameClickCommon( "same_function_setting_button" , sameChangePanelSetting );
   sameClickCommon( "same_function_data_meeting_button" , sameChangePanelDataMeeting );

@@ -197,6 +197,10 @@
       height: 500px !important;
       width: 70% !important;
 }
+.same_note_text_big_right {
+      width: 800px !important;
+      height: 500px !important;
+}
 
 .same_panel_style {
     float:left;
@@ -247,19 +251,20 @@
 #same_function_icon_button {
     background-image: url('https://plugin.sameapp.net/v1/img/position-icon.png') !important;
 }
-#same_function_edit {
+#same_function_edit, #same_function_edit_shurtcut {
     background-image: url('https://plugin.sameapp.net/v1/img/edit.png') !important;
     background-color: #eeeeee !important;
     position: fixed;
 }
 
-#same_function_shortcut_button, #same_function_shortcut_short_button, #same_function_shortcut_button_vertical {
+/* #same_function_shortcut_button, #same_function_shortcut_short_button, #same_function_shortcut_button_vertical { */
+#same_function_shortcut_button, #same_function_shortcut_short_button {
     background-image: url('https://plugin.sameapp.net/v1/img/shortcuts.png') !important;
 }
-#same_function_note_small_button {
+#same_function_note_small_button, #same_function_note_small_button_vertical {
     background-image: url('https://plugin.sameapp.net/v1/img/zoomin.png') !important;
 }
-#same_function_note_big_button {
+#same_function_note_big_button, #same_function_note_big_button_vertical {
     background-image: url('https://plugin.sameapp.net/v1/img/zoomout.png') !important;
 }
 #same_function_note_big_button {
@@ -413,7 +418,11 @@ div.editable {
     top: 122px;
     right: 3px;
     width: 95% !important;
-    height: 74% !important;
+    position: absolute;
+    /* height: 74% !important; */
+}
+.same_note_text_iframe_right_big {
+    width: 195% !important;
 }
 .same_panel_edit_external_right {
     top: 0px;
