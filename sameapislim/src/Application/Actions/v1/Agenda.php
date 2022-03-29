@@ -11,7 +11,7 @@ class Agenda
 {
 
   private $collection_name = "meetings";
-  private $collection_name_action = "meetings_action";
+  private $collection_name_action = "timelines";
   private $action_task_check = "tasksChecked";
   private $action_task_delete = "tasksDelete";
   private $action_task_insert = "tasksInsert";

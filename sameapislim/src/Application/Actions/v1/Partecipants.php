@@ -12,7 +12,7 @@ class Partecipants
 {
 
   private $collection_name = "meetings";
-  private $collection_name_action = "meetings_action";
+  private $collection_name_action = "timelines";
   private $action_attendees_check = "attendeesChecked";
   private $action_attendees_delete = "attendeesDelete";
   private $action_attendees_insert = "attendeesInsert";

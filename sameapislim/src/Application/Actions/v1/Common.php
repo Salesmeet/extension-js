@@ -84,7 +84,8 @@ class Common
             "secondmanual" => $secondmanual,
             "user" => $user,
             "email" => $email,
-            "date" => date("Y-m-d H:i:s"),
+            "type" => "meeting_date",
+            "date" => time(), // date("Y-m-d H:i:s"),
         );
     }
 

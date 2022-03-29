@@ -22,7 +22,7 @@ class Action
 
     public function insert( Request $request, Response $response, $args )  {
       $fireStore = new FireStore();
-      $fireStore->addDocument( "action", $this->setDocument( $request ) );
+      $fireStore->addDocument( "timelines", $this->setDocument( $request ) );
       return json_decode( '{"state":"200"}', true);
     }
 
@@ -58,8 +58,9 @@ class Action
             "secondmanual" => $secondmanual,
             "value" => $value,
             "action" => $action,
-            "user" => $user,            
-            "date" => date("Y-m-d H:i:s"),
+            "user" => $user,
+            "type" => "shortcut",
+            "date" =>  time(), /*  date("Y-m-d H:i:s"), */
         );
     }
 

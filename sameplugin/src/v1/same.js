@@ -92,6 +92,7 @@ Do you want to proceed with the recovery? <br><br>\
 var same_panel_operation = '<div id="same_panel" class="same_panel_style same_panel_style_border">' + same_panel_shortcut + same_panel_note + same_panel_edit_external + same_panel_setting + same_panel_data_meeting + same_panel_all_meeting + same_panel_common + same_panel_init_after_note + '</div>';
 
 var same_panel_info = '<div id="same_info" class="same_panel_style">\
+<center>\
 <button id="same_function_stop_hour_button" style="display:none;">Stop timer</button>\
 <button id="same_function_start_short_hour_button" style="display:none;">Resume</button>\
 <button id="same_function_clear_hour_button" style="display:none;">Clear</button>\
@@ -104,6 +105,7 @@ var same_panel_info = '<div id="same_info" class="same_panel_style">\
 <button id="same_function_bottom_button" class="same_icon_style" title="Position bottom"></button>\
 <button id="same_function_right_button" class="same_icon_style" title="Position right"></button>\
 <!--button id="same_function_setting_button" class="same_icon_style" title="Setting"></button-->\
+</center>\
 </div>';
 
 /****** PANEL INIT  ************************************************/

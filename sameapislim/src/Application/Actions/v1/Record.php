@@ -107,6 +107,9 @@ class Record
         // inserisco registrazione legata al meeting
         $fireStore->addDocument( $this->collection_name, $data );
 
+        // insertTimelines
+        $fireStore->addDocument( "timelines", $data );
+
       }
       return json_decode( '{"state":"200","value":"ok"}', true);
     }
@@ -146,6 +149,7 @@ class Record
             "bucket" => "",
             "idunivoco" => $idunivoco,
             "extension" => $extension,
+            "type" => "record",
             "directory" => $this->directory,
             "basename" => date("YmdHis") . "_" . $idmeeting . "_" . $user . "_" . $type,
             "date" => date("Y-m-d H:i:s"),

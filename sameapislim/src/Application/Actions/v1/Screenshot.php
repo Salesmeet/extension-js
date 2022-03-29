@@ -83,6 +83,9 @@ class Screenshot
       // inserisco registrazione legata al meeting
       $fireStore->addDocument( $this->collection_name, $dataDocument );
 
+      // insertTimelines
+      $fireStore->addDocument( "timelines", $dataDocument );
+
       return json_decode( '{"state":"200","value":"ok"}', true);
 
     }
@@ -111,6 +114,7 @@ class Screenshot
             "name" => $name,
             "value" => $value,
             "bucket" => "",
+            "type" => "screenshot",
             "directory" => $this->directory,
             "date" => date("Y-m-d H:i:s"),
         );
