@@ -80,6 +80,36 @@
 
     function sameRapidCommand( value ) {
 
+          console.log("sameRapidCommand:" + value);
+          var char_i = "[ ";
+          var char_e = " ]";
+
+          var timeDefault = value.timeDefault;
+          var hrs = ~~(timeDefault / 3600);
+          var mins = ~~((timeDefault % 3600) / 60);
+          var secs = ~~timeDefault % 60;
+          var temp = mins + ":" + secs;
+          // var timeDefault = char_i + value.timeDefault + char_e ;
+          var timeDefaultString = char_i + temp + char_e ;
+          var time = "";
+          if (value.time != "") {
+            time = char_i + value.time + char_e ;
+          }
+          var valore = value.value;
+          if (value.type == "data") {
+          } else if (value.type == "participant") {
+            valore = char_i + "@" + value.value + char_e  ;
+          } else if ((value.type == "participant") || (value.type == "agenda") || (value.type == "data") ) {
+            valore = timeDefaultString + time + char_i + "agenda" + char_e + " " + value.value  ;
+          } else {
+            valore = timeDefaultString + time + char_i + value.value  + char_e;
+          }
+
+          console.log(value.timeDefault);
+          console.log(value.time);
+          console.log(value.type);
+          // var json = {"type": type, "value": value, "timeDefault": sameDefaulTotalSeconds, "time": time};
+
           // Prendo il vavlore
           var temp2 = tinymce.activeEditor.selection.getNode().innerHTML;
           // sostituisco il valore
@@ -93,7 +123,7 @@
           // Cancello i valori del nodo
           tinymce.activeEditor.selection.getNode().innerHTML = "";
           // Creo un nuovo nodo
-          var el = tinymce.activeEditor.dom.create('spam', {}, temp2 + value + " ");
+          var el = tinymce.activeEditor.dom.create('spam', {}, temp2 + valore  + " ");
           tinymce.activeEditor.selection.setNode( el );
 
           tinyMCE.activeEditor.focus();

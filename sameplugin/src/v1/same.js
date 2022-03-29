@@ -245,7 +245,8 @@ function sameGetIframeTiny()  {
 /* ritorna il tempo da inserire correlato con le funzioni rapide */
 function same_getTimeNote() {
    if (same_timer_flag) {
-      return sameACapoCharacter + "[" + same_getTime() + "]";
+      // return sameACapoCharacter + "[" + same_getTime() + "]";
+      return same_getTime();
    }
    return "";
 }
@@ -520,14 +521,11 @@ function sameRapidShortcutList(value, type) {
 }
 
 function sameRapidCommand(time, value, type, start ) {
-      var char_i = "[ ";
-      var char_e = " ]";
-      if ((type == "participant") || (type == "agenda") || (type == "data") ) {
-        char_i = ""; char_e = "";
-      }
-      if (time==1) { time = same_getTimeShortcut(); } else { time = ""; }
-      var default_timer = "<!--time:" + sameDefaulTotalSeconds + "--" + type + "-->";
-      samePostMessageNote( default_timer + time + char_i + value + char_e , "sameRapidCommand" );
+
+      // if (time==1) { time = same_getTimeShortcut(); } else { time = ""; }
+      time = same_getTimeShortcut();
+      var json = {"type": type, "value": value, "timeDefault": sameDefaulTotalSeconds, "time": time};
+      samePostMessageNote( json , "sameRapidCommand" );
       sameChangePanelNote();
       samePostAPI(value,type);
 }
