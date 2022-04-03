@@ -2,6 +2,11 @@
 <html>
 <head>
   <script src="https://cdn.tiny.cloud/1/q8bxw8wqcr049zoy13p15fi50rgnjqfakkx9qrqnzmgt3wy4/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+
+  <link href='fullcalendar/lib/main.css' rel='stylesheet' />
+  <script src='fullcalendar/lib/main.js'></script>
+  <script src='fullcalendar/lib/locales-all.js'></script>
+
   <style>
     body {
       margin: 0px;
@@ -13,6 +18,8 @@
     <textarea id="same_note_text_iframe"></textarea>
 
   <script>
+
+
     escapeHTMLPolicy = trustedTypes.createPolicy("forceInner", {
         createHTML: (to_escape) => to_escape
     })
@@ -80,53 +87,66 @@
 
     function sameRapidCommand( value ) {
 
-          console.log("sameRapidCommand:" + value);
-          var char_i = "[ ";
-          var char_e = " ]";
+          console.log("sameRapidCommand:" + value.type);
 
-          var timeDefault = value.timeDefault;
-          var hrs = ~~(timeDefault / 3600);
-          var mins = ~~((timeDefault % 3600) / 60);
-          var secs = ~~timeDefault % 60;
-          var temp = mins + ":" + secs;
-          // var timeDefault = char_i + value.timeDefault + char_e ;
-          var timeDefaultString = char_i + temp + char_e ;
-          var time = "";
-          if (value.time != "") {
-            time = char_i + value.time + char_e ;
-          }
-          var valore = value.value;
-          if (value.type == "data") {
-          } else if (value.type == "participant") {
-            valore = char_i + "@" + value.value + char_e  ;
-          } else if ((value.type == "participant") || (value.type == "agenda") || (value.type == "data") ) {
-            valore = timeDefaultString + time + char_i + "agenda" + char_e + " " + value.value  ;
+          if (value.type=="rCalendar") {
+
+              sameViewCalendar(value);
+
           } else {
-            valore = timeDefaultString + time + char_i + value.value  + char_e;
+
+              console.log("sameRapidCommand:" + value);
+              var char_i = "[ ";
+              var char_e = " ]";
+
+              var timeDefault = value.timeDefault;
+              var hrs = ~~(timeDefault / 3600);
+              var mins = ~~((timeDefault % 3600) / 60);
+              var secs = ~~timeDefault % 60;
+              var temp = mins + ":" + secs;
+              // var timeDefault = char_i + value.timeDefault + char_e ;
+              var timeDefaultString = char_i + temp + char_e ;
+              var time = "";
+              if (value.time != "") {
+                time = char_i + value.time + char_e ;
+              }
+              var valore = value.value;
+              if (value.type == "data") {
+              } else if (value.type == "calendar") {
+                valore = value.value ;
+              } else if (value.type == "participant") {
+                valore = char_i + "@"  + char_e + " " + char_i + value.value + char_e ;
+              } else if ( value.type == "agenda") {
+                valore = timeDefaultString + time + char_i + "Agenda" + char_e + " " + value.value  ;
+              } else {
+                valore = timeDefaultString + time + char_i + value.value  + char_e;
+              }
+              console.log(value.timeDefault);
+              console.log(value.time);
+              console.log(value.type);
+              // var json = {"type": type, "value": value, "timeDefault": sameDefaulTotalSeconds, "time": time};
+
+              // Prendo il vavlore
+              var temp2 = tinymce.activeEditor.selection.getNode().innerHTML;
+              // sostituisco il valore
+              temp2 = temp2.replace("@@", "");  // 64
+              temp2 = temp2.replace("##", "");  // 35
+
+              for(i = 0; i < same_shortcut_list.length; i++) {
+                  temp2 = temp2.replace( same_shortcut_list[i].shortcut , "");
+              }
+
+              // Cancello i valori del nodo
+              tinymce.activeEditor.selection.getNode().innerHTML = "";
+              // Creo un nuovo nodo
+              var el = tinymce.activeEditor.dom.create('spam', {}, temp2 + valore  + " ");
+              tinymce.activeEditor.selection.setNode( el );
+
+              tinyMCE.activeEditor.focus();
+
           }
 
-          console.log(value.timeDefault);
-          console.log(value.time);
-          console.log(value.type);
-          // var json = {"type": type, "value": value, "timeDefault": sameDefaulTotalSeconds, "time": time};
 
-          // Prendo il vavlore
-          var temp2 = tinymce.activeEditor.selection.getNode().innerHTML;
-          // sostituisco il valore
-          temp2 = temp2.replace("@@", "");  // 64
-          temp2 = temp2.replace("##", "");  // 35
-
-          for(i = 0; i < same_shortcut_list.length; i++) {
-              temp2 = temp2.replace( same_shortcut_list[i].shortcut , "");
-          }
-
-          // Cancello i valori del nodo
-          tinymce.activeEditor.selection.getNode().innerHTML = "";
-          // Creo un nuovo nodo
-          var el = tinymce.activeEditor.dom.create('spam', {}, temp2 + valore  + " ");
-          tinymce.activeEditor.selection.setNode( el );
-
-          tinyMCE.activeEditor.focus();
     }
 
     var sameCharCodeBefore = "";
@@ -203,5 +223,57 @@
     };
 
   </script>
+
+
+  <div id='calendar' style="visibility:hidden;position: absolute;
+    top: 0px;
+    width: 100%;
+    z-index: 999999;
+    background: #ffffff;"></div>
+  <script>
+
+      var calendarEl = document.getElementById('calendar');
+
+      var calendar = new FullCalendar.Calendar(calendarEl, {
+        headerToolbar: {
+          left: 'prev,next today',
+          center: 'title',
+          right: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth'
+        },
+        buttonIcons: false, // show the prev/next text
+        weekNumbers: true,
+        navLinks: true, // can click day/week names to navigate views
+        editable: true,
+        dayMaxEvents: true, // allow "more" link when too many events
+        selectable: true,
+        dateClick: function(info) {
+          // alert("dateClick");
+        },
+        select: function(info) {
+          sameViewNote( info.startStr );
+          // alert('selected ' + info.startStr + ' to ' + info.endStr);
+        },
+      });
+
+      calendar.render();
+
+      function sameViewCalendar() {
+            var userSelection =  document.getElementsByClassName("tox-tinymce");
+            // userSelection[0].style.display = "none";
+            document.getElementById("calendar").style.visibility = "visible";
+            calendar
+      }
+      function sameViewNote( value ) {
+            var userSelection =  document.getElementsByClassName("tox-tinymce");
+            // userSelection[0].style.display = "block";
+            document.getElementById("calendar").style.visibility = "hidden";
+            var json = {"type": "calendar", "value": value, "timeDefault": "", "time": ""};
+            sameRapidCommand( json );
+      }
+
+
+  </script>
+
+
 </body>
 </html>

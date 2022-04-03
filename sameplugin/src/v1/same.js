@@ -20,8 +20,6 @@ function sameGetShortcutList() { return same_shortcut_list; }
 function sameSetShortcutList( value ) { same_shortcut_list = value; sameCreateNoteShortcut(); sameCreatePanelShortcut(); }
 
 /****** PANEL DESIGN ************************************************/
-// <button id="same_function_note_small_button" class="same_resize_img same_icon_style same_hidden_vertical same_hidden_deactive" title="Secrease note field"> </button>\
-// <button id="same_function_shortcut_button_vertical" class="same_icon_style same_hidden_vertical same_hidden_deactive" title="Shortcuts"> </button>\
 var same_panel_recording_button = '\
 <div class="same_recording_internal">\
 <button id="same_function_note_button_vertical" class="same_hidden_vertical same_hidden_deactive" >Note</button>\
@@ -280,14 +278,9 @@ function sameNoteBigCommon() {
       if (samePositionSelected=="right") {
 
       } else if (samePositionSelected=="bottom") {
-      // if (same_position_bottom) {
           element.classList.add("same_note_text_big_bottom");
-          // element.classList.remove("same_note_text_big_top");
-          // element.classList.remove("same_note_text_big_right");
       } else {
           element.classList.add("same_note_text_big_top");
-          // element.classList.remove("same_note_text_big_bottom");
-          // element.classList.remove("same_note_text_big_right");
       }
 }
 function sameNoteChangeHeight() {
@@ -315,8 +308,6 @@ var same_minutesLabel = "";
 var same_secondsLabel = "";
 var same_totalSeconds = 0;
 
-// var sameDefaultMinutes = "";
-// var sameDefaultSeconds = "";
 var sameDefaulTotalSeconds = 0;
 var same_minutesLabel_default = "";
 var same_secondsLabel_default = "";
@@ -421,10 +412,8 @@ function sameChangePanel(note,shortcut,setting,common,datameeting,allmeeting) {
       sameDisplayCommon("same_note",note);
 
       sameSelectedButtoCommon( "same_function_shortcut_button" , shortcut );
-      // sameSelectedButtoCommon( "same_function_shortcut_button_vertical" , shortcut );
       sameDisplayCommon("same_shortcut",shortcut);
 
-      // sameSelectedButtoCommon( "same_function_setting_button" , setting );
       sameDisplayCommon("same_setting",setting);
 
       sameSelectedButtoCommon( "same_function_data_meeting_button" , datameeting );
@@ -521,8 +510,6 @@ function sameRapidShortcutList(value, type) {
 }
 
 function sameRapidCommand(time, value, type, start ) {
-
-      // if (time==1) { time = same_getTimeShortcut(); } else { time = ""; }
       time = same_getTimeShortcut();
       var json = {"type": type, "value": value, "timeDefault": sameDefaulTotalSeconds, "time": time};
       samePostMessageNote( json , "sameRapidCommand" );
@@ -617,7 +604,6 @@ function sameCommonBlockApi( value, type ) {
           </div>\
           <div id="same_data_meeting_body">' + title + out + '</div>\
         ';
-        // <button data-url="' + myArr.edit + '" id="same_function_check" class="same_icon_style" title="Check"></button>\
 
         document.getElementById("same_common").innerHTML = escapeHTMLPolicy.createHTML(out);
         sameClickCommon( "same_function_edit" , sameFunctionEditOpen );
@@ -699,7 +685,7 @@ function sameClickCommon( id , name_funcition ) {
       }
 }
 function sameClickCommonClass( id , name_funcition, action ) {
-    var userSelection =  document.getElementsByClassName(id); //.addEventListener("click", name_funcition);
+    var userSelection =  document.getElementsByClassName(id);
     for(var i = 0; i < userSelection.length; i++) {
       (function(index) {
         userSelection[index].addEventListener( action , name_funcition);
@@ -736,21 +722,19 @@ function sameFunctionOpenReport() {
     }
     sameFunctionOpenCommon(same_domain + "/v1/getreport.php?idmeeting=" + sameGetIdMeeting() );
 }
+function sameFunctionOpenCalendar() {
+    sameFunctionOpenCommon(same_domain + "/v1/getcalendar.php?idmeeting=" + sameGetIdMeeting() );
+}
 function sameFunctionOpenCommon(url) {
 
     var element = document.getElementById("same_panel_edit_external");
     if (samePositionSelected=="right") {
          console.log("sameFunctionOpenCommon __  right");
-         // element.classList.remove("same_panel_edit_external_top");
-         // element.classList.remove("same_panel_edit_external_bottom");
-
     } else if (samePositionSelected=="bottom") {
     // if (same_position_bottom) {
          element.classList.add("same_panel_edit_external_bottom");
-         // element.classList.remove("same_panel_edit_external_top");
     } else {
          element.classList.add("same_panel_edit_external_top");
-         // element.classList.remove("same_panel_edit_external_bottom");
     }
     sameDisplayCommon( "same_panel_edit_external","block");
     document.getElementById("same_panel_edit_external_iframe").src = url;
@@ -765,7 +749,6 @@ function sameFunctionEditClose() {
 
 /****** PANEL FUNCTION CALL API ************************************************/
 function sameGetParticipantList() {
-    // console.log("sameGetParticipantList");
     sameGetAPI(same_domain_api + "/public/v1/partecipants/" ,"participant", "");
 }
 function sameGetDataMeeting() {
@@ -785,11 +768,7 @@ function sameGetScreenshot() {
 }
 
 /****** PANEL FUNCTION SETTING ************************************************/
-
-
-// var same_position_bottom = true;
 function sameMovePanelTop() {
-      // same_position_bottom = false;
       samePositionSelected = "top";
       sameMovePanelDeleteRight();
       document.getElementById("same_panel_base").style.top = "0px";
@@ -797,7 +776,6 @@ function sameMovePanelTop() {
       sameNoteSmall();
 }
 function sameMovePanelBottom() {
-      // same_position_bottom = true;
       samePositionSelected = "bottom";
       sameNoteSmall();
       sameMovePanelDeleteRight();
@@ -900,7 +878,6 @@ function initSameMeeting() {
 
   sameClickCommon( "same_function_shortcut_button" , sameChangePanelShortcut );
   sameClickCommon( "same_function_shortcut_short_button" , sameChangePanelShortcut );
-  // sameClickCommon( "same_function_shortcut_button_vertical" , sameChangePanelShortcut );
 
   sameClickCommon( "same_function_setting_button" , sameChangePanelSetting );
   sameClickCommon( "same_function_data_meeting_button" , sameChangePanelDataMeeting );
@@ -994,7 +971,6 @@ function sameCreateMeeting(message) {
 }
 function sameEditorRapidCommad(message) {
     var myArr = JSON.parse( message );
-    console.log("sameEditorRapidCommad");
     sameRapidShortcutList(myArr.value, myArr.type);
 }
 /***** INIZIALIZZA SAME *****/
