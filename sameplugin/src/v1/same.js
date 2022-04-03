@@ -458,10 +458,12 @@ function sameCreateNoteShortcut() {
               img = same_domain + "/v1/img/no-img.png";
           }
           var style = "background-image: url('" + img + "') !important;";
-          out += '<button onclick="sameRapidShortcutList(\'' + myItems[i].value + '\',\'' + myItems[i].call + '\');" class="same_resize_img same_icon_style" style="' + style + '"></button>';
+          // out += '<button onclick="sameRapidShortcutList(\'' + myItems[i].value + '\',\'' + myItems[i].call + '\');" class="same_resize_img same_icon_style" style="' + style + '"></button>';
+          out += '<button data-value="' + myItems[i].value + '" data-call="' + myItems[i].call + '" class="sameRapidShortcutList same_resize_img same_icon_style" style="' + style + '"></button>';
       }
       out += '<button id="same_function_shortcut_short_button" onclick="sameChangePanelShortcut();"  class="same_resize_img same_icon_style" title="Shortcuts"> </button>';
       document.getElementById("same_rapid_command").innerHTML = escapeHTMLPolicy.createHTML( out );
+      sameClickCommonClass( "sameRapidShortcutList" , sameRapidShortcutList, "click" );
 }
 function sameCreatePanelShortcut() {
       var temp = sameGetShortcutList();
@@ -473,7 +475,8 @@ function sameCreatePanelShortcut() {
       outHelp += "<tr><td>##</td><td>Agenda</td></tr>";
       for(i = 0; i < myItems.length; i++) {
           var style = "background-image: url('" + myItems[i].img + "') !important;";
-          out += '<button onclick="sameRapidShortcutList(\'' + myItems[i].value + '\',\'' + myItems[i].call + '\');" class="same_buttom_img" style="' + style + '">' + myItems[i].value + '</button>';
+          // out += '<button onclick="sameRapidShortcutList(\'' + myItems[i].value + '\',\'' + myItems[i].call + '\');" class="same_buttom_img" style="' + style + '">' + myItems[i].value + '</button>';
+          out += '<button data-value="' + myItems[i].value + '" data-call="' + myItems[i].call + '" class="sameRapidShortcutList same_buttom_img" style="' + style + '">' + myItems[i].value + '</button>';
           outHelp += "<tr><td>" + myItems[i].shortcut + "</td><td>" + myItems[i].value + "</td></tr>";
       }
       document.getElementById("same_shortcut").innerHTML = escapeHTMLPolicy.createHTML( out );
@@ -484,6 +487,7 @@ function sameCreatePanelShortcut() {
       ';
       document.getElementById("same_setting").innerHTML = escapeHTMLPolicy.createHTML( outHelp );
       sameClickCommon( "same_function_edit_shurtcut" , sameFunctionEditOpenShurtcut );
+      sameClickCommonClass( "sameRapidShortcutList" , sameRapidShortcutList, "click" );
 }
 
 function sameChangePanelShortcut() {
@@ -505,7 +509,10 @@ function sameChangePanelCommon() {
 
 /****** PANEL FUNCTION comandi rapidi ************************************************/
 var sameACapoCharacter = "";
-function sameRapidShortcutList(value, type) {
+function sameRapidShortcutList() {
+      sameRapidShortcutListCommon(this.getAttribute('data-value') , this.getAttribute('data-call'));
+}
+function sameRapidShortcutListCommon(value, type) {
       sameRapidCommand(1,value,type,sameACapoCharacter);
 }
 
@@ -971,7 +978,7 @@ function sameCreateMeeting(message) {
 }
 function sameEditorRapidCommad(message) {
     var myArr = JSON.parse( message );
-    sameRapidShortcutList(myArr.value, myArr.type);
+    sameRapidShortcutListCommon(myArr.value, myArr.type);
 }
 /***** INIZIALIZZA SAME *****/
 initSame();

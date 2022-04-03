@@ -225,11 +225,12 @@
   </script>
 
 
-  <div id='calendar' style="visibility:hidden;position: absolute;
+  <div id='calendar' style="visibility:hidden; position: absolute;
     top: 0px;
     width: 100%;
     z-index: 999999;
     background: #ffffff;"></div>
+
   <script>
 
       var calendarEl = document.getElementById('calendar');
@@ -257,20 +258,18 @@
 
       calendar.render();
 
+
       function sameViewCalendar() {
-            var userSelection =  document.getElementsByClassName("tox-tinymce");
-            // userSelection[0].style.display = "none";
             document.getElementById("calendar").style.visibility = "visible";
-            calendar
+            // document.getElementById("calendar").style.display = "block";
+
       }
       function sameViewNote( value ) {
-            var userSelection =  document.getElementsByClassName("tox-tinymce");
-            // userSelection[0].style.display = "block";
             document.getElementById("calendar").style.visibility = "hidden";
+            // document.getElementById("calendar").style.display = "none";
             var json = {"type": "calendar", "value": value, "timeDefault": "", "time": ""};
             sameRapidCommand( json );
       }
-
 
   </script>
 
