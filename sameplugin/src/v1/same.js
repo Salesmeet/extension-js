@@ -1,7 +1,4 @@
 /* funzione per pulire il codice HTML iniettato nella pagina - per potere evitare errori trusted con MEET o TEAMS*/
-escapeHTMLPolicy = trustedTypes.createPolicy("forceInner", {
-    createHTML: (to_escape) => to_escape
-})
 
 var same_id_extension = "jinjngkjbcaedjmllefbghfodplfngeh";
 var same_domain_api = "https://api.sameapp.net";
@@ -107,6 +104,19 @@ var same_panel_info = '<div id="same_info" class="same_panel_style">\
 </center>\
 </div>';
 
+
+function sameEscapeHTMLPolicy( value ) {
+    if (window.location.href.indexOf("teams.microsoft") != -1) {
+        return value ;
+    } else {
+        var escapeHTMLPolicy = trustedTypes.createPolicy("forceInner", {
+            createHTML: (to_escape) => to_escape
+        })
+        return escapeHTMLPolicy.createHTML( value );
+    }
+    // return escapeHTMLPolicy.createHTML( value );
+}
+
 /****** PANEL INIT  ************************************************/
 
 /* Inizializza SAME creando l'immagine drag come primo step per il cliente */
@@ -114,7 +124,7 @@ function sameInit() {
     var same_init = '<img id="same_init_img" alt="Open" src="' + same_domain + '/logo.png"><div id="same_initheader">Click here to move</div>';
     var same_elemDiv = document.createElement('div');
     same_elemDiv.id = "same_init";
-    same_elemDiv.innerHTML = escapeHTMLPolicy.createHTML(same_init);
+    same_elemDiv.innerHTML = sameEscapeHTMLPolicy(same_init);
     // same_elemDiv.style = "background: #FFFFFF;bottom: 110px;position: absolute;width: 150px;height: 75px;z-index: 99990;border: 1px solid #000";
     document.body.appendChild(same_elemDiv);
     sameClickCommon( "same_init_img" , sameInitHidden );
@@ -148,7 +158,7 @@ function sameInitShow() {
 function sameInitPanel() {
     var same_elemDiv = document.createElement('div');
     same_elemDiv.id = "same_panel_base";
-    same_elemDiv.innerHTML = escapeHTMLPolicy.createHTML(same_panel_recording + same_panel_tools + same_panel_operation + same_panel_info);
+    same_elemDiv.innerHTML = sameEscapeHTMLPolicy(same_panel_recording + same_panel_tools + same_panel_operation + same_panel_info);
     document.body.appendChild(same_elemDiv);
     // init recupero i dati del mmeting ...
     sameGetAPI(same_domain_api + "/public/v1/meeting/init/" ,"sameInitAfter", "sameInitAfter");
@@ -181,7 +191,7 @@ function sameNewMeeting() {
     var same_new_meeting = '<iframe src="'+ same_domain + '/v1/newmeeting.php?lang=' + sameGetLanguage() + '&user=' + sameGetUser() + '&url=' + sameGetDatePage() + '" id="same_new_meeting_iframe"></iframe>';
     var same_elemDiv = document.createElement('div');
     same_elemDiv.id = "same_new_meeting";
-    same_elemDiv.innerHTML = escapeHTMLPolicy.createHTML(same_new_meeting);
+    same_elemDiv.innerHTML = sameEscapeHTMLPolicy(same_new_meeting);
     document.body.appendChild(same_elemDiv);
 }
 
@@ -330,8 +340,8 @@ function sameStartHourDefault() {
 }
 function sameStartHourDefaultSetTime() {
     ++sameDefaulTotalSeconds;
-    same_secondsLabel_default.innerHTML = escapeHTMLPolicy.createHTML(same_pad(sameDefaulTotalSeconds % 60));
-    same_minutesLabel_default.innerHTML = escapeHTMLPolicy.createHTML(same_pad(parseInt(sameDefaulTotalSeconds / 60)));
+    same_secondsLabel_default.innerHTML = sameEscapeHTMLPolicy(same_pad(sameDefaulTotalSeconds % 60));
+    same_minutesLabel_default.innerHTML = sameEscapeHTMLPolicy(same_pad(parseInt(sameDefaulTotalSeconds / 60)));
 }
 
 
@@ -349,8 +359,8 @@ function same_getTime() {
 }
 function same_setTime() {
   ++same_totalSeconds;
-  same_secondsLabel.innerHTML = escapeHTMLPolicy.createHTML(same_pad(same_totalSeconds % 60));
-  same_minutesLabel.innerHTML = escapeHTMLPolicy.createHTML(same_pad(parseInt(same_totalSeconds / 60)));
+  same_secondsLabel.innerHTML = sameEscapeHTMLPolicy(same_pad(same_totalSeconds % 60));
+  same_minutesLabel.innerHTML = sameEscapeHTMLPolicy(same_pad(parseInt(same_totalSeconds / 60)));
 }
 function same_pad(val) {
   var valString = val + "";
@@ -400,8 +410,8 @@ function sameClearHour() {
     samePostAPI(same_totalSeconds,"sameClearHour");
     clearInterval(same_timer);
     same_totalSeconds = 0;
-    same_secondsLabel.innerHTML = escapeHTMLPolicy.createHTML("00");
-    same_minutesLabel.innerHTML =  escapeHTMLPolicy.createHTML("00");
+    same_secondsLabel.innerHTML = sameEscapeHTMLPolicy("00");
+    same_minutesLabel.innerHTML =  sameEscapeHTMLPolicy("00");
     sameDisplayCommon("same_function_start_hour_button","block");
     sameDisplayCommon("same_function_start_short_hour_button","none");
     sameDisplayCommon("same_function_stop_hour_button","none");
@@ -469,7 +479,7 @@ function sameCreateNoteShortcut() {
           out += '<button data-value="' + myItems[i].value + '" data-call="' + myItems[i].call + '" class="sameRapidShortcutList same_resize_img same_icon_style" style="' + style + '"></button>';
       }
       out += '<button id="same_function_shortcut_short_button" onclick="sameChangePanelShortcut();"  class="same_resize_img same_icon_style" title="Shortcuts"> </button>';
-      document.getElementById("same_rapid_command").innerHTML = escapeHTMLPolicy.createHTML( out );
+      document.getElementById("same_rapid_command").innerHTML = sameEscapeHTMLPolicy( out );
       sameClickCommonClass( "sameRapidShortcutList" , sameRapidShortcutList, "click" );
 }
 function sameCreatePanelShortcut() {
@@ -486,13 +496,13 @@ function sameCreatePanelShortcut() {
           out += '<button data-value="' + myItems[i].value + '" data-call="' + myItems[i].call + '" class="sameRapidShortcutList same_buttom_img" style="' + style + '">' + myItems[i].value + '</button>';
           outHelp += "<tr><td>" + myItems[i].shortcut + "</td><td>" + myItems[i].value + "</td></tr>";
       }
-      document.getElementById("same_shortcut").innerHTML = escapeHTMLPolicy.createHTML( out );
+      document.getElementById("same_shortcut").innerHTML = sameEscapeHTMLPolicy( out );
       outHelp += "</table>";
       outHelp += '\
         <hr>\
         <button id="same_function_edit_shurtcut" class="same_icon_style" title="edit"></button>\
       ';
-      document.getElementById("same_setting").innerHTML = escapeHTMLPolicy.createHTML( outHelp );
+      document.getElementById("same_setting").innerHTML = sameEscapeHTMLPolicy( outHelp );
       sameClickCommon( "same_function_edit_shurtcut" , sameFunctionEditOpenShurtcut );
       sameClickCommonClass( "sameRapidShortcutList" , sameRapidShortcutList, "click" );
 }
@@ -541,7 +551,7 @@ function sameAllMeetingCalendar( value ) {
 
 /* centralizza la scrittura all'interno del pnnello common */
 function sameCommonBlock( value ) {
-      document.getElementById("same_common").innerHTML = escapeHTMLPolicy.createHTML(value);
+      document.getElementById("same_common").innerHTML = sameEscapeHTMLPolicy(value);
       sameChangePanelCommon();
 }
 
@@ -619,12 +629,12 @@ function sameCommonBlockApi( value, type ) {
           <div id="same_data_meeting_body">' + title + out + '</div>\
         ';
 
-        document.getElementById("same_common").innerHTML = escapeHTMLPolicy.createHTML(out);
+        document.getElementById("same_common").innerHTML = sameEscapeHTMLPolicy(out);
         sameClickCommon( "same_function_edit" , sameFunctionEditOpen );
 
       } else {
         out = '<div style="float:left;" id="same_data_meeting_body">' + title + out + '</div>';
-        document.getElementById("same_common").innerHTML = escapeHTMLPolicy.createHTML(out);
+        document.getElementById("same_common").innerHTML = sameEscapeHTMLPolicy(out);
       }
       sameClickCommonClass( "sameAddValueInNote" , sameAddValueInNote , "click" );
       sameClickCommonClass( "sameAddValueCheck" , sameAddValueCheck , "click" );
