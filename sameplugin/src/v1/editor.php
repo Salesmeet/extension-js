@@ -87,7 +87,7 @@
 
     function sameRapidCommand( value ) {
 
-          console.log("sameRapidCommand:" + value.type);
+          //console.log("sameRapidCommand:" + value.type);
 
           if (value.type=="rCalendar") {
 
@@ -95,7 +95,7 @@
 
           } else {
 
-              console.log("sameRapidCommand:" + value);
+              //console.log("sameRapidCommand:" + value);
               var char_i = "[ ";
               var char_e = " ]";
 
@@ -121,9 +121,9 @@
               } else {
                 valore = timeDefaultString + time + char_i + value.value  + char_e;
               }
-              console.log(value.timeDefault);
-              console.log(value.time);
-              console.log(value.type);
+              //console.log(value.timeDefault);
+              //console.log(value.time);
+              //console.log(value.type);
               // var json = {"type": type, "value": value, "timeDefault": sameDefaulTotalSeconds, "time": time};
 
               // Prendo il vavlore
@@ -239,7 +239,7 @@
         headerToolbar: {
           left: 'prev,next today',
           center: 'title',
-          right: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth'
+          right: 'dayGridMonth,timeGridWeek,timeGridDay'
         },
         buttonIcons: false, // show the prev/next text
         weekNumbers: true,
@@ -247,6 +247,7 @@
         editable: true,
         dayMaxEvents: true, // allow "more" link when too many events
         selectable: true,
+        height: 500,
         dateClick: function(info) {
           // alert("dateClick");
         },

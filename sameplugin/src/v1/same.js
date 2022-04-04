@@ -14,6 +14,7 @@ function sameGetUser() { return "2"; }
 function sameGetDatePage() { return encodeURIComponent(window.location.href); }
 var samePanelSelected = "";
 var samePositionSelected = "right";
+var samePanelNoteLarge = "";
 function sameSetPanelSelected( value ) { samePanelSelected = value; }
 var same_shortcut_list = "";
 function sameGetShortcutList() { return same_shortcut_list; }
@@ -132,6 +133,7 @@ function sameInitHidden() {
         document.getElementById("same_note_text_iframe").src = same_domain + '/v1/editor.php?idmeeting=' + sameGetIdMeeting() + '&lang=' + sameGetLanguage() + "&user=" + sameGetUser();
         if (samePositionSelected == "right") {
           sameMovePanelRight();
+          sameNoteBigVertical();
         }
         sameDisplayCommon("same_panel_base","block");
     }
@@ -263,16 +265,19 @@ function sameNoteBig() {
 }
 
 function sameNoteBigVertical() {
+  samePanelNoteLarge = "";
   element = document.getElementById("same_note_text_iframe");
   element.classList.add("same_note_text_iframe_right_big");
 }
 function sameNoteSmallVertical() {
+  samePanelNoteLarge = "small";
   element = document.getElementById("same_note_text_iframe");
   element.classList.remove("same_note_text_iframe_right_big");
 }
 
 /* ingrandisce WYSIWYG HTML */
 function sameNoteBigCommon() {
+      samePanelNoteLarge = "";
       sameNoteChangeHeight();
       element = document.getElementById("same_note_text_iframe");
       if (samePositionSelected=="right") {
@@ -293,6 +298,7 @@ function samePostMessageNote( value, action ) {
 
 /* rimpicciolisce WYSIWYG HTML */
 function sameNoteSmall() {
+      samePanelNoteLarge = "small";
       sameChangePanelNote();
       sameNoteChangeHeight();
       element = document.getElementById("same_note_text_iframe");
@@ -452,6 +458,7 @@ function sameCreateNoteShortcut() {
       var myArr = JSON.parse( temp );
       var myItems = myArr.items;
       var out = "";
+      // for(i = 0; i < myItems.length; i++) {
       for(i = 0; i < 4; i++) {
           var img = myItems[i].img ;
           if  (img=="") {
@@ -776,15 +783,23 @@ function sameGetScreenshot() {
 
 /****** PANEL FUNCTION SETTING ************************************************/
 function sameMovePanelTop() {
+      sameNoteSmallVertical();
       samePositionSelected = "top";
       sameMovePanelDeleteRight();
       document.getElementById("same_panel_base").style.top = "0px";
       document.getElementById("same_panel_base").style.bottom = "auto";
       sameNoteSmall();
+      if (samePanelNoteLarge == "") {
+        sameNoteBig();
+      }
 }
 function sameMovePanelBottom() {
+      sameNoteSmallVertical();
       samePositionSelected = "bottom";
-      sameNoteSmall();
+      // sameNoteSmall();
+      if (samePanelNoteLarge == "") {
+        sameNoteBigCommon();
+      }
       sameMovePanelDeleteRight();
       document.getElementById("same_panel_base").style.top = "auto";
       document.getElementById("same_panel_base").style.bottom = "0px";
