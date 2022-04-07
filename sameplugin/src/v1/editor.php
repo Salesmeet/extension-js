@@ -1,3 +1,5 @@
+<?php include("common/referer.php") ?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -14,16 +16,12 @@
   </style>
 </head>
 <body>
-
     <textarea id="same_note_text_iframe"></textarea>
 
   <script>
-
-
     escapeHTMLPolicy = trustedTypes.createPolicy("forceInner", {
         createHTML: (to_escape) => to_escape
     })
-
     var contentTinymce = "";
     window.onmessage = function(e) {
         var ed = tinymce.get('same_note_text_iframe');
@@ -42,16 +40,24 @@
 
     function sameWrite( message ) {
       // console.log("sameWrite");
+      // console.log( message );
       tinymce.activeEditor.setContent( message , {format: 'html'});
       tinyMCE.activeEditor.focus();
     }
 
     function sameChangeHeight() {
-      document.head.insertAdjacentHTML("beforeend", '<style> .same_note_text_iframe_dynamic { height: ' + document.documentElement.clientHeight + 'px !important;}</style>')
+      window.focus();
+      document.getElementById("same_note_text_iframe").focus();
+      var height = document.documentElement.clientHeight
+      if (height==0) {
+          height = 500;
+      }
+      document.head.insertAdjacentHTML("beforeend", '<style> .same_note_text_iframe_dynamic { height: ' + height + 'px !important;}</style>')
       var userSelection = document.getElementsByClassName("tox-tinymce");
       userSelection[0].classList.remove("same_note_text_iframe_dynamic");
       userSelection[0].classList.add("same_note_text_iframe_dynamic");
       sameWrite( contentTinymce );
+
     }
 
     function saveNote() {
@@ -207,6 +213,11 @@
             ed.on("mouseout", function(){
                 // samePostAPINote();
             });
+            /*
+            ed.on("focus", function(){
+                sameChangeHeight();
+            });
+            */
             ed.ui.registry.addButton('customInsertButton', {
               text: 'SHORTCUTS',
               onAction: function (_) {
@@ -219,8 +230,10 @@
     });
 
     window.onload = function() {
+        console.log("onloadonloadonload");
         sameGetShortcut();
     };
+    window.addEventListener('focus', sameChangeHeight);
 
   </script>
 
@@ -252,6 +265,7 @@
           // alert("dateClick");
         },
         select: function(info) {
+          console.log(info);
           sameViewNote( info.startStr );
           // alert('selected ' + info.startStr + ' to ' + info.endStr);
         },
@@ -259,11 +273,9 @@
 
       calendar.render();
 
-
       function sameViewCalendar() {
             document.getElementById("calendar").style.visibility = "visible";
             // document.getElementById("calendar").style.display = "block";
-
       }
       function sameViewNote( value ) {
             document.getElementById("calendar").style.visibility = "hidden";

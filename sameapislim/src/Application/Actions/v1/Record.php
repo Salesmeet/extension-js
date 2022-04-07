@@ -152,7 +152,7 @@ class Record
             "type" => "record",
             "directory" => $this->directory,
             "basename" => date("YmdHis") . "_" . $idmeeting . "_" . $user . "_" . $type,
-            "date" => date("Y-m-d H:i:s"),
+            "date" =>  time(), // date("Y-m-d H:i:s"),
         );
     }
 

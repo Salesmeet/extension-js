@@ -13,7 +13,7 @@ class FireStore {
 
   private $project = "sales-66641";
   private $apiKey = 'AIzaSyB_bq-VMYBF7xow-C6GKi4cB3SPKbInm_w';
-  private $fileKey = 'firebase_credentials.json'; 
+  private $fileKey = 'firebase_credentials.json';
 
   public function addDocument( $collection_name, $document) {
       $firestore = new FirestoreClient([

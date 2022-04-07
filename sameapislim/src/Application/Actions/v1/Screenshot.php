@@ -116,7 +116,7 @@ class Screenshot
             "bucket" => "",
             "type" => "screenshot",
             "directory" => $this->directory,
-            "date" => date("Y-m-d H:i:s"),
+            "date" =>  time(), // date("Y-m-d H:i:s"),
         );
     }
 

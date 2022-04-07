@@ -101,7 +101,7 @@ class Note
             "idmeeting" => $idmeeting,
             "value" => $value,
             "user" => $user,
-            "date" => date("Y-m-d H:i:s"),
+            "date" =>  time(), // date("Y-m-d H:i:s"),
         );
     }
 

@@ -1,5 +1,6 @@
 <?
 header("Access-Control-Allow-Origin: *");
+include("common/referer.php");
 
 $lang = "";
 if (isset($_GET['lang'])) {

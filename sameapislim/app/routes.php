@@ -172,7 +172,21 @@ return function (App $app) {
     });
 
 
+    // Login
+    $app->post('/public/v1/login', function (Request $request, Response $response, $args) {
+      $auth = new Auth();
+      return setResponse($response, $auth->login($request, $response, $args) );
+    });
+
+
     $app->get('/public/v1/test/', function (Request $request, Response $response, $args) {
+
+      echo "<hr>Login:<br>";
+      echo '<form id="inviofile" action="https://api.sameapp.net/public/v1/login" method="post">';
+      echo '  <input type="text" name="email" id="email">';
+      echo '  <input type="text" name="password" id="password">';
+      echo '  <input type="submit" value="Login" name="submit">';
+      echo '</form>';
 
       echo "<hr>New shortcut:<br>";
       echo '<form id="inviofile" action="https://api.sameapp.net/public/v1/shortcut/qqqqq" method="post">';

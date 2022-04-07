@@ -7,7 +7,9 @@ var same_id_meeting = "";
 function sameGetIdMeeting() { return same_id_meeting; }
 function sameSetIdMeeting( value ) { same_id_meeting = value; }
 function sameGetLanguage() { return "en"; }
-function sameGetUser() { return "2"; }
+var same_id_user = "";
+function sameGetUser() { return same_id_user; }
+function sameSetUser( value ) { same_id_user = value; }
 function sameGetDatePage() { return encodeURIComponent(window.location.href); }
 var samePanelSelected = "";
 var samePositionSelected = "right";
@@ -40,16 +42,18 @@ var same_panel_shortcut = '<div id="same_shortcut" style="display:none"></div>';
 
 var same_panel_data_meeting = '\
 <div id="same_data_meeting" style="display:none">\
+<button id="same_function_meeting_data_button" class="same_buttom_img">Summary</button> \
 <button id="same_function_agenda_data_button" class="same_buttom_img">Agenda</button> \
 <button id="same_function_participant_list_button" class="same_buttom_img">Participant list</button> \
 <button id="same_function_meeting_attachments_button" class="same_buttom_img">Attachments</button> \
-<button id="same_function_meeting_data_button" class="same_buttom_img">Summary</button> \
 <button id="same_function_screenshot_button" class="same_buttom_img">Screenshot list</button> \
 <button id="same_function_records_button" class="same_buttom_img">Records list</button> \
+<button id="same_function_meeting_notes_button" class="same_buttom_img">Note list</button> \
 </div>';
 
 var same_panel_all_meeting = '\
 <div id="same_all_meeting" style="display:none">\
+<button id="same_function_all_logout_button">Logout</button> \
 <button id="same_function_all_meeting_calendar_button">Appointment calendar</button> \
 <button id="same_function_all_meeting_new_button">New meeting</button> \
 <button id="same_function_all_meeting_open_in_same_button">Open meeting in SAME</button> \
@@ -72,7 +76,7 @@ var same_panel_tools = '\
   <button id="same_function_data_meeting_button">Data meeting</button><hr class="same_hidden">\
   <button id="same_function_data_report_meeting_button">Export / Edit plus</button><hr class="same_hidden">\
   <button id="same_function_data_meeting_template_button">Template</button>\
-  <button id="same_function_data_meeting_all_button">All meeting</button>\
+  <button id="same_function_same_settimg_button">Setting</button>\
   </div>';
 
 var same_panel_edit_external = '<div style="display:none;" id="same_panel_edit_external">\
@@ -104,7 +108,6 @@ var same_panel_info = '<div id="same_info" class="same_panel_style">\
 </center>\
 </div>';
 
-
 function sameEscapeHTMLPolicy( value ) {
     if (window.location.href.indexOf("teams.microsoft") != -1) {
         return value ;
@@ -114,7 +117,6 @@ function sameEscapeHTMLPolicy( value ) {
         })
         return escapeHTMLPolicy.createHTML( value );
     }
-    // return escapeHTMLPolicy.createHTML( value );
 }
 
 /****** PANEL INIT  ************************************************/
@@ -134,18 +136,22 @@ function sameInit() {
 
 /* Nasconde immagine SAME e apre il pannello di lavoro */
 function sameInitHidden() {
-    sameDisplayCommon("same_init","none");
-    if (sameGetIdMeeting()=="") {
-        sameGetIdMeetingByUrl();
+    if (sameGetUser()=="") {
+      sameLogin();
     } else {
-        initSameMeeting();
-        sameStartHourDefault();
-        document.getElementById("same_note_text_iframe").src = same_domain + '/v1/editor.php?idmeeting=' + sameGetIdMeeting() + '&lang=' + sameGetLanguage() + "&user=" + sameGetUser();
-        if (samePositionSelected == "right") {
-          sameMovePanelRight();
-          sameNoteBigVertical();
-        }
-        sameDisplayCommon("same_panel_base","block");
+      sameDisplayCommon("same_init","none");
+      if (sameGetIdMeeting()=="") {
+          sameGetIdMeetingByUrl();
+      } else {
+          initSameMeeting();
+          sameStartHourDefault();
+          document.getElementById("same_note_text_iframe").src = same_domain + '/v1/editor.php?idmeeting=' + sameGetIdMeeting() + '&lang=' + sameGetLanguage() + "&user=" + sameGetUser();
+          if (samePositionSelected == "right") {
+            sameMovePanelRight();
+            sameNoteBigVertical();
+          }
+          sameDisplayCommon("same_panel_base","block");
+      }
     }
 }
 
@@ -194,6 +200,7 @@ function sameNewMeeting() {
     same_elemDiv.innerHTML = sameEscapeHTMLPolicy(same_new_meeting);
     document.body.appendChild(same_elemDiv);
 }
+
 
 /******* DA QUI CORRADO ******/
 function sameInitAfter( data ) {
@@ -435,7 +442,7 @@ function sameChangePanel(note,shortcut,setting,common,datameeting,allmeeting) {
       sameSelectedButtoCommon( "same_function_data_meeting_button" , datameeting );
       sameDisplayCommon("same_data_meeting",datameeting);
 
-      sameSelectedButtoCommon( "same_function_data_meeting_all_button" , allmeeting );
+      sameSelectedButtoCommon( "same_function_same_settimg_button" , allmeeting );
       sameDisplayCommon("same_all_meeting",allmeeting);
 
       // pannello iniziale recupero note ... Sempre in none.
@@ -517,7 +524,7 @@ function sameChangePanelSetting() {
 function sameChangePanelDataMeeting() {
       sameChangePanel("none","none","none","none","block","none");
 }
-function sameChangePanelAllMeeting() {
+function sameChangePanelSameSetting() {
       sameChangePanel("none","none","none","none","none","block");
 }
 function sameChangePanelCommon() {
@@ -878,12 +885,22 @@ function sameMovePanelDeleteRight() {
 
 }
 
-/****** PANEL SEARCH ************************************************/
-function sameLogin(str) {
-  console.log("sameLogin");
-  var url = "chrome-extension://jinjngkjbcaedjmllefbghfodplfngeh/options/options.html";
-  url = "chrome-extension://eakfjnpihbkoohjbelkfjcdlkdhfeadb/options/options.html";
-  windiw.open(url);
+/****** AUTH  ************************************************/
+function sameLogin() {
+  var same_login = '<iframe src="'+ same_domain + '/v1/auth/auth.php?lang=' + sameGetLanguage() + '&url=' + sameGetDatePage() + '" id="same_login_iframe"></iframe>';
+  var same_elemDiv = document.createElement('div');
+  same_elemDiv.id = "same_login";
+  same_elemDiv.innerHTML = sameEscapeHTMLPolicy(same_login);
+  document.body.appendChild(same_elemDiv);
+}
+function sameLogout() {
+  var same_loguot = '<iframe src="'+ same_domain + '/v1/auth/logout.php?lang=' + sameGetLanguage() + '&url=' + sameGetDatePage() + '" id="same_logout_iframe"></iframe>';
+  var same_elemDiv = document.createElement('div');
+  same_elemDiv.id = "same_loguot";
+  same_elemDiv.innerHTML = sameEscapeHTMLPolicy(same_loguot);
+  document.body.appendChild(same_elemDiv);
+  // sameDisplayCommon( "same_loguot" , "none" );
+  sameInitShow();
 }
 
 /****** INIT  ************************************************/
@@ -913,15 +930,18 @@ function initSameMeeting() {
 
   sameClickCommon( "same_function_setting_button" , sameChangePanelSetting );
   sameClickCommon( "same_function_data_meeting_button" , sameChangePanelDataMeeting );
-  sameClickCommon( "same_function_data_meeting_all_button" , sameChangePanelAllMeeting );
+  sameClickCommon( "same_function_same_settimg_button" , sameChangePanelSameSetting );
 
   sameClickCommon( "same_function_participant_list_button" , sameGetParticipantList );
   sameClickCommon( "same_function_meeting_data_button" , sameGetDataMeeting );
+  sameClickCommon( "same_function_meeting_notes_button" , sameFunctionOpenNoteVersion );
   sameClickCommon( "same_function_agenda_data_button" , sameGetAgenda );
   sameClickCommon( "same_function_meeting_attachments_button" , sameGetAttachments);
   sameClickCommon( "same_function_records_button" , sameGetRecords );
   sameClickCommon( "same_function_screenshot_button" , sameGetScreenshot );
 
+
+  sameClickCommon( "same_function_all_logout_button" , sameLogout );
   sameClickCommon( "same_function_all_meeting_calendar_button" , sameAllMeetingCalendar );
   sameClickCommon( "same_function_all_meeting_new_button" , sameAllMeetingCalendar );
   sameClickCommon( "same_function_all_meeting_open_in_same_button" , sameAllMeetingCalendar );
@@ -1004,6 +1024,11 @@ function sameCreateMeeting(message) {
 function sameEditorRapidCommad(message) {
     var myArr = JSON.parse( message );
     sameRapidShortcutListCommon(myArr.value, myArr.type);
+}
+function sameAuthOk(message) {
+    sameSetUser(message);
+    sameInitHidden();
+    sameDisplayCommon( "same_login" , "none" );
 }
 /***** INIZIALIZZA SAME *****/
 initSame();

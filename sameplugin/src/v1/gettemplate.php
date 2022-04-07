@@ -1,5 +1,6 @@
 <?
 header("Access-Control-Allow-Origin: *");
+include("common/referer.php");
 
 $note = "<p style='text-align:center;'>Select the template to make your meeting more efficient.</p>";
 $idtemplate = "";

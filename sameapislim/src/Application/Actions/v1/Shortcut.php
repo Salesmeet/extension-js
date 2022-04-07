@@ -94,7 +94,7 @@ class Shortcut
             "img" => "",
             "call" => $call,
             "language" => $language,
-            "date" => date("Y-m-d H:i:s"),
+            "date" =>  time(), // date("Y-m-d H:i:s"),
         );
     }
 

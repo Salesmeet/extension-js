@@ -1,6 +1,8 @@
 <?
 header("Access-Control-Allow-Origin: *");
 
+include("common/referer.php");
+
 $idmeeting = "";
 if (isset($_GET['idmeeting'])) {
     $idmeeting = $_GET['idmeeting'];
@@ -103,9 +105,11 @@ if ($idnote !="") {
           // console.log( value );
           var myArr = JSON.parse(value);
           // console.log(myArr);
+          /*
           myArr.sort(function (a, b) {
             return a.date.localeCompare(b.date) || b.price - a.price;
-        });
+          });
+          */
 
           var out = "";
           for(i = 0; i < myArr.length; i++) {
@@ -127,14 +131,18 @@ if ($idnote !="") {
       // console.log("sameWrite");
       tinymce.activeEditor.setContent( message , {format: 'html'});
     }
+
+    /* plugins: 'link table lists checklist',  */
+    /* toolbar: 'undo redo | bold italic underline strikethrough | fontsizeselect | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist checklist | forecolor backcolor removeformat | link | table ', */
+
     function loadTinyMCE() {
         tinymce.init({
           selector: 'textarea',
           menubar: false,
           statusbar: false,
           height: 135,
-          plugins: 'link table lists checklist',
-          toolbar: 'undo redo | bold italic underline strikethrough | fontsizeselect | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist checklist | forecolor backcolor removeformat | link | table ',
+          plugins: 'link table lists',
+          toolbar: 'undo redo | bold italic underline strikethrough | fontsizeselect | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist | forecolor backcolor removeformat | link | table ',
           height: window.innerHeight,
           statusbar: false,
           tinycomments_mode: 'embedded',

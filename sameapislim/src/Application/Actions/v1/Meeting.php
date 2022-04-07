@@ -42,10 +42,12 @@ class Meeting
     if (isset($args["idmeeting"])) {
         $fireStore = new FireStore();
         $data = $fireStore->getDocument( $this->collection_name, $args["idmeeting"] ) ;
+        /*
         $start = "";
         if ($data["start"]!="") {
             $start  = $data["start"]->formatAsString();
         }
+        */
         return [
             "title" => "Summary of meeting data",
             "edit" => "",
@@ -176,8 +178,13 @@ class Meeting
            "lang" => $lang,
            "user" => $user,
            "url" => $url,
-           "date" => date("Y-m-d H:i:s"),
+           "date" => time(), // date("Y-m-d H:i:s"),
            "uniqid" => $uniqid,
+           "color" => "",
+           "end" => "",
+           "status" => "",
+           "allDay" => false,
+           "start" => date("Y-m-d H:i:s"),
        );
    }
 

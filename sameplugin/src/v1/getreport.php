@@ -1,5 +1,7 @@
 <?
 header("Access-Control-Allow-Origin: *");
+include("common/referer.php");
+
 $idmeeting = "";
 if (isset($_GET['idmeeting'])) {
     $idmeeting = $_GET['idmeeting'];

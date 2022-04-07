@@ -53,6 +53,23 @@
     height: 100%;
 }
 
+#same_login, #same_loguot {
+    background: #FFFFFF;
+    font-size: 13px;
+    color: #000;
+    top: 40%;
+    right: 0px;
+    position:fixed;
+    width:300px;
+    height:200px;
+    padding:3px;
+    z-index:99992;
+    border:1px solid #000;
+}
+#same_login_iframe,  #same_logout_iframe {
+    height: 100%;
+}
+
 
 #same_panel_base button {
     background-color: #ffffff; /* #d7d7d7; */
@@ -311,6 +328,9 @@
 #same_function_meeting_data_button {
     background-image: url('https://plugin.sameapp.net/v1/img/meeting-information.png') !important;
 }
+#same_function_meeting_notes_button {
+    background-image: url('https://plugin.sameapp.net/v1/img/list.png') !important;
+}
 #same_function_screenshot_button {
     background-image: url('https://plugin.sameapp.net/v1/img/screenshot.png') !important;
 }
@@ -445,7 +465,7 @@ div.editable {
 }
 .same_recording_internal_right {
     padding-top: 6px;
-    padding-right: 10px;
-    padding-left: 10px;
+    padding-right: 7px;
+    padding-left: 7px;
     border-right: 1px solid #9e9e9e;
 }

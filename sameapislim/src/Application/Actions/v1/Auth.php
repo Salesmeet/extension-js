@@ -13,12 +13,14 @@ class Auth
     public function __construct() {
     }
 
-    public function auth( Request $request, Response $response, $args )  {
+    public function login( Request $request, Response $response, $args )  {
 
       echo "auth<hr>";
+      /*
       $fireStore = new FireStore();
       $result = $fireStore->login() ;
-
+      */
+      return json_decode( '{"state":"200","auth":""}', true);
     }
 
 }
