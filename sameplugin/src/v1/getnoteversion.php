@@ -39,7 +39,7 @@ if ($idnote !="") {
 </head>
 <body>
 
-  <div style="float: left; width: 7%; text-align: center;  height: 100vh; border-right: 1px solid #767575;">
+  <div style="float: left; width: 10%; text-align: center;  height: 100vh; border-right: 1px solid #767575;">
      <img src="https://plugin.sameapp.net/v1/img/logo.png" style="width: 70px;">
      <br><br>
      List note version
@@ -49,8 +49,9 @@ if ($idnote !="") {
      <button onclick="save();" id="" class="same_icon_style" title="">Save</button>
      <hr>
      <button onclick="exit();" id="" class="same_icon_style" title="">Close</button>
+
   </div>
-  <div style="float: left; width: 90%; padding-left: 20px;">
+  <div style="float: left; width: 88%; padding-left: 20px;">
 
     <div id="spinner" style="position: absolute;z-index: 99;left: 48%;top: 40%;">
       <svg  width="970" height="70">

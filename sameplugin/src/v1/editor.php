@@ -242,6 +242,8 @@
     top: 0px;
     width: 100%;
     z-index: 999999;
+    padding: 10px;
+    border: 2px solid #000;
     background: #ffffff;"></div>
 
   <script>
@@ -260,7 +262,7 @@
         editable: true,
         dayMaxEvents: true, // allow "more" link when too many events
         selectable: true,
-        height: 500,
+        height: 480,
         dateClick: function(info) {
           // alert("dateClick");
         },

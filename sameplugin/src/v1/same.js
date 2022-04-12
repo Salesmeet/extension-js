@@ -953,7 +953,7 @@ function initSameMeeting() {
   sameClickCommon( "same_function_icon_button" , sameInitShow );
 
   sameClickCommon( "same_function_data_report_meeting_button" , sameFunctionOpenReport );
-  sameClickCommon( "same_function_data_report_meeting_edit_plus_button" , sameFunctionOpenReport );  
+  sameClickCommon( "same_function_data_report_meeting_edit_plus_button" , sameFunctionOpenReport );
 
   sameClickCommon( "same_function_data_meeting_template_button" , sameFunctionOpenTemplate );
 
@@ -995,9 +995,6 @@ function sameTemplateChoise(message) {
 }
 function sameSaveParentNote(message) {
     sameChangePanelNote();
-    sameSaveParentCommon(message);
-}
-function sameSaveParentNote(message) {
     sameSaveParentCommon(message);
 }
 function sameTemplateCloseParent(message) {

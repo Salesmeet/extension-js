@@ -447,7 +447,7 @@ div.editable {
 .same_panel_edit_external_right {
     top: 0px;
     position: fixed !important;
-    width: 80% !important;
+    width: 100% !important;
     right: 0px !important;
     left: unset !important;
     height: 100% !important;

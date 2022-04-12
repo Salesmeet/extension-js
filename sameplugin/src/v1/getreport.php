@@ -20,7 +20,7 @@ $note = "";
 <body>
 
 
-  <div style="float: left; width: 7%; text-align: center;  height: 100vh; border-right: 1px solid #767575;">
+  <div style="float: left; width: 10%; text-align: center;  height: 100vh; border-right: 1px solid #767575;">
      <img src="https://plugin.sameapp.net/v1/img/logo.png" style="width: 70px;">
      <br><br>
      Edit and export
@@ -36,7 +36,7 @@ $note = "";
      <hr>
      <button onclick="alert('Work in progress');" id="" class="same_icon_style" title="">Share</button>
   </div>
-  <div style="float: right; width: 92%;">
+  <div style="float: right; width: 88%;">
 
      <form id="getfile" action="https://api.sameapp.net/public/v1/converter" method="post" target="_Blank">
        <input type="hidden" name="idmeeting" id="idmeeting" value="<?php echo $_GET['idmeeting']; ?>">

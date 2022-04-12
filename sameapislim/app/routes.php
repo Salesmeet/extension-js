@@ -172,14 +172,12 @@ return function (App $app) {
     });
 
 
-
-    // Login
+    // Generate file
     $app->post('/public/v1/converter', function (Request $request, Response $response, $args) {
       $converter = new Converter();
       return $converter->get($request, $response, $args);
       // return setResponse($response, $converter->get($request, $response, $args) );
     });
-
 
     $app->get('/public/v1/test/', function (Request $request, Response $response, $args) {
 
