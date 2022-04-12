@@ -27,7 +27,7 @@ use App\Application\Actions\v1\Auth;
 use App\Application\Actions\v1\Record;
 use App\Application\Actions\v1\Screenshot;
 use App\Application\Actions\v1\Shortcut;
-
+use App\Application\Actions\v1\Converter;
 
 return function (App $app) {
 
@@ -172,20 +172,24 @@ return function (App $app) {
     });
 
 
+
     // Login
-    $app->post('/public/v1/login', function (Request $request, Response $response, $args) {
-      $auth = new Auth();
-      return setResponse($response, $auth->login($request, $response, $args) );
+    $app->post('/public/v1/converter', function (Request $request, Response $response, $args) {
+      $converter = new Converter();
+      return $converter->get($request, $response, $args);
+      // return setResponse($response, $converter->get($request, $response, $args) );
     });
 
 
     $app->get('/public/v1/test/', function (Request $request, Response $response, $args) {
 
-      echo "<hr>Login:<br>";
-      echo '<form id="inviofile" action="https://api.sameapp.net/public/v1/login" method="post">';
-      echo '  <input type="text" name="email" id="email">';
-      echo '  <input type="text" name="password" id="password">';
-      echo '  <input type="submit" value="Login" name="submit">';
+      echo "<hr>Generate Files:<br>";
+      echo '<form id="inviofile" action="https://api.sameapp.net/public/v1/converter" method="post">';
+      echo '  <input type="text" name="idmeeting" id="idmeeting" value="74b8c6d27160432ab225">';
+      echo '  <input type="text" name="user" id="user" value="2">';
+      echo '  <input type="text" name="type" id="type" value="doc">';
+      echo '  <input type="text" name="name" id="name" value="provafile">';
+      echo '  <input type="submit" value="Generate" name="submit">';
       echo '</form>';
 
       echo "<hr>New shortcut:<br>";

@@ -74,7 +74,8 @@ var same_panel_tools = '\
   <button id="same_function_shortcut_button" class="same_resize_img same_icon_style same_hidden" title="Shortcuts"> </button>\
   <hr class="">\
   <button id="same_function_data_meeting_button">Data meeting</button><hr class="same_hidden">\
-  <button id="same_function_data_report_meeting_button">Export / Edit plus</button><hr class="same_hidden">\
+  <button id="same_function_data_report_meeting_button">Export</button><hr class="same_hidden">\
+  <button id="same_function_data_report_meeting_edit_plus_button">Edit plus</button><hr class="same_hidden">\
   <button id="same_function_data_meeting_template_button">Template</button>\
   <button id="same_function_same_settimg_button">Setting</button>\
   </div>';
@@ -751,7 +752,7 @@ function sameFunctionOpenReport() {
     } else {
       samePostAPINote();
     }
-    sameFunctionOpenCommon(same_domain + "/v1/getreport.php?idmeeting=" + sameGetIdMeeting() );
+    sameFunctionOpenCommon(same_domain + "/v1/getreport.php?idmeeting=" + sameGetIdMeeting() + "&lang=" + sameGetLanguage() + "&user=" + sameGetUser()  );
 }
 function sameFunctionOpenCalendar() {
     sameFunctionOpenCommon(same_domain + "/v1/getcalendar.php?idmeeting=" + sameGetIdMeeting() );
@@ -952,6 +953,7 @@ function initSameMeeting() {
   sameClickCommon( "same_function_icon_button" , sameInitShow );
 
   sameClickCommon( "same_function_data_report_meeting_button" , sameFunctionOpenReport );
+  sameClickCommon( "same_function_data_report_meeting_edit_plus_button" , sameFunctionOpenReport );  
 
   sameClickCommon( "same_function_data_meeting_template_button" , sameFunctionOpenTemplate );
 
@@ -993,6 +995,9 @@ function sameTemplateChoise(message) {
 }
 function sameSaveParentNote(message) {
     sameChangePanelNote();
+    sameSaveParentCommon(message);
+}
+function sameSaveParentNote(message) {
     sameSaveParentCommon(message);
 }
 function sameTemplateCloseParent(message) {

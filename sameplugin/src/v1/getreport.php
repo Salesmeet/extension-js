@@ -1,6 +1,6 @@
 <?
 header("Access-Control-Allow-Origin: *");
-include("common/referer.php");
+// include("common/referer.php");
 
 $idmeeting = "";
 if (isset($_GET['idmeeting'])) {
@@ -16,7 +16,6 @@ $note = "";
 <html>
 <head>
   <script src="https://cdn.tiny.cloud/1/q8bxw8wqcr049zoy13p15fi50rgnjqfakkx9qrqnzmgt3wy4/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
-
 </head>
 <body>
 
@@ -31,11 +30,20 @@ $note = "";
      <hr>
      <button onclick="save();" id="" class="same_icon_style" title="">Save</button>
      <hr>
-     <button onclick="" id="" class="same_icon_style" title="">Export PDF</button>
+     <button onclick="exportWord()" id="" class="same_icon_style" title="">Export Word</button>
      <hr>
-     <button onclick="" id="" class="same_icon_style" title="">Share</button>
+     <button onclick="exportPdf()" id="" class="same_icon_style" title="">Export PDF</button>
+     <hr>
+     <button onclick="alert('Work in progress');" id="" class="same_icon_style" title="">Share</button>
   </div>
   <div style="float: right; width: 92%;">
+
+     <form id="getfile" action="https://api.sameapp.net/public/v1/converter" method="post" target="_Blank">
+       <input type="hidden" name="idmeeting" id="idmeeting" value="<?php echo $_GET['idmeeting']; ?>">
+       <input type="hidden" name="user" id="user" value="<?php echo $_GET['user']; ?>">
+       <input type="hidden" name="type" id="type" value="doc">
+       <input type="hidden" name="name" id="name" value="">
+     </form>
 
     <div id="spinner" style="position: absolute;z-index: 99;left: 48%;top: 40%;">
       <svg  width="970" height="70">
@@ -62,6 +70,30 @@ $note = "";
           xhttp.open("GET", "https://api.sameapp.net/public/v1/note/<?php echo $idmeeting; ?>", true);
           xhttp.send();
     }
+
+    function saveExport( type ) {
+          document.getElementById("type").value = type;
+          document.getElementById("getfile").submit();
+          /*
+          var data = new FormData();
+          data.append('idmeeting', "<?php echo $_GET['idmeeting']; ?>" );
+          data.append('user', "<?php echo $_GET['user']; ?>" );
+          data.append('type', type );
+          data.append('name', "export_" + type );
+          samePostAPICommon('https://api.sameapp.net/public/v1/converter',data);
+          */
+    }
+    /*
+    function samePostAPICommon(url,data) {
+          var xhr = new XMLHttpRequest();
+          xhr.open('POST', url, true);
+          xhr.onload = function () {
+              // console.log(this.responseText);
+          };
+          xhr.send(data);
+    }
+    */
+
     function sameWrite( message ) {
       // console.log("sameWrite");
       tinymce.activeEditor.setContent( message , {format: 'html'});
@@ -74,11 +106,12 @@ $note = "";
       }, "*");
     }
     function exportPdf() {
-      tinymce.activeEditor.execCommand('mceExportDownload', false, {
-        format: 'clientpdf',
-        settings: {}
-      });
+      saveExport( "pdf" );
     }
+    function exportWord() {
+      saveExport( "doc" );
+    }
+
     window.onload = function() {
       sameGetAPI();
     };

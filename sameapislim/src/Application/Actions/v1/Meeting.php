@@ -87,6 +87,15 @@ class Meeting
 
   }
 
+
+  public function getNote( $idmeeting )  {
+
+        $fireStore = new FireStore();
+        $data = $fireStore->getDocument( $this->collection_name, $idmeeting ) ;
+        return $data["note"];
+
+  }
+
   /*** UTILIZZO quello in note.php per essere più veloce
   public function updateNote( $idmeeting , $value )  {
         $fireStore = new FireStore();

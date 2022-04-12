@@ -33,7 +33,8 @@
         "google/auth": "*",
         "google/protobuf": "*",
         "grpc/grpc": "*",
-        "aws/aws-sdk-php" : "*"
+        "aws/aws-sdk-php" : "*",
+        "convertio/convertio-php" : "*"
     },
     "require-dev": {
         "jangregor/phpstan-prophecy": "^1.0.0",
