@@ -1,4 +1,4 @@
-<?php include("common/referer.php") ?>
+<?php //include("common/referer.php") ?>
 
 <!DOCTYPE html>
 <html>
@@ -127,12 +127,8 @@
               } else {
                 valore = timeDefaultString + time + char_i + value.value  + char_e;
               }
-              //console.log(value.timeDefault);
-              //console.log(value.time);
-              //console.log(value.type);
-              // var json = {"type": type, "value": value, "timeDefault": sameDefaulTotalSeconds, "time": time};
 
-              // Prendo il vavlore
+              // Prendo il valore
               var temp2 = tinymce.activeEditor.selection.getNode().innerHTML;
               // sostituisco il valore
               temp2 = temp2.replace("@@", "");  // 64
@@ -151,8 +147,6 @@
               tinyMCE.activeEditor.focus();
 
           }
-
-
     }
 
     var sameCharCodeBefore = "";
@@ -172,20 +166,27 @@
           } else {
               sameWord += keyPressed.key;
           }
-          if (sameWord.length > 2) {
 
+          // console.log("sameWord: " + sameWord);
+          if (sameWord.length > 2) {
             for(i = 0; i < same_shortcut_list.length; i++) {
-                if (sameWord==same_shortcut_list[i].shortcut) {
+                let result = sameWord.includes( same_shortcut_list[i].shortcut );
+                if (result) {
+                // if (sameWord==same_shortcut_list[i].shortcut) {
                     sameWord = "";
                     var temp = '{"value":"' + same_shortcut_list[i].value + '","shortcut":"' + same_shortcut_list[i].shortcut + '","type":"' + same_shortcut_list[i].call + '"}';
                     sameCall( "sameEditorRapidCommad", temp );
                 }
             }
           }
+
     }
     function sameKeydown( keyDown ) {
+        // console.log("keyDown " + keyDown.key);
         if (keyDown.key=="Enter") {
             sameWord = "";
+        } else if (keyDown.key=="Backspace") {
+            sameWord = sameWord.substring(0, sameWord.length - 1);;
         }
     }
     function sameCall( value , message ) {
@@ -193,6 +194,13 @@
           'func': value,
           'message': message
       }, "*");
+    }
+
+    function sameFormatValue( value ) {
+      if ( value < 10 ) {
+          return "0" + value;
+      }
+      return value;
     }
 
     // plugins: 'link table lists checklist',
@@ -230,7 +238,6 @@
     });
 
     window.onload = function() {
-        console.log("onloadonloadonload");
         sameGetShortcut();
     };
     window.addEventListener('focus', sameChangeHeight);
@@ -244,10 +251,9 @@
     z-index: 999999;
     padding: 10px;
     border: 2px solid #000;
-    background: #ffffff;"></div>
+    background: #eae5e5;"></div>
 
   <script>
-
       var calendarEl = document.getElementById('calendar');
 
       var calendar = new FullCalendar.Calendar(calendarEl, {
@@ -267,8 +273,24 @@
           // alert("dateClick");
         },
         select: function(info) {
+          /*
+          console.log(info.start.getDate());
+          console.log(info.start.getFullYear());
+          console.log(info.start.getMonth());
+          console.log("_________");
+          console.log(info.start.getHours());
+          console.log(info.start.getMinutes());
           console.log(info);
-          sameViewNote( info.startStr );
+          console.log("_________");
+          */
+          var data =  sameFormatValue(info.start.getDate()) + "-" + sameFormatValue(info.start.getMonth() + 1) + "-" + info.start.getFullYear();
+          // console.log( info.startStr.length );
+          if ( info.startStr.length > 10 ) {
+            data = data + " " + sameFormatValue(info.start.getHours()) + ":" + sameFormatValue(info.start.getMinutes());
+          }
+          sameViewNote( data );
+
+          // sameViewNote( info.startStr );
           // alert('selected ' + info.startStr + ' to ' + info.endStr);
         },
       });

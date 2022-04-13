@@ -1,6 +1,5 @@
 <?
 header("Access-Control-Allow-Origin: *");
-
 include("common/referer.php");
 
 $idmeeting = "";
@@ -49,7 +48,6 @@ if ($idnote !="") {
      <button onclick="save();" id="" class="same_icon_style" title="">Save</button>
      <hr>
      <button onclick="exit();" id="" class="same_icon_style" title="">Close</button>
-
   </div>
   <div style="float: left; width: 88%; padding-left: 20px;">
 

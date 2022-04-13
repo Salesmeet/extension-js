@@ -74,7 +74,7 @@ var same_panel_tools = '\
   <button id="same_function_shortcut_button" class="same_resize_img same_icon_style same_hidden" title="Shortcuts"> </button>\
   <hr class="">\
   <button id="same_function_data_meeting_button">Data meeting</button><hr class="same_hidden">\
-  <button id="same_function_data_report_meeting_button">Export</button><hr class="same_hidden">\
+  <button id="same_function_data_report_meeting_button">Export</button>\
   <button id="same_function_data_report_meeting_edit_plus_button">Edit plus</button><hr class="same_hidden">\
   <button id="same_function_data_meeting_template_button">Template</button>\
   <button id="same_function_same_settimg_button">Setting</button>\
@@ -136,6 +136,7 @@ function sameInit() {
 }
 
 /* Nasconde immagine SAME e apre il pannello di lavoro */
+var sameInitMeeting = false;
 function sameInitHidden() {
     if (sameGetUser()=="") {
       sameLogin();
@@ -144,13 +145,16 @@ function sameInitHidden() {
       if (sameGetIdMeeting()=="") {
           sameGetIdMeetingByUrl();
       } else {
-          initSameMeeting();
-          sameStartHourDefault();
-          document.getElementById("same_note_text_iframe").src = same_domain + '/v1/editor.php?idmeeting=' + sameGetIdMeeting() + '&lang=' + sameGetLanguage() + "&user=" + sameGetUser();
-          if (samePositionSelected == "right") {
-            sameMovePanelRight();
-            sameNoteBigVertical();
+          if (!sameInitMeeting) {
+             initSameMeeting();
+             sameStartHourDefault();
+             document.getElementById("same_note_text_iframe").src = same_domain + '/v1/editor.php?idmeeting=' + sameGetIdMeeting() + '&lang=' + sameGetLanguage() + "&user=" + sameGetUser();
+             if (samePositionSelected == "right") {
+               sameMovePanelRight();
+               sameNoteBigVertical();
+             }
           }
+          sameInitMeeting = true;
           sameDisplayCommon("same_panel_base","block");
       }
     }
@@ -744,6 +748,7 @@ function sameFunctionEditOpenShurtcut() {
     sameFunctionOpenCommon(same_domain + "/v1/getshurcut.php?idmeeting=" + sameGetIdMeeting() + "&lang=" + sameGetLanguage() + "&user=" + sameGetUser() );
 }
 function sameFunctionOpenNoteVersion() {
+    sameChangePanelNote();
     sameFunctionOpenCommon(same_domain + "/v1/getnoteversion.php?idmeeting=" + sameGetIdMeeting() + "&lang=" + sameGetLanguage() + "&user=" + sameGetUser() );
 }
 function sameFunctionOpenReport() {
