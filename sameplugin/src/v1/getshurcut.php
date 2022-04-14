@@ -142,8 +142,8 @@ $urlDelete = "";
           var title = "";
 
           var outHelp = "<table><tr><td style='width:70px;'><b>Shortcut</b></td><td><b>Value</b></td></tr>";
-          outHelp += "<tr><td>@@</td><td>Partecipants list</td></tr>";
-          outHelp += "<tr><td>##</td><td>Agenda</td></tr>";
+          outHelp += "<tr><td>/@</td><td>Partecipant</td></tr>";
+          outHelp += "<tr><td>/#</td><td>Agenda</td></tr>";
 
           if (myArr.title!="") {
               title ='<b>' + myArr.title + '</b><br>';

@@ -104,28 +104,9 @@
           xhttp.send();
     }
 
-    var same_partecipant_list = [];
-    function sameGetPartecipantList() {
-          var xhttp = new XMLHttpRequest();
-          xhttp.onreadystatechange = function() {
-               if (this.readyState == 4 && this.status == 200) {
-                   var myArr = JSON.parse( this.responseText );
-                   var myItems = myArr.items;
-                   same_partecipant_list = myArr.items;
-               }
-          };
-          xhttp.open("GET", "https://api.sameapp.net/public/v1/partecipants/<?php echo $_GET['idmeeting']; ?>/<?php echo $_GET['lang']; ?>/<?php echo $_GET['user']; ?>" , true);
-          xhttp.send();
-    }
-
     function sameRapidCommand( value ) {
 
-          sameCharCodeBefore = "";
-          sameWord = "";
-          /*
-          console.log("sameRapidCommand:" + value.type);
-          console.log(value);
-          */
+          //console.log("sameRapidCommand:" + value.type);
           if (value.type=="rCalendar") {
               sameViewCalendar(value);
           } else {
@@ -175,8 +156,8 @@
               }
 
               // Prendo il valore
-              temp2 = temp2.replace("@", "");  // 64
-              temp2 = temp2.replace("##", "");  // 35
+              temp2 = temp2.replace("/@", "");  // 64
+              temp2 = temp2.replace("/#", "");  // 35
 
               for(i = 0; i < same_shortcut_list.length; i++) {
                   temp2 = temp2.replace( same_shortcut_list[i].shortcut , "");
@@ -198,16 +179,14 @@
     var sameCharCodeBefore = "";
     var sameWord = "";
     function sameKeypress( keyPressed ) {
-          // console.log(keyPressed.charCode + " __ " + sameCharCodeBefore );
           // valore per il trigger @@
-          if (keyPressed.charCode == 64) {
-          // if ((keyPressed.charCode == 64) && (sameCharCodeBefore == 47)) {
+          console.log(keyPressed.charCode + " __ " + sameCharCodeBefore );
+          if ((keyPressed.charCode == 64) && (sameCharCodeBefore == 47)) {
           // if ((keyPressed.charCode == 64) && (sameCharCodeBefore == 64)) {
               sameDeleteTooltip();
-              sameCreateTooltip("partecipants");
-              // sameCall( "sameGetParticipantList", "" );
-          } else if ((keyPressed.charCode == 35) && (sameCharCodeBefore == 35)) {
-          // } else if ((keyPressed.charCode == 35) && (sameCharCodeBefore == 47)) {
+              sameCall( "sameGetParticipantList", "" );
+          // } else if ((keyPressed.charCode == 35) && (sameCharCodeBefore == 35)) {
+          } else if ((keyPressed.charCode == 35) && (sameCharCodeBefore == 47)) {
               sameDeleteTooltip();
               sameCall( "sameGetAgenda", "" );
           }
@@ -218,12 +197,9 @@
               sameWord += keyPressed.key;
           }
 
-          if (keyPressed.charCode == 35) {
-          // if ((keyPressed.charCode == 47) && (sameCharCodeBefore == 47)) {
-              sameCreateTooltip("shortcut");
-          }
           if (keyPressed.charCode == 47) {
-              sameCreateTooltip("template");
+          // if ((keyPressed.charCode == 47) && (sameCharCodeBefore == 47)) {
+              sameCreateTooltip();
           }
 
           sameCharCodeBefore = keyPressed.charCode;
@@ -234,24 +210,19 @@
             for(i = 0; i < same_shortcut_list.length; i++) {
                 let result = sameWord.includes( same_shortcut_list[i].shortcut );
                 if (result) {
-                    //console.log(same_shortcut_list[i]);
+                    console.log(same_shortcut_list[i]);
                 // if (sameWord==same_shortcut_list[i].shortcut) {
                     sameDeleteTooltip();
                     sameWord = "";
 
                     if (same_shortcut_list[i].type=="0") {
-
                       var temp = '{"value":"' + same_shortcut_list[i].value + '","shortcut":"' + same_shortcut_list[i].shortcut + '","type":"' + same_shortcut_list[i].call + '"}';
                       sameCall( "sameEditorRapidCommad", temp );
 
                     } else if (same_shortcut_list[i].type=="1") {
 
-                      console.log( same_shortcut_list[i].call );
-
-                      /*
                       var temp = '{"value":"' + same_shortcut_list[i].value + '","shortcut":"' + same_shortcut_list[i].shortcut + '","type":""}';
                       sameRapidCommand( temp );
-                      */
 
                     }
                 }
@@ -260,10 +231,9 @@
 
     }
 
-
     var tooltipid = null;
     var tooltipid_id = null;
-    function sameCreateTooltip( type ) {
+    function sameCreateTooltip() {
 
       sameDeleteTooltip();
 
@@ -280,36 +250,17 @@
       var el = tinymce.activeEditor.dom.create('spam', {}, temp2 + " <label class='tooltipshortcut' id='" + timestamp + "'></label>");
       tinymce.activeEditor.selection.setNode( el );
 
+      // tinymce.activeEditor.selection.getNode().setAttribute("id", "prova" + timestamp);
+      // tinymce.activeEditor.selection.getNode().setAttribute("style", "background-color: #ff00ff;");
+      // console.log(tinymce.activeEditor.selection.getNode());
+
       var stylea = "cursor: pointer;";
       var valori = "<div style='max-height: 180px; overflow: auto; padding: 10px; border: 2px solid #000; background: #eae5e5;'>";
-
-      if (type=="shortcut") {
-        // valori += "<a style='" + stylea + "' href='#' onclick='alert();'>##</a>  -  Agenda<br>";
-        valori += "##  -  Agenda<br>";
-        for(i = 0; i < same_shortcut_list.length; i++) {
-            // valori += "<a style='" + stylea + "' href='#' onclick='alert();'>" + same_shortcut_list[i].shortcut + "</a>  -  " + same_shortcut_list[i].value + "<br>";
-            if (same_shortcut_list[i].type == "0") {
-              valori += same_shortcut_list[i].shortcut + "  -  " + same_shortcut_list[i].value + "<br>";
-            }
-        }
-
-      } else if (type=="partecipants")  {
-
-        for(i = 0; i < same_partecipant_list.length; i++) {
-            valori += "<a style='" + stylea + "' href='#' onclick='parent.sameTooltipRapidCommand(\"" + same_partecipant_list[i].value + "\", \"@\", \"participant\");'>" + same_partecipant_list[i].value + "<br>";
-        }
-
-      } else if (type=="template")  {
-
-        for(i = 0; i < same_shortcut_list.length; i++) {
-            // valori += "<a style='" + stylea + "' href='#' onclick='alert();'>" + same_shortcut_list[i].shortcut + "</a>  -  " + same_shortcut_list[i].value + "<br>";
-            if (same_shortcut_list[i].type == "1") {
-              valori += same_shortcut_list[i].shortcut + "  -  " + same_shortcut_list[i].value + "<br>";
-            }
-        }
-
+      valori += "<a style='" + stylea + "' href='#' onclick='alert();'>/@</a>  -  Partecipant<br>";
+      valori += "<a style='" + stylea + "' href='#' onclick='alert();'>/#</a>  -  Agenda<br>";
+      for(i = 0; i < same_shortcut_list.length; i++) {
+          valori += "<a style='" + stylea + "' href='#' onclick='alert();'>" + same_shortcut_list[i].shortcut + "</a>  -  " + same_shortcut_list[i].value + "<br>";
       }
-
       valori += "</div>";
 
       tooltipid = tippy( iDocument.getElementById( timestamp ), {
@@ -323,13 +274,7 @@
       });
       tooltipid.show();
       sameCharCodeBefore = "";
-    }
 
-    function sameTooltipRapidCommand(value, shortcut, type) {
-        sameDeleteTooltip();
-        // var json = {"type": type, "value": value, "shortcut": shortcut, "time": time};
-        var json = {"type": type, "value": value, "shortcut": shortcut};
-        sameRapidCommand( json );
     }
 
     function sameDeleteTooltip() {
@@ -401,15 +346,9 @@
     });
 
     window.onload = function() {
-        sameReloadDynamycValue();
+        sameGetShortcut();
     };
-    window.addEventListener('focus', sameReloadDynamycValue);
-
-    function sameReloadDynamycValue() {
-      sameGetShortcut();
-      sameGetPartecipantList();
-      sameChangeHeight();
-    }
+    window.addEventListener('focus', sameChangeHeight);
 
   </script>
 
@@ -442,12 +381,25 @@
           // alert("dateClick");
         },
         select: function(info) {
+          /*
+          console.log(info.start.getDate());
+          console.log(info.start.getFullYear());
+          console.log(info.start.getMonth());
+          console.log("_________");
+          console.log(info.start.getHours());
+          console.log(info.start.getMinutes());
+          console.log(info);
+          console.log("_________");
+          */
           var data =  sameFormatValue(info.start.getDate()) + "-" + sameFormatValue(info.start.getMonth() + 1) + "-" + info.start.getFullYear();
           // console.log( info.startStr.length );
           if ( info.startStr.length > 10 ) {
             data = data + " " + sameFormatValue(info.start.getHours()) + ":" + sameFormatValue(info.start.getMinutes());
           }
           sameViewNote( data );
+
+          // sameViewNote( info.startStr );
+          // alert('selected ' + info.startStr + ' to ' + info.endStr);
         },
       });
 

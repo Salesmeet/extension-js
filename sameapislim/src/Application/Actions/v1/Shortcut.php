@@ -17,7 +17,7 @@ class Shortcut
     public function getAll( Request $request, Response $response, $args )  {
 
        $fireStore = new FireStore();
-       $data = $fireStore->getDocumentsByQuery( $this->collection_name, "type", "==" , "0");
+       $data = $fireStore->getDocumentsByQuery( $this->collection_name, "type", ">=" , "0");
        $records = array();
        foreach ($data as $document) {
            $temp = [
