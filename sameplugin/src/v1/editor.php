@@ -119,7 +119,11 @@
               var hrs = ~~(timeDefault / 3600);
               var mins = ~~((timeDefault % 3600) / 60);
               var secs = ~~timeDefault % 60;
-              var temp = mins + ":" + secs;
+              if (hrs >0) {
+                  var temp = sameFormatValue(hrs) + ":" + sameFormatValue(mins) + ":" + sameFormatValue(secs);
+              } else {
+                  var temp = sameFormatValue(mins) + ":" + sameFormatValue(secs);
+              }
               // var timeDefault = char_i + value.timeDefault + char_e ;
               var timeDefaultString = char_i + temp + char_e ;
               var time = "";
@@ -141,8 +145,12 @@
               // Prendo il valore
               var temp2 = tinymce.activeEditor.selection.getNode().innerHTML;
               // sostituisco il valore
+              /*
               temp2 = temp2.replace("@@", "");  // 64
               temp2 = temp2.replace("##", "");  // 35
+              */
+              temp2 = temp2.replace("/@", "");  // 64
+              temp2 = temp2.replace("/#", "");  // 35
 
               for(i = 0; i < same_shortcut_list.length; i++) {
                   temp2 = temp2.replace( same_shortcut_list[i].shortcut , "");
@@ -163,9 +171,14 @@
     var sameWord = "";
     function sameKeypress( keyPressed ) {
           // valore per il trigger @@
-          if ((keyPressed.charCode == 64) && (sameCharCodeBefore == 64)) {
+          console.log(keyPressed.charCode + " __ " + sameCharCodeBefore );
+          if ((keyPressed.charCode == 64) && (sameCharCodeBefore == 47)) {
+          // if ((keyPressed.charCode == 64) && (sameCharCodeBefore == 64)) {
+              sameDeleteTooltip();
               sameCall( "sameGetParticipantList", "" );
-          } else if ((keyPressed.charCode == 35) && (sameCharCodeBefore == 35)) {
+          // } else if ((keyPressed.charCode == 35) && (sameCharCodeBefore == 35)) {
+          } else if ((keyPressed.charCode == 35) && (sameCharCodeBefore == 47)) {
+              sameDeleteTooltip();
               sameCall( "sameGetAgenda", "" );
           }
           // spazio ...
@@ -175,12 +188,12 @@
               sameWord += keyPressed.key;
           }
 
-          // if (sameWord.length == 2) {
-          if ((keyPressed.charCode == 47) && (sameCharCodeBefore == 47)) {
+          if (keyPressed.charCode == 47) {
+          // if ((keyPressed.charCode == 47) && (sameCharCodeBefore == 47)) {
               sameCreateTooltip();
-          } else {
-              sameCharCodeBefore = keyPressed.charCode;
           }
+
+          sameCharCodeBefore = keyPressed.charCode;
 
           // console.log("sameWord: " + sameWord);
           if (sameWord.length > 2) {
@@ -214,25 +227,30 @@
 
       var temp2 = tinymce.activeEditor.selection.getNode().innerHTML;
       tinymce.activeEditor.selection.getNode().innerHTML = "";
-      var el = tinymce.activeEditor.dom.create('spam', {}, temp2 + "<label class='tooltipshortcut' id='" + timestamp + "'></label>");
+      var el = tinymce.activeEditor.dom.create('spam', {}, temp2 + " <label class='tooltipshortcut' id='" + timestamp + "'></label>");
       tinymce.activeEditor.selection.setNode( el );
 
       // tinymce.activeEditor.selection.getNode().setAttribute("id", "prova" + timestamp);
       // tinymce.activeEditor.selection.getNode().setAttribute("style", "background-color: #ff00ff;");
       // console.log(tinymce.activeEditor.selection.getNode());
 
-      var valori = ""
+      var stylea = "cursor: pointer;";
+      var valori = "<div style='max-height: 180px; overflow: auto; padding: 10px; border: 2px solid #000; background: #eae5e5;'>";
+      valori += "<a style='" + stylea + "' href='#' onclick='alert();'>/@</a>  -  Partecipant<br>";
+      valori += "<a style='" + stylea + "' href='#' onclick='alert();'>/#</a>  -  Agenda<br>";
       for(i = 0; i < same_shortcut_list.length; i++) {
-          valori += same_shortcut_list[i].shortcut + "  -  " + same_shortcut_list[i].value + "<br>";
+          valori += "<a style='" + stylea + "' href='#' onclick='alert();'>" + same_shortcut_list[i].shortcut + "</a>  -  " + same_shortcut_list[i].value + "<br>";
       }
+      valori += "</div>";
 
       tooltipid = tippy( iDocument.getElementById( timestamp ), {
-        content: valori,
-        animation: 'scale',
-        allowHTML: true,
-        placement: 'right',
-        offset: [0, 30],
-        arrow: false,
+          content: valori,
+          animation: 'scale',
+          allowHTML: true,
+          placement: 'right',
+          offset: [0, 30],
+          arrow: false,
+          interactive: true,
       });
       tooltipid.show();
       sameCharCodeBefore = "";
@@ -240,16 +258,12 @@
     }
 
     function sameDeleteTooltip() {
-
         if (tooltipid === undefined || tooltipid === null) {
         } else {
             tooltipid.hide();
             tooltipid.destroy();
         }
-
     }
-
-
 
     function sameKeydown( keyDown ) {
         if (keyDown.key=="Enter") {
@@ -262,6 +276,7 @@
             sameDeleteTooltip();
         }
     }
+
     function sameCall( value , message ) {
       window.parent.postMessage({
           'func': value,

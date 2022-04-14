@@ -500,8 +500,8 @@ function sameCreatePanelShortcut() {
       var myItems = myArr.items;
       var out = "";
       var outHelp = "<table><tr><td style='width:70px;'><b>Shortcut</b></td><td><b>Value</b></td></tr>";
-      outHelp += "<tr><td>@@</td><td>Partecipants list</td></tr>";
-      outHelp += "<tr><td>##</td><td>Agenda</td></tr>";
+      outHelp += "<tr><td>/@</td><td>Partecipants list</td></tr>";
+      outHelp += "<tr><td>/#</td><td>Agenda</td></tr>";
       for(i = 0; i < myItems.length; i++) {
           var style = "background-image: url('" + myItems[i].img + "') !important;";
           // out += '<button onclick="sameRapidShortcutList(\'' + myItems[i].value + '\',\'' + myItems[i].call + '\');" class="same_buttom_img" style="' + style + '">' + myItems[i].value + '</button>';
