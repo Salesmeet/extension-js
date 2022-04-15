@@ -120,14 +120,10 @@
 
     function sameRapidCommand( value ) {
 
-          sameCharCodeBefore = "";
-          sameWord = "";
-          /*
-          console.log("sameRapidCommand:" + value.type);
-          console.log(value);
-          */
           if (value.type=="rCalendar") {
+
               sameViewCalendar(value);
+
           } else {
 
               //console.log("sameRapidCommand:" + value);
@@ -153,6 +149,8 @@
               if (value.type == "data") {
               } else if (value.type == "calendar") {
                 valore = value.value ;
+              } else if (value.type == "template") {
+                valore = value.value ;
               } else if (value.type == "participant") {
                 valore = char_i + "@"  + char_e + " " + char_i + value.value + char_e ;
               } else if ( value.type == "agenda") {
@@ -161,13 +159,25 @@
                 valore = timeDefaultString + time + char_i + value.value  + char_e;
               }
 
-              // Prendodel tooltip
+              /*
+              console.log("_______21________");
+              console.log( tinymce.activeEditor.selection.getNode().outerHTML );
+              console.log( tinymce.activeEditor.selection.getNode().innerHTML );
+              console.log( tinymce.activeEditor.selection.getNode() );
+              */
+
+              // Prendo del tooltip
               var html2 = tinymce.activeEditor.selection.getNode().innerHTML;
               var parser = new DOMParser();
             	var doc = parser.parseFromString(html2, 'text/html');
               var el = doc.getElementById( tooltipid_id );
 
-              var temp2 = tinymce.activeEditor.selection.getNode().innerHTML;
+              var temp2 = html2;
+
+              /*
+              console.log("_______3________");
+              console.log(temp2);
+              */
 
               if (el === undefined || el === null) {
               } else {
@@ -191,6 +201,10 @@
               tinyMCE.activeEditor.focus();
 
           }
+
+          sameCharCodeBefore = "";
+          sameWord = "";
+
     }
 
 
@@ -198,16 +212,14 @@
     var sameCharCodeBefore = "";
     var sameWord = "";
     function sameKeypress( keyPressed ) {
+
           // console.log(keyPressed.charCode + " __ " + sameCharCodeBefore );
-          // valore per il trigger @@
+
           if (keyPressed.charCode == 64) {
-          // if ((keyPressed.charCode == 64) && (sameCharCodeBefore == 47)) {
-          // if ((keyPressed.charCode == 64) && (sameCharCodeBefore == 64)) {
               sameDeleteTooltip();
               sameCreateTooltip("partecipants");
               // sameCall( "sameGetParticipantList", "" );
           } else if ((keyPressed.charCode == 35) && (sameCharCodeBefore == 35)) {
-          // } else if ((keyPressed.charCode == 35) && (sameCharCodeBefore == 47)) {
               sameDeleteTooltip();
               sameCall( "sameGetAgenda", "" );
           }
@@ -219,26 +231,25 @@
           }
 
           if (keyPressed.charCode == 35) {
-          // if ((keyPressed.charCode == 47) && (sameCharCodeBefore == 47)) {
+              sameDeleteTooltip();
               sameCreateTooltip("shortcut");
           }
           if (keyPressed.charCode == 47) {
+              sameDeleteTooltip();
               sameCreateTooltip("template");
           }
 
           sameCharCodeBefore = keyPressed.charCode;
 
-          // console.log("sameWord: " + sameWord);
           if (sameWord.length > 1) {
+
             sameDeleteTooltip();
             for(i = 0; i < same_shortcut_list.length; i++) {
+
                 let result = sameWord.includes( same_shortcut_list[i].shortcut );
                 if (result) {
-                    //console.log(same_shortcut_list[i]);
-                // if (sameWord==same_shortcut_list[i].shortcut) {
-                    sameDeleteTooltip();
-                    sameWord = "";
 
+                    sameWord = "";
                     if (same_shortcut_list[i].type=="0") {
 
                       var temp = '{"value":"' + same_shortcut_list[i].value + '","shortcut":"' + same_shortcut_list[i].shortcut + '","type":"' + same_shortcut_list[i].call + '"}';
@@ -246,12 +257,7 @@
 
                     } else if (same_shortcut_list[i].type=="1") {
 
-                      console.log( same_shortcut_list[i].call );
-
-                      /*
-                      var temp = '{"value":"' + same_shortcut_list[i].value + '","shortcut":"' + same_shortcut_list[i].shortcut + '","type":""}';
-                      sameRapidCommand( temp );
-                      */
+                      sameTemplate( same_shortcut_list[i] );
 
                     }
                 }
@@ -276,7 +282,9 @@
       tooltipid_id = timestamp;
 
       var temp2 = tinymce.activeEditor.selection.getNode().innerHTML;
+
       tinymce.activeEditor.selection.getNode().innerHTML = "";
+
       var el = tinymce.activeEditor.dom.create('spam', {}, temp2 + " <label class='tooltipshortcut' id='" + timestamp + "'></label>");
       tinymce.activeEditor.selection.setNode( el );
 
@@ -289,14 +297,19 @@
         for(i = 0; i < same_shortcut_list.length; i++) {
             // valori += "<a style='" + stylea + "' href='#' onclick='alert();'>" + same_shortcut_list[i].shortcut + "</a>  -  " + same_shortcut_list[i].value + "<br>";
             if (same_shortcut_list[i].type == "0") {
-              valori += same_shortcut_list[i].shortcut + "  -  " + same_shortcut_list[i].value + "<br>";
+              valori += "<a style='" + stylea + "' href='#' onclick='parent.sameTooltipRapidCommand(\"" + same_shortcut_list[i].value + "\", \"@\", \"participant\");'>" + same_shortcut_list[i].shortcut + "  -  " + same_shortcut_list[i].value + "</a><br>";
+              // valori +=  same_partecipant_list[i].value + "<br>";
             }
         }
 
       } else if (type=="partecipants")  {
 
-        for(i = 0; i < same_partecipant_list.length; i++) {
-            valori += "<a style='" + stylea + "' href='#' onclick='parent.sameTooltipRapidCommand(\"" + same_partecipant_list[i].value + "\", \"@\", \"participant\");'>" + same_partecipant_list[i].value + "<br>";
+        if (same_partecipant_list.length==0) {
+          valori += "Empty participant list";
+        } else {
+          for(i = 0; i < same_partecipant_list.length; i++) {
+              valori += "<a style='" + stylea + "' href='#' onclick='parent.sameTooltipRapidCommand(\"" + same_partecipant_list[i].value + "\", \"@\", \"participant\");'>" + same_partecipant_list[i].value + "</a><br>";
+          }
         }
 
       } else if (type=="template")  {
@@ -322,7 +335,9 @@
           interactive: true,
       });
       tooltipid.show();
+
       sameCharCodeBefore = "";
+
     }
 
     function sameTooltipRapidCommand(value, shortcut, type) {
@@ -353,6 +368,7 @@
     }
 
     function sameCall( value , message ) {
+      sameDeleteTooltip();
       window.parent.postMessage({
           'func': value,
           'message': message
@@ -410,6 +426,41 @@
       sameGetPartecipantList();
       sameChangeHeight();
     }
+
+
+    /** template ***/
+
+    function sameTemplate( same_shortcut ) {
+
+       // console.log( same_shortcut );
+       var html = "";
+
+       if ( same_shortcut.call == "partecipantList") {
+
+         html += '<h3>Partecipant list</h3>';
+         html += '<table>';
+         if (same_partecipant_list.length==0) {
+           html += '<tr><td>Empty participant list</td></tr>';
+         } else {
+           for(i = 0; i < same_partecipant_list.length; i++) {
+               console.log(same_partecipant_list[i]);
+               var checked = "Yes";
+               if (same_partecipant_list[i].checked=="0") {
+                  checked = "No";
+               }
+               html += '<tr><td>Present: ' + checked + '</td><td>' + same_partecipant_list[i].value + '</td></tr>';
+           }
+         }
+         html += '</table>';
+
+       }
+
+       var temp = '{"value":"' + html + '","shortcut":"' + same_shortcut.shortcut + '","type":"template"}';
+       sameCall( "sameEditorRapidCommad", temp );
+
+
+    }
+
 
   </script>
 

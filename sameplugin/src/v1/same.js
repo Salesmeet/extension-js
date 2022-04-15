@@ -490,9 +490,10 @@ function sameCreateNoteShortcut() {
           // out += '<button onclick="sameRapidShortcutList(\'' + myItems[i].value + '\',\'' + myItems[i].call + '\');" class="same_resize_img same_icon_style" style="' + style + '"></button>';
           out += '<button data-value="' + myItems[i].value + '" data-call="' + myItems[i].call + '" class="sameRapidShortcutList same_resize_img same_icon_style" style="' + style + '"></button>';
       }
-      out += '<button id="same_function_shortcut_short_button" onclick="sameChangePanelShortcut();"  class="same_resize_img same_icon_style" title="Shortcuts"> </button>';
+      out += '<button id="same_function_shortcut_short_button" class="same_resize_img same_icon_style" title="Shortcuts"> </button>';
       document.getElementById("same_rapid_command").innerHTML = sameEscapeHTMLPolicy( out );
       sameClickCommonClass( "sameRapidShortcutList" , sameRapidShortcutList, "click" );
+      sameClickCommon( "same_function_shortcut_short_button" , sameChangePanelShortcut );
 }
 function sameCreatePanelShortcut() {
       var temp = sameGetShortcutList();
