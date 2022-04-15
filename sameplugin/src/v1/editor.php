@@ -429,7 +429,6 @@
 
 
     /** template ***/
-
     function sameTemplate( same_shortcut ) {
 
        // console.log( same_shortcut );
@@ -438,12 +437,11 @@
        if ( same_shortcut.call == "partecipantList") {
 
          html += '<h3>Partecipant list</h3>';
-         html += '<table>';
+         html += '<table style=\'width: 100%; border:1px solid\'>';
          if (same_partecipant_list.length==0) {
            html += '<tr><td>Empty participant list</td></tr>';
          } else {
            for(i = 0; i < same_partecipant_list.length; i++) {
-               console.log(same_partecipant_list[i]);
                var checked = "Yes";
                if (same_partecipant_list[i].checked=="0") {
                   checked = "No";
@@ -453,14 +451,33 @@
          }
          html += '</table>';
 
-       }
+         var temp = '{"value":"' + html + '","shortcut":"' + same_shortcut.shortcut + '","type":"template"}';
+         sameCall( "sameEditorRapidCommad", temp );
 
-       var temp = '{"value":"' + html + '","shortcut":"' + same_shortcut.shortcut + '","type":"template"}';
-       sameCall( "sameEditorRapidCommad", temp );
+       } else if ( same_shortcut.call == "discussionTopics") {
+
+          sameGetTemplate( same_shortcut )
+
+       }
 
 
     }
 
+    function sameGetTemplate( same_shortcut ) {
+
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+             if (this.readyState == 4 && this.status == 200) {
+                 var testo = this.responseText;
+                 testo = testo.replace("\n", "");
+                 var temp = '{"value":"' + testo + '","shortcut":"' + same_shortcut.shortcut + '","type":"template"}';
+                 sameCall( "sameEditorRapidCommad", temp );
+             }
+        };
+        xhttp.open("GET", "https://plugin.sameapp.net/v1/template/" + same_shortcut.call + ".txt" , true);
+        xhttp.send();
+
+    }
 
   </script>
 

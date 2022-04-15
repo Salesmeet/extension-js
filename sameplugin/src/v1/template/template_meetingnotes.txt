@@ -11,7 +11,7 @@
 &lt;p&gt;&lt;strong&gt;Goals&lt;/strong&gt;&lt;/p&gt;
 &lt;p data-pm-slice=&quot;1 1 []&quot;&gt;&lt;span contenteditable=&quot;true&quot; data-placeholder=&quot;List goals for this meeting (e.g., Set design priorities for FY19)&quot;&gt;List goals for this meeting (e.g., Set design priorities for FY19)&lt;/span&gt;&lt;/p&gt;
 &lt;p data-pm-slice=&quot;1 1 []&quot;&gt;&amp;nbsp;&lt;/p&gt;
-&lt;p data-pm-slice=&quot;1 1 []&quot;&gt;&lt;span contenteditable=&quot;true&quot; data-placeholder=&quot;List goals for this meeting (e.g., Set design priorities for FY19)&quot;&gt;&lt;strong&gt;Disussion topics&lt;/strong&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;p data-pm-slice=&quot;1 1 []&quot;&gt;&lt;span contenteditable=&quot;true&quot; data-placeholder=&quot;List goals for this meeting (e.g., Set design priorities for FY19)&quot;&gt;&lt;strong&gt;Discussion topics&lt;/strong&gt;&lt;/span&gt;&lt;/p&gt;
 &lt;table style=&quot;border-collapse: collapse; width: 100%; height: 67.1718px;&quot; border=&quot;1&quot;&gt;
 &lt;tbody&gt;
 &lt;tr style=&quot;height: 22.3906px;&quot;&gt;
