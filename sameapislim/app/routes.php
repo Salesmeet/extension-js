@@ -170,7 +170,10 @@ return function (App $app) {
         $screenshot = new Screenshot();
         return setResponse($response, $screenshot->getAll($request, $response, $args) );
     });
-
+    $app->get('/public/v1/screenshot/getFile/{idmeeting}/{filename}/{user}', function (Request $request, Response $response, $args) {
+        $screenshot = new Screenshot();
+        $screenshot->getFile($request, $response, $args);
+    });
 
     // Generate file
     $app->post('/public/v1/converter', function (Request $request, Response $response, $args) {
@@ -180,6 +183,10 @@ return function (App $app) {
     });
 
     $app->get('/public/v1/test/', function (Request $request, Response $response, $args) {
+
+      echo "<hr>Get file<br>";
+      echo '<a href="https://api.sameapp.net/public/v1/screenshot/getFile/7EQPmfmJD5eahPCLNxwV/62597cc2bfb01_74b8c6d27160432ab225_BKqJl8XbOeY5kuONOeW8DCqeZcq1.jpeg/1" target="-Blank">get</a>';
+
 
       echo "<hr>Generate Files:<br>";
       echo '<form id="inviofile" action="https://api.sameapp.net/public/v1/converter" method="post">';

@@ -50,7 +50,6 @@ class Screenshot
       return json_decode( '{"state":"200","value":"not add"}', true);
     }
 
-
     public function insert( Request $request, Response $response, $args )  {
 
       $dataDocument = $this->setDocument( $request );
@@ -89,6 +88,22 @@ class Screenshot
       return json_decode( '{"state":"200","value":"ok"}', true);
 
     }
+
+
+    public function getFile( Request $request, Response $response, $args )  {
+
+      if (isset($args["filename"])) {
+
+        $aws = new Aws();
+        $aws->getFile( "sameapp" /*$this->directory */ , "screenshot/" .  $args["filename"] );
+        // return $aws->getFile( "screenshot" /*$this->directory */ ,  $args["filename"] );
+
+      }
+
+      return json_decode( '{"state":"200","value":"ok"}', true);
+
+    }
+
 
     public function setDocument( Request $request )  {
         $requestArrayParam = $request->getParsedBody();

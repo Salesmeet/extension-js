@@ -23,6 +23,36 @@ class Aws
         return $this->bucketMaster . "/" . $bucket;
     }
 
+    public function getFile( $bucket_name, $file_name )  {
+
+      // https://docs.aws.amazon.com/AmazonS3/latest/userguide/example_s3_GetObject_section.html
+
+      try {
+
+          $s3Client = new S3Client([
+            'version' => 'latest',
+            'region'  => $this->region,
+            'credentials' => [
+            'key'    => $this->key,
+            'secret' => $this->secret
+            ]
+          ]);
+
+          $file = $s3Client->getObject([
+              'Bucket' => $bucket_name,
+              'Key' => $file_name,
+          ]);
+          $body = $file->get('Body');
+          $body->rewind();
+
+          // echo "Downloaded the file and it begins with: {$body->read(26)}.\n";
+      } catch (Exception $exception) {
+          // echo "Failed to download $file_name from $bucket_name with error: " . $exception->getMessage();
+          exit("Please fix error with file downloading before continuing.");
+      }
+
+    }
+
     public function uploadAWS( $directory,  $file, $bucket )  {
 
         // https://docs.aws.amazon.com/code-samples/latest/catalog/php-s3-TransferManager.php.html
