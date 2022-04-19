@@ -23,6 +23,43 @@ class Aws
         return $this->bucketMaster . "/" . $bucket;
     }
 
+
+    public function getPublicUrl( $bucket_name, $file_name )  {
+
+      // https://docs.aws.amazon.com/sdk-for-php/v3/developer-guide/s3-examples-access-permissions.html
+      // https://docs.aws.amazon.com/sdk-for-php/v3/developer-guide/s3-presigned-url.html
+
+      try {
+
+          $s3Client = new S3Client([
+            'version' => 'latest',
+            'region'  => $this->region,
+            'credentials' => [
+            'key'    => $this->key,
+            'secret' => $this->secret
+            ]
+          ]);
+
+          //Creating a presigned URL
+          $cmd = $s3Client->getCommand('GetObject', [
+              'Bucket' => $bucket_name,
+              'Key' => $file_name
+          ]);
+
+          $request = $s3Client->createPresignedRequest($cmd, '+60 minutes');
+
+          // Get the actual presigned-url
+          $presignedUrl = (string)$request->getUri();
+          return $presignedUrl;
+
+      } catch (Exception $exception) {
+          // echo "Failed to download $file_name from $bucket_name with error: " . $exception->getMessage();
+          exit("Please fix error with file downloading before continuing.");
+      }
+
+    }
+
+
     public function getFile( $bucket_name, $file_name )  {
 
       // https://docs.aws.amazon.com/AmazonS3/latest/userguide/example_s3_GetObject_section.html
@@ -44,6 +81,7 @@ class Aws
           ]);
           $body = $file->get('Body');
           $body->rewind();
+          return $body;
 
           // echo "Downloaded the file and it begins with: {$body->read(26)}.\n";
       } catch (Exception $exception) {

@@ -149,6 +149,8 @@
               if (value.type == "data") {
               } else if (value.type == "calendar") {
                 valore = value.value ;
+              } else if (value.type == "screenshot") {
+                valore = '<img style="width:200px;" src="' + value.value + '">' ;
               } else if (value.type == "template") {
                 valore = value.value ;
               } else if (value.type == "participant") {
@@ -295,9 +297,9 @@
         // valori += "<a style='" + stylea + "' href='#' onclick='alert();'>##</a>  -  Agenda<br>";
         valori += "##  -  Agenda<br>";
         for(i = 0; i < same_shortcut_list.length; i++) {
-            // valori += "<a style='" + stylea + "' href='#' onclick='alert();'>" + same_shortcut_list[i].shortcut + "</a>  -  " + same_shortcut_list[i].value + "<br>";
             if (same_shortcut_list[i].type == "0") {
-              valori += "<a style='" + stylea + "' href='#' onclick='parent.sameTooltipRapidCommand(\"" + same_shortcut_list[i].value + "\", \"@\", \"participant\");'>" + same_shortcut_list[i].shortcut + "  -  " + same_shortcut_list[i].value + "</a><br>";
+              // valori += "<a style='" + stylea + "' href='#' onclick='parent.sameTooltipRapidCommand(\"" + same_shortcut_list[i].value + "\", \"#\", \"" + same_shortcut_list[i].call + "\");'>" + same_shortcut_list[i].shortcut + "  -  " + same_shortcut_list[i].value + "</a><br>";
+              valori += same_shortcut_list[i].shortcut + "  -  " + same_shortcut_list[i].value + "<br>";
               // valori +=  same_partecipant_list[i].value + "<br>";
             }
         }
@@ -344,6 +346,7 @@
         sameDeleteTooltip();
         // var json = {"type": type, "value": value, "shortcut": shortcut, "time": time};
         var json = {"type": type, "value": value, "shortcut": shortcut};
+        console.log(json);
         sameRapidCommand( json );
     }
 

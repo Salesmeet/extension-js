@@ -40,12 +40,12 @@ var same_panel_note = '<div id="same_note" style="display:none">' + same_panel_r
 
 var same_panel_shortcut = '<div id="same_shortcut" style="display:none"></div>';
 
+// <button id="same_function_meeting_attachments_button" class="same_buttom_img">Attachments</button> \
 var same_panel_data_meeting = '\
 <div id="same_data_meeting" style="display:none">\
 <button id="same_function_meeting_data_button" class="same_buttom_img">Summary</button> \
 <button id="same_function_agenda_data_button" class="same_buttom_img">Agenda</button> \
 <button id="same_function_participant_list_button" class="same_buttom_img">Participant list</button> \
-<button id="same_function_meeting_attachments_button" class="same_buttom_img">Attachments</button> \
 <button id="same_function_screenshot_button" class="same_buttom_img">Screenshot list</button> \
 <button id="same_function_records_button" class="same_buttom_img">Records list</button> \
 <button id="same_function_meeting_notes_button" class="same_buttom_img">Note list</button> \
@@ -601,12 +601,19 @@ function sameCommonBlockApi( value, type ) {
       var out = "";
       var i;
       var title = "";
+      var type = "";
       if (myArr.title!="") {
           title ='<b>' + myArr.title + '</b><br><br>';
       }
       for(i = 0; i < myItems.length; i++) {
 
-        out += '<div class="sameBlockApi">';
+
+        if ((myItems[i].type == 'record') || (myItems[i].type == 'screenshot')) {
+            out += '<div class="">';
+        } else {
+            out += '<div class="sameBlockApi">';
+        }
+
         if (myItems[i].type == 'checkbox') {
             if (myItems[i].checked == '1') { var checked = "checked"; } else { var checked = ""; }
             out += "<input class='sameAddValueCheck' data-url='" + myArr.apiupdate + "' type='checkbox' " + checked + " id='" + myItems[i].id + "'>";
@@ -616,24 +623,30 @@ function sameCommonBlockApi( value, type ) {
 
         if (myItems[i].type == 'link') {
             out += '<a href="' + myItems[i].value + '" target="_blank">' + description + myItems[i].value + '</a>';
+
         } else if (myItems[i].type == 'record') {
+           type = 'record';
            if (myItems[i].name!="") {
               out += '<a href="' + same_domain_api + myItems[i].directory + myItems[i].value  + '" target="_blank">' + myItems[i].name + ' (' + myItems[i].date + ')</a>';
            } else {
               out += '<a href="' + same_domain_api + myItems[i].directory + myItems[i].value  + '" target="_blank">' + myItems[i].value + ' (' + myItems[i].date + ')</a>';
            }
          } else if (myItems[i].type == 'screenshot') {
+            type = 'screenshot';
             if (myItems[i].value!="") {
-               out += '<a href="' + myItems[i].directory + '" target="_blank">' + myItems[i].value + ' (' + myItems[i].date + ')</a>';
+               out += '<img id="' + myItems[i].id + '" class="loadingImage" data-name="' + myItems[i].name + '" style="width:100px;" src="https://plugin.sameapp.net/v1/img/placeholder.png"><br>' + myItems[i].value + ' (' + myItems[i].date + ')';
             } else {
-               out += '<a href="' + myItems[i].directory + '" target="_blank">' + myItems[i].name + ' (' + myItems[i].date + ')</a>';
+               out += '<img id="' + myItems[i].id + '"  class="loadingImage" data-name="' + myItems[i].name + '" style="width:100px;" src="https://plugin.sameapp.net/v1/img/placeholder.png"><br>' + myItems[i].name + ' (' + myItems[i].date + ')';
             }
         } else {
+
             out += description + myItems[i].value;
         }
-        out += ' <button data-object="' + myItems[i].type + '" data-type="' + type + '" data-value="' + sameReplaceCharacters( myItems[i].value ) + '" class="sameAddValueInNote same_resize_small_img same_icon_style" title="Add note"></button>';
+        out += ' <button id="' + myItems[i].id + 'button" data-object="' + myItems[i].type + '" data-type="' + type + '" data-value="' + sameReplaceCharacters( myItems[i].value ) + '" class="sameAddValueInNote same_resize_small_img same_icon_style" title="Add note"></button>';
         out += "</div>";
+
       }
+
       if (myArr.edit!="") {
         out = '\
           <div id="same_data_meeting_edit">\
@@ -649,9 +662,34 @@ function sameCommonBlockApi( value, type ) {
         out = '<div style="float:left;" id="same_data_meeting_body">' + title + out + '</div>';
         document.getElementById("same_common").innerHTML = sameEscapeHTMLPolicy(out);
       }
+
       sameClickCommonClass( "sameAddValueInNote" , sameAddValueInNote , "click" );
       sameClickCommonClass( "sameAddValueCheck" , sameAddValueCheck , "click" );
       sameChangePanelCommon();
+
+      if (type=="screenshot") {
+          myTimeout = setTimeout( sameGetImageScreenshot, 300);
+      }
+
+
+}
+
+function sameGetImageScreenshot() {
+
+    var userSelection =  document.getElementsByClassName("loadingImage");
+    for(var i = 0; i < userSelection.length; i++) {
+      (function(index) {
+        // console.log(userSelection[index]);
+        // console.log(userSelection[index].getAttribute('data-name'));
+        sameGetAPI(same_domain_api + "/public/v1/screenshot/getFile/" + userSelection[index].getAttribute('data-name') + "/", userSelection[index].id , "sameGetImageScreenshotInsert");
+      })(i);
+    }
+}
+
+function sameGetImageScreenshotInsert( value, idObject ) {
+    var myArr = JSON.parse(value);
+    document.getElementById(idObject + "button").setAttribute('data-value', myArr.value);
+    document.getElementById(idObject).src = myArr.value;
 }
 
 function sameGetAPI(url,type,action) {
@@ -662,6 +700,8 @@ function sameGetAPI(url,type,action) {
                  sameInitAfter(this.responseText);
                } else if (action=="sameShortcutList") {
                  sameSetShortcutList( this.responseText )
+               } else if (action=="sameGetImageScreenshotInsert") {
+                 sameGetImageScreenshotInsert( this.responseText, type )
                } else {
                  sameCommonBlockApi( this.responseText, type );
                }
@@ -943,7 +983,7 @@ function initSameMeeting() {
   sameClickCommon( "same_function_meeting_data_button" , sameGetDataMeeting );
   sameClickCommon( "same_function_meeting_notes_button" , sameFunctionOpenNoteVersion );
   sameClickCommon( "same_function_agenda_data_button" , sameGetAgenda );
-  sameClickCommon( "same_function_meeting_attachments_button" , sameGetAttachments);
+  // sameClickCommon( "same_function_meeting_attachments_button" , sameGetAttachments);
   sameClickCommon( "same_function_records_button" , sameGetRecords );
   sameClickCommon( "same_function_screenshot_button" , sameGetScreenshot );
 

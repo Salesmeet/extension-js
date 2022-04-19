@@ -170,9 +170,14 @@ return function (App $app) {
         $screenshot = new Screenshot();
         return setResponse($response, $screenshot->getAll($request, $response, $args) );
     });
-    $app->get('/public/v1/screenshot/getFile/{idmeeting}/{filename}/{user}', function (Request $request, Response $response, $args) {
+    $app->get('/public/v1/screenshot/getFile/{filename}/{idmeeting}/{lang}/{user}', function (Request $request, Response $response, $args) {
         $screenshot = new Screenshot();
-        $screenshot->getFile($request, $response, $args);
+        /*
+        $file = $screenshot->getFile($request, $response, $args);
+        $response->withStatus(200)->withHeader('Content-type', 'image/jpeg');
+        return $response->getBody()->write($file);
+        */
+        return setResponse($response, $screenshot->getPublicUrl($request, $response, $args) );
     });
 
     // Generate file

@@ -90,20 +90,18 @@ class Screenshot
     }
 
 
-    public function getFile( Request $request, Response $response, $args )  {
+    public function getPublicUrl( Request $request, Response $response, $args )  {
 
       if (isset($args["filename"])) {
 
         $aws = new Aws();
-        $aws->getFile( "sameapp" /*$this->directory */ , "screenshot/" .  $args["filename"] );
-        // return $aws->getFile( "screenshot" /*$this->directory */ ,  $args["filename"] );
+        $public_url = $aws->getPublicUrl( "sameapp" , "screenshot/" .  $args["filename"] );
+        return json_decode( '{"state":"200","value":"' .  $public_url . '"}', true);
 
       }
-
-      return json_decode( '{"state":"200","value":"ok"}', true);
+      return json_decode( '{"state":"400","value":"ok"}', true);
 
     }
-
 
     public function setDocument( Request $request )  {
         $requestArrayParam = $request->getParsedBody();
