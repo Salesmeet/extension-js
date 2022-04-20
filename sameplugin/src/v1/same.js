@@ -1,6 +1,6 @@
 /* funzione per pulire il codice HTML iniettato nella pagina - per potere evitare errori trusted con MEET o TEAMS*/
 
-var same_id_extension = "jinjngkjbcaedjmllefbghfodplfngeh";
+// var same_id_extension = "jinjngkjbcaedjmllefbghfodplfngeh";
 var same_domain_api = "https://api.sameapp.net";
 var same_domain = "https://plugin.sameapp.net";
 var same_id_meeting = "";
