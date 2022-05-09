@@ -5,7 +5,8 @@ namespace App\Application\Actions\v1;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\UploadedFileInterface;
-
+use Google\Cloud\Core\Timestamp;
+use \Datetime;
 use App\Application\Actions\FireStore;
 // use App\Application\Actions\FirebaseStorage;
 use App\Application\Actions\Aws;
@@ -129,7 +130,7 @@ class Screenshot
             "bucket" => "",
             "type" => "screenshot",
             "directory" => $this->directory,
-            "date" =>  time(), // date("Y-m-d H:i:s"),
+            "date" =>  new Timestamp(new DateTime()), //time(), // date("Y-m-d H:i:s"),
         );
     }
 

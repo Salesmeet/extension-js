@@ -1,4 +1,4 @@
-<?php //include("common/referer.php") ?>
+<?php include("common/referer.php") ?>
 
 <!DOCTYPE html>
 <html>
@@ -126,7 +126,8 @@
 
           } else {
 
-              //console.log("sameRapidCommand:" + value);
+
+              console.log("sameRapidCommand:" + value.type);
               var char_i = "[ ";
               var char_e = " ]";
 
@@ -154,11 +155,17 @@
               } else if (value.type == "template") {
                 valore = value.value ;
               } else if (value.type == "participant") {
-                valore = char_i + "@"  + char_e + " " + char_i + value.value + char_e ;
+                // valore = char_i + "@"  + char_e + " " + char_i + value.value + char_e ;
+                valore = "@" + value.value ;
+              } else if (value.type == "rTimestamp") {
+                valore = timeDefaultString ;
               } else if ( value.type == "agenda") {
-                valore = timeDefaultString + time + char_i + "Agenda" + char_e + " " + value.value  ;
+                // valore = timeDefaultString + time + char_i + "Agenda" + char_e + " " + value.value  ;
+                // valore = timeDefaultString + time + "(" + "Agenda" + ")" + " " + value.value  ;
+                valore = "#" + value.value;
               } else {
-                valore = timeDefaultString + time + char_i + value.value  + char_e;
+                // valore = timeDefaultString + time + char_i + value.value  + char_e;
+                valore = timeDefaultString + time + "(" + value.value  + ")";
               }
 
               /*
@@ -175,12 +182,6 @@
               var el = doc.getElementById( tooltipid_id );
 
               var temp2 = html2;
-
-              /*
-              console.log("_______3________");
-              console.log(temp2);
-              */
-
               if (el === undefined || el === null) {
               } else {
                 temp2 = temp2.replace(el.outerHTML, "");
@@ -224,7 +225,10 @@
           } else if ((keyPressed.charCode == 35) && (sameCharCodeBefore == 35)) {
               sameDeleteTooltip();
               sameCall( "sameGetAgenda", "" );
+              // sameCreateTooltip("agenda");
           }
+
+
           // spazio ...
           if ( keyPressed.charCode == 32) {
               sameWord = "";
@@ -313,6 +317,14 @@
               valori += "<a style='" + stylea + "' href='#' onclick='parent.sameTooltipRapidCommand(\"" + same_partecipant_list[i].value + "\", \"@\", \"participant\");'>" + same_partecipant_list[i].value + "</a><br>";
           }
         }
+        valori += "<hr><a style='" + stylea + "' href='#'  onclick='parent.sameTooltipRapidCommand(\"addparticipant\", \"addparticipant\", \"addparticipant\");'>Add partecipant</a>";
+
+      } else if (type=="agenda")  {
+
+        alert("agenda");
+
+        valori += "<hr><a style='" + stylea + "' href='#'  onclick='parent.sameTooltipRapidCommand(\"addparticipant\", \"addparticipant\", \"addparticipant\");'>Add partecipant</a>";
+
 
       } else if (type=="template")  {
 
@@ -345,9 +357,14 @@
     function sameTooltipRapidCommand(value, shortcut, type) {
         sameDeleteTooltip();
         // var json = {"type": type, "value": value, "shortcut": shortcut, "time": time};
-        var json = {"type": type, "value": value, "shortcut": shortcut};
-        console.log(json);
-        sameRapidCommand( json );
+
+        if (value=="addparticipant") {
+            sameCall( "sameFunctionEditOpenEditorPartecipant", "" );
+        } else {
+          var json = {"type": type, "value": value, "shortcut": shortcut};
+          console.log(json);
+          sameRapidCommand( json );
+        }
     }
 
     function sameDeleteTooltip() {
@@ -392,7 +409,7 @@
         statusbar: false,
         height: 500,
         plugins: 'link table lists',
-        toolbar: 'customInsertButton | undo redo | bold italic underline strikethrough | fontsizeselect | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist | forecolor backcolor removeformat | link | table ',
+        toolbar: 'customSHORTCUTS | customBig customSmall | undo redo | bold italic underline strikethrough | fontsizeselect | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist | forecolor backcolor removeformat | link | table ',
         setup : function(ed) {
             ed.on("keypress", function(keypress){
                 sameKeypress( keypress );
@@ -408,14 +425,25 @@
                 sameChangeHeight();
             });
             */
-            ed.ui.registry.addButton('customInsertButton', {
+            ed.ui.registry.addButton('customSHORTCUTS', {
               text: 'SHORTCUTS',
               onAction: function (_) {
                 sameCall( "sameChangePanelSetting", "" );
                 // ed.insertContent('&nbsp;<strong>Shortcuts</strong>&nbsp;');
               }
             });
-
+            ed.ui.registry.addButton('customBig', {
+              text: '+',
+              onAction: function (_) {
+                sameCall( "sameNoteBigEditor", "" );
+              }
+            });
+            ed.ui.registry.addButton('customSmall', {
+              text: '-',
+              onAction: function (_) {
+                sameCall( "sameNoteSmallEditor", "" );
+              }
+            });
         }
     });
 

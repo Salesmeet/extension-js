@@ -6,6 +6,8 @@ use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use App\Application\Actions\FireStore;
 use App\Application\Actions\v1\Common;
+use Google\Cloud\Core\Timestamp;
+use \Datetime;
 
 class Meeting
 {
@@ -23,6 +25,7 @@ class Meeting
           $fireStore = new FireStore();
           $data = $fireStore->getDocument( $this->collection_name, $idmeeting ) ;
           // print_r($data);
+          // time(), // date("Y-m-d H:i:s"),
           if ($data["init"]=="") {
               $temp = [
                   ['path' => 'init', 'value' => date("Y-m-d H:i:s")]
@@ -181,19 +184,20 @@ class Meeting
        if (isset($requestArrayParam["uniqid"])) {
            $uniqid  = $requestArrayParam["uniqid"];
        }
+
        return array(
            "name" => $name,
            "type" => $type,
            "lang" => $lang,
            "user" => $user,
            "url" => $url,
-           "date" => time(), // date("Y-m-d H:i:s"),
+           "date" => new Timestamp(new DateTime()), //time(), // date("Y-m-d H:i:s"),
            "uniqid" => $uniqid,
-           "color" => "",
-           "end" => "",
-           "status" => "",
+           "color" => "lime",
+           "end" => new Timestamp(new DateTime()), //time(), // date("Y-m-d H:i:s"),
+           "status" => "ready",
            "allDay" => false,
-           "start" => date("Y-m-d H:i:s"),
+           "start" => new Timestamp(new DateTime()), //time(), // date("Y-m-d H:i:s"),
        );
    }
 

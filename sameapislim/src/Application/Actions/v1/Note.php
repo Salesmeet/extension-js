@@ -6,6 +6,8 @@ use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
 use App\Application\Actions\FireStore;
+use Google\Cloud\Core\Timestamp;
+use \Datetime;
 
 class Note
 {
@@ -101,7 +103,7 @@ class Note
             "idmeeting" => $idmeeting,
             "value" => $value,
             "user" => $user,
-            "date" =>  time(), // date("Y-m-d H:i:s"),
+            "date" =>  new Timestamp(new DateTime()), //time(), // date("Y-m-d H:i:s"),
         );
     }
 

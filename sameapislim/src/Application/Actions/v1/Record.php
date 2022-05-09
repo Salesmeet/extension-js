@@ -8,6 +8,8 @@ use Psr\Http\Message\UploadedFileInterface;
 
 use App\Application\Actions\FireStore;
 use App\Application\Actions\Aws;
+use Google\Cloud\Core\Timestamp;
+use \Datetime;
 
 class Record
 {
@@ -119,7 +121,7 @@ class Record
         $idmeeting = "";
         $type = "";
         $user = "";
-        $extension = "mp3";
+        $extension = "wav"; // "mp3";
         $name = "";
         $idunivoco = "";
         if (isset($requestArrayParam["idmeeting"])) {
@@ -152,7 +154,7 @@ class Record
             "type" => "record",
             "directory" => $this->directory,
             "basename" => date("YmdHis") . "_" . $idmeeting . "_" . $user . "_" . $type,
-            "date" =>  time(), // date("Y-m-d H:i:s"),
+            "date" =>  new Timestamp(new DateTime()), //time(), // date("Y-m-d H:i:s"),
         );
     }
 

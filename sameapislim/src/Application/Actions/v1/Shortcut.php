@@ -5,6 +5,8 @@ namespace App\Application\Actions\v1;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use App\Application\Actions\FireStore;
+use Google\Cloud\Core\Timestamp;
+use \Datetime;
 
 class Shortcut
 {
@@ -94,7 +96,7 @@ class Shortcut
             "img" => "",
             "call" => $call,
             "language" => $language,
-            "date" =>  time(), // date("Y-m-d H:i:s"),
+            "date" =>  new Timestamp(new DateTime()), //time(), // date("Y-m-d H:i:s"),
         );
     }
 

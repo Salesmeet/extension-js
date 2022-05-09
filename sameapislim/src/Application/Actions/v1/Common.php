@@ -4,6 +4,8 @@ namespace App\Application\Actions\v1;
 
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
+use Google\Cloud\Core\Timestamp;
+use \Datetime;
 
 class Common
 {
@@ -85,7 +87,7 @@ class Common
             "user" => $user,
             "email" => $email,
             "type" => "meeting_date",
-            "date" => time(), // date("Y-m-d H:i:s"),
+            "date" => new Timestamp(new DateTime()), //time(), // date("Y-m-d H:i:s"),
         );
     }
 

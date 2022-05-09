@@ -28,7 +28,7 @@ $note = "";
      your report.
      <br><br>
      <hr>
-     <button onclick="save();" id="" class="same_icon_style" title="">Save</button>
+     <button onclick="save();" id="" class="same_icon_style" title="">Close</button>
      <hr>
      <button onclick="exportWord()" id="" class="same_icon_style" title="">Export Word</button>
      <hr>

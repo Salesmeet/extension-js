@@ -298,6 +298,9 @@
 .sameBlockApi {
     height: 27px;
 }
+.sameBlockApiSpace {
+    padding-bottom: 25px;
+}
 
 .same_resize_img {
   background-size: 22px;
@@ -435,7 +438,7 @@ div.editable {
     display:  none !important;
 }
 .same_note_text_iframe_right {
-    top: 122px;
+    top: 102px;
     right: 3px;
     width: 95% !important;
     position: absolute;
@@ -456,16 +459,18 @@ div.editable {
 .same_rapid_command_right {
     width: 100% !important;
 }
+/*
 #same_function_note_button_vertical {
     position: relative;
     top: -5px;
 }
+*/
 .same_function_note_button_vertical_right {
     display: block !important;
 }
 .same_recording_internal_right {
     padding-top: 6px;
-    padding-right: 7px;
-    padding-left: 7px;
-    border-right: 1px solid #9e9e9e;
+    padding-right: 14px;
+    padding-left: 14px;
+    border-right: 2px solid #9e9e9e;
 }
