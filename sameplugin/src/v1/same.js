@@ -107,7 +107,7 @@ var same_panel_operation = '<div id="same_panel" class="same_panel_style same_pa
 var same_panel_info = '<div id="same_info" class="same_panel_style">\
 <center>\
 <label id="same_minutes" style="display:none;float:left;padding-top: 4px;">00</label><label id="same_minutes_separatore" style="display:none;float:left;padding-top:4px;">:</label><label id="same_seconds" style="display:none;float:left;padding-top:4px;">00</label><label id="same_minutes_spazio" style="display:none;float:left;padding-top:4px;">&nbsp;&nbsp;&nbsp;</label> \
-<button id="same_function_stop_hour_button" style="display:none;">Stop timer</button>\
+<button id="same_function_stop_hour_button" style="display:none;">Stop</button>\
 <button id="same_function_start_short_hour_button" style="display:none;">Resume</button>\
 <button id="same_function_clear_hour_button" style="display:none;">Clear</button>\
 <button id="same_function_start_hour_button" class="same_function_start_hour_button">Countdown</button>\
@@ -400,8 +400,12 @@ function same_getTime() {
 var same_totalSeconds = 0;
 function same_setTime() {
   --same_totalSeconds;
-  same_secondsLabel.innerHTML = sameEscapeHTMLPolicy(same_pad(same_totalSeconds % 60));
-  same_minutesLabel.innerHTML = sameEscapeHTMLPolicy(same_pad(parseInt(same_totalSeconds / 60)));
+  if (same_totalSeconds==0) {
+    endStopHour();
+  } else {
+    same_secondsLabel.innerHTML = sameEscapeHTMLPolicy(same_pad(same_totalSeconds % 60));
+    same_minutesLabel.innerHTML = sameEscapeHTMLPolicy(same_pad(parseInt(same_totalSeconds / 60)));
+  }
 }
 function same_pad(val) {
   var valString = val + "";
@@ -442,6 +446,12 @@ function sameStopHour() {
     sameDisplayCommon("same_function_start_short_hour_button","block");
     clearInterval(same_timer);
 }
+function endStopHour() {
+    samePostAPI(same_totalSeconds,"endStopHour");
+    sameClearHour();
+    alert("Countdown finished!");
+}
+
 function sameClearHourAsk() {
     var temp = 'Do you want to reset timer?\
     <button id="same_function_clear_yes">YES</button>\
