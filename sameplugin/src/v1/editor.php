@@ -165,7 +165,8 @@
                 valore = "#" + value.value;
               } else {
                 // valore = timeDefaultString + time + char_i + value.value  + char_e;
-                valore = timeDefaultString + time + "(" + value.value  + ")";
+                // valore = timeDefaultString + time + "(" + value.value  + ")";
+                valore = timeDefaultString + "(" + value.value  + ")";
               }
 
               /*
