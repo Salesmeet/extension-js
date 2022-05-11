@@ -110,7 +110,7 @@ var same_panel_info = '<div id="same_info" class="same_panel_style">\
 <button id="same_function_stop_hour_button" style="display:none;">Stop timer</button>\
 <button id="same_function_start_short_hour_button" style="display:none;">Resume</button>\
 <button id="same_function_clear_hour_button" style="display:none;">Clear</button>\
-<button id="same_function_start_hour_button" class="same_function_start_hour_button">Start timer action</button>\
+<button id="same_function_start_hour_button" class="same_function_start_hour_button">Countdown</button>\
 <hr>\
 <button id="same_function_icon_button" class="same_icon_style" title="Zoom out"></button>\
 <button id="same_function_top_button" class="same_icon_style" title="Position top"></button>\
@@ -362,7 +362,6 @@ function sameNoteSmall() {
 
 var same_minutesLabel = "";
 var same_secondsLabel = "";
-var same_totalSeconds = 0;
 
 var sameDefaulTotalSeconds = 0;
 var same_minutesLabel_default = "";
@@ -397,8 +396,10 @@ function same_getTime() {
    }
 
 }
+
+var same_totalSeconds = 0;
 function same_setTime() {
-  ++same_totalSeconds;
+  --same_totalSeconds;
   same_secondsLabel.innerHTML = sameEscapeHTMLPolicy(same_pad(same_totalSeconds % 60));
   same_minutesLabel.innerHTML = sameEscapeHTMLPolicy(same_pad(parseInt(same_totalSeconds / 60)));
 }
@@ -412,7 +413,14 @@ function same_pad(val) {
 }
 var same_timer;
 var same_timer_flag = false;
+
 function sameStartHour() {
+    same_totalSeconds = 300;
+    let countdowntime = prompt('countdown time (in seconds)?','300');
+    if (countdowntime != null) {
+        same_totalSeconds = countdowntime;
+    }
+    same_setTime();
     samePostAPI(same_totalSeconds,"sameStartHour");
     same_minutesLabel = document.getElementById("same_minutes");
     same_secondsLabel = document.getElementById("same_seconds");
@@ -540,7 +548,7 @@ function sameCreatePanelShortcut() {
       var myItems = myArr.items;
       var out = "";
       var outHelp = "<table><tr><td style='width:70px;'><b>Shortcut</b></td><td><b>Value</b></td></tr>";
-      outHelp += "<tr><td>@</td><td>Partecipant</td></tr>";
+      outHelp += "<tr><td>@</td><td>Participant</td></tr>";
       outHelp += "<tr><td>##</td><td>Agenda</td></tr>";
       for(i = 0; i < myItems.length; i++) {
           var style = "background-image: url('" + myItems[i].img + "') !important;";
