@@ -317,13 +317,13 @@
               valori += "<a style='" + stylea + "' href='#' onclick='parent.sameTooltipRapidCommand(\"" + same_partecipant_list[i].value + "\", \"@\", \"participant\");'>" + same_partecipant_list[i].value + "</a><br>";
           }
         }
-        valori += "<hr><a style='" + stylea + "' href='#'  onclick='parent.sameTooltipRapidCommand(\"addparticipant\", \"addparticipant\", \"addparticipant\");'>Add partecipant</a>";
+        valori += "<hr><a style='" + stylea + "' href='#'  onclick='parent.sameTooltipRapidCommand(\"addparticipant\", \"addparticipant\", \"addparticipant\");'>Add participant</a>";
 
       } else if (type=="agenda")  {
 
         alert("agenda");
 
-        valori += "<hr><a style='" + stylea + "' href='#'  onclick='parent.sameTooltipRapidCommand(\"addparticipant\", \"addparticipant\", \"addparticipant\");'>Add partecipant</a>";
+        valori += "<hr><a style='" + stylea + "' href='#'  onclick='parent.sameTooltipRapidCommand(\"addparticipant\", \"addparticipant\", \"addparticipant\");'>Add participant</a>";
 
 
       } else if (type=="template")  {

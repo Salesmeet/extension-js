@@ -101,21 +101,21 @@ function sameInitRecord() {
 
         if (clipName != null) {
 
-            // const blob = new Blob(chunks, { 'type' : 'audio/ogg; codecs=opus' });
-            const blob = new Blob(chunks, { 'type' : 'audio/wav; codecs=opus' });
+            const blob = new Blob(chunks, { 'type' : 'audio/ogg; codecs=opus' });
+            // const blob = new Blob(chunks, { 'type' : 'audio/wav; codecs=opus' });
             // const blob = new Blob(chunks, { 'type' : 'audio/wav; codecs=MS_PCM' });
 
             //the form data that will hold the Blob to upload
             const formData = new FormData();
             //add the Blob to formData
-            //nformData.append('fileToUpload', blob, 'recording.mp3');
-            formData.append('fileToUpload', blob, 'recording.wav');
+            formData.append('fileToUpload', blob, 'recording.mp3');
+            // formData.append('fileToUpload', blob, 'recording.wav');
             formData.append('idmeeting', sameGetIdMeeting() );
             formData.append('type', "microphone" );
             formData.append('name', clipName );
             formData.append('user', sameGetUser());
-            // formData.append('extension', "ogg");
-            formData.append('extension', "wav");
+            formData.append('extension', "ogg");
+            // formData.append('extension', "wav");
             formData.append('idunivoco', sameIdUnivoco);
             //send the request to the endpoint
             var xhr = new XMLHttpRequest();

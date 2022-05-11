@@ -37,7 +37,7 @@ var same_panel_recording_button = '\
 <button id="same_cancel_button" class="same_cancel_button same_icon_style" title="Cancel"> </button>\
 <hr class="same_hidden"></div>\
 <div class="same_recording_internal"><button id="same_screenshot_button" class="same_icon_style" title="Screenshot"> </button><hr class="same_hidden"></div>\
-<div id="same_count_hour_default" class="same_recording_internal">Meeting timer <label id="same_minutes_default">00</label>:<label id="same_seconds_default">00</label></div>\
+<div id="same_count_hour_default" class="same_recording_internal">Timer <label id="same_minutes_default">00</label>:<label id="same_seconds_default">00</label></div>\
 ';
 
 // var same_panel_rapid_command = '<div id="same_rapid_command" style="float:left;"></div>';
