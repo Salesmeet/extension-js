@@ -19,15 +19,6 @@
   </style>
 </head>
 <body>
-    <!--button id="myButton">My button</button>
-    <script>
-      // With the above scripts loaded, you can call `tippy()` with a CSS
-      // selector and a `content` prop:
-      tippy('#myButton', {
-        content: 'My tooltip!',
-        interactive: true,
-      });
-    </script -->
 
     <textarea id="same_note_text_iframe"></textarea>
 
@@ -52,13 +43,15 @@
     };
 
     function sameWrite( message ) {
-      // console.log("sameWrite");
-      // console.log( message );
+      console.log("sameWrite");
+      console.log( message );
       tinymce.activeEditor.setContent( message , {format: 'html'});
       tinyMCE.activeEditor.focus();
     }
 
+    var sameChangeHeightFlag = false;
     function sameChangeHeight() {
+
       window.focus();
       document.getElementById("same_note_text_iframe").focus();
       var height = document.documentElement.clientHeight
@@ -69,7 +62,12 @@
       var userSelection = document.getElementsByClassName("tox-tinymce");
       userSelection[0].classList.remove("same_note_text_iframe_dynamic");
       userSelection[0].classList.add("same_note_text_iframe_dynamic");
-      sameWrite( contentTinymce );
+
+      if (!sameChangeHeightFlag) {
+        sameWrite( contentTinymce );
+      }
+
+      sameChangeHeightFlag = true;
 
     }
 
@@ -414,12 +412,15 @@
         toolbar: 'customSHORTCUTS | customBig customSmall | undo redo | bold italic underline strikethrough | fontsizeselect | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist | forecolor backcolor removeformat | link | table ',
         setup : function(ed) {
             ed.on("keypress", function(keypress){
+                // alert('keypress');
                 sameKeypress( keypress );
             });
             ed.on("keydown", function(keydown){
+                // alert('keydown');
                 sameKeydown( keydown );
             });
             ed.on("mouseout", function(){
+                // alert('mouseout');
                 // samePostAPINote();
             });
             /*
