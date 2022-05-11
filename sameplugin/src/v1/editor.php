@@ -316,7 +316,7 @@
           for(i = 0; i < same_partecipant_list.length; i++) {
               valori += "<a style='" + stylea + "' href='#' onclick='parent.sameTooltipRapidCommand(\"" + same_partecipant_list[i].value + "\", \"@\", \"participant\");'>" + same_partecipant_list[i].value + "</a><br>";
           }
-          valori += "<a style='" + stylea + "' href='#' onclick='parent.sameTooltipRapidCommand(\"All participant\", \"@\", \"participant\");'>All participant</a><br>";
+          valori += "<a style='" + stylea + "' href='#' onclick='parent.sameTooltipRapidCommand(\"All participants\", \"@\", \"participant\");'>All participants</a><br>";
 
         }
         valori += "<hr><a style='" + stylea + "' href='#'  onclick='parent.sameTooltipRapidCommand(\"addparticipant\", \"addparticipant\", \"addparticipant\");'>Add participant</a>";
