@@ -102,14 +102,15 @@ Do you want to proceed with the recovery? <br><br>\
 
 var same_panel_operation = '<div id="same_panel" class="same_panel_style same_panel_style_border">' + same_panel_shortcut + same_panel_note + same_panel_edit_external + same_panel_setting + same_panel_data_meeting + same_panel_all_meeting + same_panel_common + same_panel_init_after_note + '</div>';
 
+// <div id="same_count_hour" style="display:none;"></div>\
+
 var same_panel_info = '<div id="same_info" class="same_panel_style">\
 <center>\
+<label id="same_minutes" style="display:none; float:left;">00</label><label id="same_minutes_separatore" style="display:none; float:left;">:</label><label id="same_seconds" style="display:none;  float:left;">00</label><label id="same_minutes_spazio" style="display:none; float:left;"> </label> \
 <button id="same_function_stop_hour_button" style="display:none;">Stop timer</button>\
 <button id="same_function_start_short_hour_button" style="display:none;">Resume</button>\
 <button id="same_function_clear_hour_button" style="display:none;">Clear</button>\
 <button id="same_function_start_hour_button" class="same_function_start_hour_button">Start timer action</button>\
-<hr>\
-<div id="same_count_hour"><label id="same_minutes">00</label>:<label id="same_seconds">00</label></div>\
 <hr>\
 <button id="same_function_icon_button" class="same_icon_style" title="Zoom out"></button>\
 <button id="same_function_top_button" class="same_icon_style" title="Position top"></button>\
@@ -420,6 +421,10 @@ function sameStartHour() {
     sameDisplayCommon("same_function_start_hour_button","none");
     sameDisplayCommon("same_function_start_short_hour_button","none");
     sameDisplayCommon("same_function_stop_hour_button","block");
+    sameDisplayCommon("same_minutes","block");
+    sameDisplayCommon("same_seconds","block");
+    sameDisplayCommon("same_minutes_separatore","block");
+    sameDisplayCommon("same_minutes_spazio","block");
     sameDisplayCommon("same_function_clear_hour_button","block");
 }
 function sameStopHour() {
@@ -455,6 +460,11 @@ function sameClearHour() {
     sameDisplayCommon("same_function_start_short_hour_button","none");
     sameDisplayCommon("same_function_stop_hour_button","none");
     sameDisplayCommon("same_function_clear_hour_button","none");
+    sameDisplayCommon("same_minutes","none");
+    sameDisplayCommon("same_minutes_separatore","none");
+    sameDisplayCommon("same_minutes_spazio","none");
+    sameDisplayCommon("same_seconds","none");
+
 }
 
 /****** PANEL FUNCTION  ************************************************/
@@ -936,7 +946,7 @@ function sameMovePanelRight() {
           hrselec_rec[i].classList.add("same_recording_internal_right");
       }
 
-      let height = window.innerHeight - 190; //  215;
+      let height = window.innerHeight - 162; //  215;
       document.getElementById("same_panel").style.height = height + "px";
       document.getElementById("same_note_text_iframe").style.height = (height - 30) + "px";
       document.getElementById("same_panel_edit_external_iframe").style.height = "100%";
