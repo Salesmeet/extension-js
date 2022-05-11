@@ -134,18 +134,23 @@
     height: 100%;
     padding-top: 10px;
 }
-#same_function_start_hour_button {
+
+.same_function_start_hour_button {
     height: 50px !important;
     width:100%;
-    background: #03a9f4 !important;;
-        max-width: 100px;
+    max-width: 100px;
+}
+.same_function_start_hour_button_right {
+  height: 25px !important;
+  max-width: 152px !important;
 }
 #same_function_stop_hour_button{
     height: 24px !important;
-    background: #69d26d !important;;
+    background: #69d26d !important;
     margin-bottom: 2px;
     width:100%;
         max-width: 100px;
+        float:left;
 }
 #same_function_start_short_hour_button {
     height: 24px !important;
@@ -153,11 +158,13 @@
     margin-bottom: 2px;
     width:100%;
         max-width: 100px;
+        float:left;
 }
 #same_function_clear_hour_button{
     height: 24px !important;
     width:100%;
-        max-width: 100px;
+    max-width: 100px;
+    float:left;
 }
 #same_panel_edit_external{
     position: absolute;

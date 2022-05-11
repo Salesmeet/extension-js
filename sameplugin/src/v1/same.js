@@ -107,7 +107,7 @@ var same_panel_info = '<div id="same_info" class="same_panel_style">\
 <button id="same_function_stop_hour_button" style="display:none;">Stop timer</button>\
 <button id="same_function_start_short_hour_button" style="display:none;">Resume</button>\
 <button id="same_function_clear_hour_button" style="display:none;">Clear</button>\
-<button id="same_function_start_hour_button">Start timer action</button>\
+<button id="same_function_start_hour_button" class="same_function_start_hour_button">Start timer action</button>\
 <hr>\
 <div id="same_count_hour"><label id="same_minutes">00</label>:<label id="same_seconds">00</label></div>\
 <hr>\
@@ -920,6 +920,7 @@ function sameMovePanelRight() {
       document.getElementById("same_common").classList.add("same_common_right");
       document.getElementById("same_note_text_iframe").classList.add("same_note_text_iframe_right");
       document.getElementById("same_panel_edit_external").classList.add("same_panel_edit_external_right");
+      document.getElementById("same_function_start_hour_button").classList.add("same_function_start_hour_button_right");
       // document.getElementById("same_rapid_command").classList.add("same_rapid_command_right");
 
       var hrselec_vertical =  document.getElementsByClassName("same_hidden_vertical");
@@ -935,9 +936,9 @@ function sameMovePanelRight() {
           hrselec_rec[i].classList.add("same_recording_internal_right");
       }
 
-      let height = window.innerHeight - 215;
+      let height = window.innerHeight - 190; //  215;
       document.getElementById("same_panel").style.height = height + "px";
-      document.getElementById("same_note_text_iframe").style.height = (height - 50) + "px";
+      document.getElementById("same_note_text_iframe").style.height = (height - 30) + "px";
       document.getElementById("same_panel_edit_external_iframe").style.height = "100%";
 
       sameNoteBigCommon();
@@ -953,6 +954,8 @@ function sameMovePanelDeleteRight() {
       document.getElementById("same_common").classList.remove("same_common_right");
       document.getElementById("same_note_text_iframe").classList.remove("same_note_text_iframe_right");
       document.getElementById("same_panel_edit_external").classList.remove("same_panel_edit_external_right");
+      document.getElementById("same_function_start_hour_button").classList.remove("same_function_start_hour_button_right");
+
       // document.getElementById("same_rapid_command").classList.remove("same_rapid_command_right");
 
       var hrselec_vertical =  document.getElementsByClassName("same_hidden_vertical");
