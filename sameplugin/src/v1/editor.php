@@ -156,7 +156,8 @@
                 valore = value.value ;
               } else if (value.type == "participant") {
                 // valore = char_i + "@"  + char_e + " " + char_i + value.value + char_e ;
-                valore = "@" + value.value ;
+                // valore = "@" + value.value ;
+                valore = value.value ;
               } else if (value.type == "rTimestamp") {
                 valore = timeDefaultString ;
               } else if ( value.type == "agenda") {
@@ -189,7 +190,7 @@
               }
 
               // Prendo il valore
-              temp2 = temp2.replace("@", "");  // 64
+              // temp2 = temp2.replace("@", "");  // 64
               temp2 = temp2.replace("##", "");  // 35
 
               for(i = 0; i < same_shortcut_list.length; i++) {
@@ -217,7 +218,7 @@
     var sameWord = "";
     function sameKeypress( keyPressed ) {
 
-          // console.log(keyPressed.charCode + " __ " + sameCharCodeBefore );
+          console.log(keyPressed.charCode + " __ " + sameCharCodeBefore );
 
           if (keyPressed.charCode == 64) {
               sameDeleteTooltip();
